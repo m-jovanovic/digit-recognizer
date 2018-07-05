@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitRecognizer.Core", "DigitRecognizer.Core\DigitRecognizer.Core.csproj", "{BA726236-C7EC-41CA-ABB6-E4FE7E784939}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitRecognizer.Engine", "DigitRecognizer.Engine\DigitRecognizer.Engine.csproj", "{00CE9C72-5F92-4555-BB96-D0E77B9A2390}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitRecognizer.MachineLearning", "DigitRecognizer.MachineLearning\DigitRecognizer.MachineLearning.csproj", "{BF82C3DF-0EFE-45DB-8E3D-1FFDD548AE73}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA726236-C7EC-41CA-ABB6-E4FE7E784939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA726236-C7EC-41CA-ABB6-E4FE7E784939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA726236-C7EC-41CA-ABB6-E4FE7E784939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA726236-C7EC-41CA-ABB6-E4FE7E784939}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00CE9C72-5F92-4555-BB96-D0E77B9A2390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00CE9C72-5F92-4555-BB96-D0E77B9A2390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00CE9C72-5F92-4555-BB96-D0E77B9A2390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00CE9C72-5F92-4555-BB96-D0E77B9A2390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF82C3DF-0EFE-45DB-8E3D-1FFDD548AE73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF82C3DF-0EFE-45DB-8E3D-1FFDD548AE73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF82C3DF-0EFE-45DB-8E3D-1FFDD548AE73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF82C3DF-0EFE-45DB-8E3D-1FFDD548AE73}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {72EDBB0B-99B8-4D0F-A643-DEE415D96034}
+	EndGlobalSection
+EndGlobal

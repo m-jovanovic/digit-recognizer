@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BA726236-C7EC-41CA-ABB6-E4FE7E784939}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DigitRecognizer.Core</RootNamespace>
+    <AssemblyName>DigitRecognizer.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\DoublyLinkedList.cs" />
+    <Compile Include="Data\IDoublyLinkedList.cs" />
+    <Compile Include="Data\IDoublyLinkedListNode.cs" />
+    <Compile Include="Data\MnistImage.cs" />
+    <Compile Include="Data\MnistImageBatch.cs" />
+    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\ByteExtensions.cs" />
+    <Compile Include="Extensions\DoubleExtensions.cs" />
+    <Compile Include="Extensions\StreamExtensions.cs" />
+    <Compile Include="InputOutput\ILabelProvider.cs" />
+    <Compile Include="InputOutput\IMemoryStreamReader.cs" />
+    <Compile Include="InputOutput\INnBinaryAdapter.cs" />
+    <Compile Include="InputOutput\INnBinaryDeserializer.cs" />
+    <Compile Include="InputOutput\INnBinarySerializer.cs" />
+    <Compile Include="InputOutput\IPixelProvider.cs" />
+    <Compile Include="InputOutput\LabelProvider.cs" />
+    <Compile Include="InputOutput\MemoryStreamReader.cs" />
+    <Compile Include="InputOutput\NnBinaryAdapter.cs" />
+    <Compile Include="InputOutput\NnBinaryDeserializer.cs" />
+    <Compile Include="InputOutput\NnBinarySerializer.cs" />
+    <Compile Include="InputOutput\NnFile.cs" />
+    <Compile Include="InputOutput\NnFileInfo.cs" />
+    <Compile Include="InputOutput\PixelProvider.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\BatchDataProvider.cs" />
+    <Compile Include="Providers\StohasticDataProvider.cs" />
+    <Compile Include="Providers\IDataProvider.cs" />
+    <Compile Include="Providers\StohasticTestDataProvider.cs" />
+    <Compile Include="Providers\StohasticTrainDataProvider.cs" />
+    <Compile Include="Providers\BatchTestDataProvider.cs" />
+    <Compile Include="Providers\BatchTrainDataProvider.cs" />
+    <Compile Include="Utilities\Folders.cs" />
+    <Compile Include="Utilities\MathUtilities.cs" />
+    <Compile Include="Utilities\Contracts.cs" />
+    <Compile Include="Utilities\VectorUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
