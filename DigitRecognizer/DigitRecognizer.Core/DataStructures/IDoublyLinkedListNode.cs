@@ -1,7 +1,7 @@
-﻿namespace DigitRecognizer.Core.Data
+﻿namespace DigitRecognizer.Core.DataStructures
 {
     /// <summary>
-    /// 
+    /// Represents a generic doubly linked list node.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IDoublyLinkedListNode<T>

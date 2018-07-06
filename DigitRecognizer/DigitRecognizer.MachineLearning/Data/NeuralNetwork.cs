@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DigitRecognizer.Core.Data;
+using DigitRecognizer.Core.DataStructures;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Interfaces.ML;
 

@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.Core.Data
+﻿namespace DigitRecognizer.Core.DataStructures
 {
     /// <summary>
     /// Represents an MNIST image model.

@@ -1,4 +1,4 @@
-﻿using DigitRecognizer.Core.Data;
+﻿using DigitRecognizer.Core.DataStructures;
 using DigitRecognizer.Core.InputOutput;
 using DigitRecognizer.Core.Utilities;
 

@@ -1,6 +1,6 @@
 ﻿using DigitRecognizer.Core.Utilities;
 
-namespace DigitRecognizer.Core.Data
+namespace DigitRecognizer.Core.DataStructures
 {
     /// <summary>
     /// Represents a batch of MNIST images.

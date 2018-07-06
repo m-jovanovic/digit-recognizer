@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DigitRecognizer.Core.Data;
+using DigitRecognizer.Core.DataStructures;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.InputOutput;
 using DigitRecognizer.Core.Utilities;
