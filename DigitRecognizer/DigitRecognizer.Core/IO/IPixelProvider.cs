@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.Core.InputOutput
+﻿namespace DigitRecognizer.Core.IO
 {
     /// <summary>
     /// Interface that should be implemented by a pixel provider class.

@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using DigitRecognizer.Core.DataStructures;
 using DigitRecognizer.Core.Extensions;
-using DigitRecognizer.Core.InputOutput;
+using DigitRecognizer.Core.IO;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Interfaces.Functions;
 using DigitRecognizer.MachineLearning.Interfaces.ML;

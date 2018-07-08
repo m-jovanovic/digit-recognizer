@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DigitRecognizer.Core.InputOutput;
+using DigitRecognizer.Core.IO;
 using DigitRecognizer.MachineLearning.Data;
 using DigitRecognizer.MachineLearning.Interfaces.InputOutput;
 

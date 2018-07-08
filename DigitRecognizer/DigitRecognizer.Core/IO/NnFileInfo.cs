@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.Core.InputOutput
+﻿namespace DigitRecognizer.Core.IO
 {
     /// <summary>
     /// Contains context information about a neural netowrk file.

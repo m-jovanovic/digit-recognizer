@@ -2,7 +2,7 @@
 using System.IO;
 using DigitRecognizer.Core.Utilities;
 
-namespace DigitRecognizer.Core.InputOutput
+namespace DigitRecognizer.Core.IO
 {
     /// <summary>
     /// 

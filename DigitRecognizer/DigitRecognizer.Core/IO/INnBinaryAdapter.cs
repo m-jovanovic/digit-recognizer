@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DigitRecognizer.Core.InputOutput
+namespace DigitRecognizer.Core.IO
 {
     public interface INnBinaryAdapter : IDisposable
     {

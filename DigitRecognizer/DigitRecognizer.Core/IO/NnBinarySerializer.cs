@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.Extensions;
 
-namespace DigitRecognizer.Core.InputOutput
+namespace DigitRecognizer.Core.IO
 {
     /// <summary>
     /// 

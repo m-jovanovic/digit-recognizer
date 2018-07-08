@@ -5,7 +5,7 @@ using System.Linq;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 
-namespace DigitRecognizer.Core.InputOutput
+namespace DigitRecognizer.Core.IO
 {
     /// <summary>
     /// Provides methods for reading pixels from a <see cref="MemoryStream"/>.

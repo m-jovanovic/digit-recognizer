@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DigitRecognizer.Core.InputOutput
+namespace DigitRecognizer.Core.IO
 {
     public interface INnBinaryDeserializer
     {

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using DigitRecognizer.Core.Utilities;
 
-namespace DigitRecognizer.Core.InputOutput
+namespace DigitRecognizer.Core.IO
 {
     public class LabelProvider : MemoryStreamReader, ILabelProvider<int>
     {

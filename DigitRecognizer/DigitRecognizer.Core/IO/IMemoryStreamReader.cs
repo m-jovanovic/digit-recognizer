@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.Core.InputOutput
+﻿namespace DigitRecognizer.Core.IO
 {
     public interface IMemoryStreamReader<T>
     {

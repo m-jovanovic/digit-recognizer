@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.Core.InputOutput
+﻿namespace DigitRecognizer.Core.IO
 {
     /// <summary>
     /// Model for the neural netowrk file format.

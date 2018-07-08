@@ -4,7 +4,7 @@ using System.IO;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 
-namespace DigitRecognizer.Core.InputOutput
+namespace DigitRecognizer.Core.IO
 {
     /// <summary>
     /// Provides methods for working with an in-memory stream of data.

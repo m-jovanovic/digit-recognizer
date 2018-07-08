@@ -1,4 +1,4 @@
-﻿using DigitRecognizer.Core.InputOutput;
+﻿using DigitRecognizer.Core.IO;
 
 namespace DigitRecognizer.MachineLearning.Interfaces.InputOutput
 {

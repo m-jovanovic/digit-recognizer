@@ -1,5 +1,5 @@
 ﻿using DigitRecognizer.Core.DataStructures;
-using DigitRecognizer.Core.InputOutput;
+using DigitRecognizer.Core.IO;
 using DigitRecognizer.Core.Utilities;
 
 namespace DigitRecognizer.Core.Providers
