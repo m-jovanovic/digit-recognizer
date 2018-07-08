@@ -40,9 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\DoublyLinkedList.cs" />
-    <Compile Include="DataStructures\IDoublyLinkedList.cs" />
-    <Compile Include="DataStructures\IDoublyLinkedListNode.cs" />
+    <Compile Include="DataStructures\LinkedList.cs" />
+    <Compile Include="DataStructures\LinkedListNode.cs" />
     <Compile Include="DataStructures\MnistImage.cs" />
     <Compile Include="DataStructures\MnistImageBatch.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
@@ -71,7 +70,7 @@
     <Compile Include="Providers\StohasticTrainDataProvider.cs" />
     <Compile Include="Providers\BatchTestDataProvider.cs" />
     <Compile Include="Providers\BatchTrainDataProvider.cs" />
-    <Compile Include="Utilities\Folders.cs" />
+    <Compile Include="Utilities\DirectoryUtilities.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Utilities\Contracts.cs" />
     <Compile Include="Utilities\VectorUtilities.cs" />

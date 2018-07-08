@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.InputOutput;
-using DigitRecognizer.MachineLearning.Interfaces;
 using DigitRecognizer.MachineLearning.Interfaces.InputOutput;
 using DigitRecognizer.MachineLearning.Interfaces.ML;
 

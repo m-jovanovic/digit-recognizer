@@ -57,47 +57,6 @@ namespace DigitRecognizer.Engine
             //    }
             //    Console.WriteLine();
             //}
-
-            var nnLayer1 = new NnLayer(100, 20);
-            var nnLayer2 = new NnLayer(20, 5);
-
-            nnLayer1.Next = nnLayer2;
-            nnLayer2.Previous = nnLayer1;
-
-            nnLayer1.ActivationFunction = new Relu();
-            nnLayer2.ActivationFunction = new Softmax();
-
-            var data = new double[20][];
-
-            for (var i = 0; i < data.Length; i++)
-            {
-                data[i] = new double[100];
-                for (var j = 0; j < 20; j++)
-                {
-                    data[i][j] = 0.01 * i * j;
-                }
-            }
-
-            var data1 = new double[20][];
-
-            for (var i = 0; i < data1.Length; i++)
-            {
-                data1[i] = new double[20];
-                for (var j = 0; j < 20; j++)
-                {
-                    data1[i][j] = 0.01 * i * j;
-                }
-            }
-
-            var opt = new GradientDescentOptimizer(new Softmax(), new CrossEntropy());
-
-            var forwardPass = nnLayer1.FeedForward(data);
-
-            var result = opt.CalculateGradient(data1[0], forwardPass[0], 3);
-
-            nnLayer2.BackPropagate(result.WeightGradient, result.BiasGradient, 0.001);
-
-            Console.Read();
         }
 
         private static double[][] MatMul(double[][] m1, double[][] m2)

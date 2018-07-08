@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides utility for accessing commonly required folders.
     /// </summary>
-    public static class Folders
+    public static class DirectoryUtilities
     {
         /// <summary>
         /// The path to the dataset folder.

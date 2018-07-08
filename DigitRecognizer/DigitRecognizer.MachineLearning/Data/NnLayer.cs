@@ -12,23 +12,8 @@ namespace DigitRecognizer.MachineLearning.Data
     /// <summary>
     /// 
     /// </summary>
-    public class NnLayer : INnLayer, IDoublyLinkedListNode<NnLayer>
+    public class NnLayer : INnLayer
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public IDoublyLinkedListNode<NnLayer> Next { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public IDoublyLinkedListNode<NnLayer> Previous { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public NnLayer Value => this;
-
         private readonly WeightMatrix _weights;
         private readonly BiasVector _bias;
 
@@ -130,20 +115,21 @@ namespace DigitRecognizer.MachineLearning.Data
         /// <returns></returns>
         public double[][] FeedForward(double[][] input)
         {
-            _activationCache = input;
+            //_activationCache = input;
 
-            var weightedSum = input.Multiply(_weights.Value).ElementwiseAdd(_bias.Value);
+            //var weightedSum = input.Multiply(_weights.Value).ElementwiseAdd(_bias.Value);
 
-            _weightedSumCache = weightedSum;
+            //_weightedSumCache = weightedSum;
 
-            var activation = VectorUtilities.CreateMatrix(weightedSum.Length, weightedSum[0].Length);
+            //var activation = VectorUtilities.CreateMatrix(weightedSum.Length, weightedSum[0].Length);
 
-            Parallel.For(0, activation.Length, i =>
-            {
-                activation[i] = _activationFunction.Activate(weightedSum[i]);
-            });
+            //Parallel.For(0, activation.Length, i =>
+            //{
+            //    activation[i] = _activationFunction.Activate(weightedSum[i]);
+            //});
 
-            return Next == null ? activation : Next?.Value.FeedForward(activation);
+            //return Next == null ? activation : Next?.Value.FeedForward(activation);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -154,26 +140,26 @@ namespace DigitRecognizer.MachineLearning.Data
         /// <param name="learningRate"></param>
         public void BackPropagate(double[][] wDerivative, double[][] bDerivative, double learningRate)
         {
-            var weightedSumDerivative = WeightedSumDerivative();
+            //var weightedSumDerivative = WeightedSumDerivative();
             
-            var currWeightErr = Next == null ? 
-                wDerivative : 
-                Next.Value._weights.Value.Transpose().Multiply(wDerivative);
+            //var currWeightErr = Next == null ? 
+            //    wDerivative : 
+            //    Next.Value._weights.Value.Transpose().Multiply(wDerivative);
 
-            currWeightErr = currWeightErr.HadamardProduct(weightedSumDerivative);
+            //currWeightErr = currWeightErr.HadamardProduct(weightedSumDerivative);
 
-            var currBiasErr = Next == null ? 
-                bDerivative : 
-                Next.Value._weights.Value.Transpose().Multiply(bDerivative);
+            //var currBiasErr = Next == null ? 
+            //    bDerivative : 
+            //    Next.Value._weights.Value.Transpose().Multiply(bDerivative);
 
-            var weightGradient = Previous.Value._activationCache.Transpose().Multiply(currWeightErr);
-            var biasGradient = currBiasErr;
+            //var weightGradient = Previous.Value._activationCache.Transpose().Multiply(currWeightErr);
+            //var biasGradient = currBiasErr;
 
-            _weights.AdjustValue(weightGradient, learningRate);
+            //_weights.AdjustValue(weightGradient, learningRate);
 
-            _bias.AdjustValue(biasGradient, learningRate);
+            //_bias.AdjustValue(biasGradient, learningRate);
 
-            Previous?.Value?.BackPropagate(currWeightErr, currBiasErr, learningRate);
+            //Previous?.Value?.BackPropagate(currWeightErr, currBiasErr, learningRate);
         }
     }
 }

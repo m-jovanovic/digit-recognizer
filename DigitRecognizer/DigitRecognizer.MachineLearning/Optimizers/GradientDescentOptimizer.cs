@@ -15,7 +15,8 @@ namespace DigitRecognizer.MachineLearning.Optimizers
         /// </summary>
         /// <param name="activationFunction"></param>
         /// <param name="lossFunction"></param>
-        public GradientDescentOptimizer(IActivationFunction activationFunction, ILossFunction lossFunction) : base(activationFunction, lossFunction)
+        public GradientDescentOptimizer(IActivationFunction activationFunction, ILossFunction lossFunction) 
+            : base(activationFunction, lossFunction)
         {
         }
 

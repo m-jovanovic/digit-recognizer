@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using DigitRecognizer.Core.DataStructures;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Interfaces.ML;
 
@@ -7,14 +6,14 @@ namespace DigitRecognizer.MachineLearning.Data
 {
     public class NeuralNetwork : INeuralNetwork
     {
-        private readonly DoublyLinkedList<NnLayer> _layers;
+        private readonly Core.DataStructures.LinkedList<NnLayer> _layers;
 
         /// <summary>
         /// 
         /// </summary>
         public NeuralNetwork()
         {
-            _layers = new DoublyLinkedList<NnLayer>();
+            _layers = new Core.DataStructures.LinkedList<NnLayer>();
         }
 
         /// <summary>
@@ -25,7 +24,7 @@ namespace DigitRecognizer.MachineLearning.Data
         {
             Contracts.ValueNotNull(layer, nameof(layer));
             
-            _layers = new DoublyLinkedList<NnLayer>(layer);
+            _layers = new Core.DataStructures.LinkedList<NnLayer>(layer);
         }
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace DigitRecognizer.MachineLearning.Data
         {
             Contracts.ValueNotNull(layers, nameof(layers));
             
-            _layers = new DoublyLinkedList<NnLayer>(layers);
+            _layers = new Core.DataStructures.LinkedList<NnLayer>(layers);
         }
 
         /// <summary>
@@ -59,7 +58,7 @@ namespace DigitRecognizer.MachineLearning.Data
         {
             Contracts.ValueNotNull(layer, nameof(layer));
 
-            _layers.Add(layer);
+            _layers.AddLast(layer);
         }
     }
 }
