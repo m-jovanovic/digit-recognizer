@@ -11,6 +11,6 @@ namespace DigitRecognizer.MachineLearning.Interfaces.ML
         IActivationFunction ActivationFunction { set; }
 
         double[][] FeedForward(double[][] input);
-        void BackPropagate(double[][] wDerivative, double[][] bDerivative, double learningRate);
+        double[][] BackPropagate(double[][] outputError, int[] oneHot, double learningRate);
     }
 }

@@ -243,6 +243,11 @@ namespace DigitRecognizer.Core.Utilities
             return sum;
         }
 
+        public static double[] Avg(double[][] m)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Calculates the average of the specified vector.
         /// </summary>

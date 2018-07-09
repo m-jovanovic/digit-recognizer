@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using DigitRecognizer.Core.DataStructures;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.IO;
 using DigitRecognizer.Core.Utilities;
@@ -24,21 +24,6 @@ namespace DigitRecognizer.MachineLearning.Data
 
         private double[][] _weightedSumCache;
         private double[][] _activationCache;
-
-        private double[][] WeightedSumDerivative()
-        {
-            var result = VectorUtilities.CreateMatrix(_weightedSumCache.Length, _weightedSumCache[0].Length);
-
-            for (var i = 0; i < _weightedSumCache.Length; i++)
-            {
-                for (var j = 0; j < _weightedSumCache[0].Length; j++)
-                {
-                    result[i][j] = _activationFunction.Derivative(_weightedSumCache[i], j, j);
-                }
-            }
-
-            return result;
-        }
 
         /// <summary>
         /// 
@@ -95,8 +80,8 @@ namespace DigitRecognizer.MachineLearning.Data
         {
             var fileInfo = new NnFileInfo(_weights.Width, _weights.Height, _bias.Length);
 
-            var weightsLength = _weights.Width * _weights.Height;
-            var biasLength = _bias.Length;
+            int weightsLength = _weights.Width * _weights.Height;
+            int biasLength = _bias.Length;
 
             var data = new double[weightsLength + biasLength];
     
@@ -115,51 +100,69 @@ namespace DigitRecognizer.MachineLearning.Data
         /// <returns></returns>
         public double[][] FeedForward(double[][] input)
         {
-            //_activationCache = input;
+            _activationCache = input;
 
-            //var weightedSum = input.Multiply(_weights.Value).ElementwiseAdd(_bias.Value);
+            double[][] weightedSum = input.Multiply(_weights.Value).ElementwiseAdd(_bias.Value);
 
-            //_weightedSumCache = weightedSum;
+            _weightedSumCache = weightedSum;
 
-            //var activation = VectorUtilities.CreateMatrix(weightedSum.Length, weightedSum[0].Length);
+            double[][] output = VectorUtilities.CreateMatrix(weightedSum.Length, weightedSum[0].Length);
 
-            //Parallel.For(0, activation.Length, i =>
-            //{
-            //    activation[i] = _activationFunction.Activate(weightedSum[i]);
-            //});
+            Parallel.For(0, output.Length, i =>
+            {
+                output[i] = _activationFunction.Activate(weightedSum[i]);
+            });
 
-            //return Next == null ? activation : Next?.Value.FeedForward(activation);
-            throw new NotImplementedException();
+            return output;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="wDerivative"></param>
-        /// <param name="bDerivative"></param>
+        /// <param name="outputError"></param>
+        /// <param name="oneHot"></param>
         /// <param name="learningRate"></param>
-        public void BackPropagate(double[][] wDerivative, double[][] bDerivative, double learningRate)
+        public double[][] BackPropagate(double[][] outputError, int[] oneHot, double learningRate)
         {
-            //var weightedSumDerivative = WeightedSumDerivative();
-            
-            //var currWeightErr = Next == null ? 
-            //    wDerivative : 
-            //    Next.Value._weights.Value.Transpose().Multiply(wDerivative);
+            double[][] wSumDerivative = WeightedSumDerivative(oneHot);
 
-            //currWeightErr = currWeightErr.HadamardProduct(weightedSumDerivative);
+            double[][] gradients = VectorUtilities.CreateMatrix(_numberOfInputs, _numberOfOutputs);
 
-            //var currBiasErr = Next == null ? 
-            //    bDerivative : 
-            //    Next.Value._weights.Value.Transpose().Multiply(bDerivative);
+            Parallel.For(0, _numberOfInputs, i => { gradients[i] = outputError[i].Product(wSumDerivative[i]); });
 
-            //var weightGradient = Previous.Value._activationCache.Transpose().Multiply(currWeightErr);
-            //var biasGradient = currBiasErr;
+            double[][] currentLayerError = { gradients.Average() };
 
-            //_weights.AdjustValue(weightGradient, learningRate);
+            double[][] averageActivation = {_activationCache.Average()};
 
-            //_bias.AdjustValue(biasGradient, learningRate);
+            double[][] weightGradients = averageActivation.Transpose().Multiply(currentLayerError);
 
-            //Previous?.Value?.BackPropagate(currWeightErr, currBiasErr, learningRate);
+            _weights.AdjustValue(weightGradients, learningRate);
+
+            _bias.AdjustValue(currentLayerError, learningRate);
+
+            return currentLayerError.Multiply(_weights.Value);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oneHot"></param>
+        /// <returns></returns>
+        private double[][] WeightedSumDerivative(IReadOnlyList<int> oneHot)
+        {
+            int rowCount = _weightedSumCache.Length;
+            int colCount = _weightedSumCache[0].Length;
+            double[][] result = VectorUtilities.CreateMatrix(rowCount, colCount);
+
+            for (var i = 0; i < rowCount; i++)
+            {
+                for (var j = 0; j < colCount; j++)
+                {
+                    result[i][j] = _activationFunction.Derivative(_weightedSumCache[i], j, oneHot[i]);
+                }
+            }
+
+            return result;
         }
     }
 }

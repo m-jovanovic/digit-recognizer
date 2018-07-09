@@ -1,5 +1,4 @@
-﻿using DigitRecognizer.MachineLearning.Data;
-using DigitRecognizer.MachineLearning.Interfaces.Functions;
+﻿using DigitRecognizer.MachineLearning.Interfaces.Functions;
 
 namespace DigitRecognizer.MachineLearning.Interfaces.Optimization
 {
@@ -8,9 +7,9 @@ namespace DigitRecognizer.MachineLearning.Interfaces.Optimization
     /// </summary>
     public interface IOptimizer
     {
-        IActivationFunction ActivationFunction { get; }
         ILossFunction LossFunction { get; }
 
-        Gradient CalculateGradient(double[] activation, double[] prediction, int oneHot);
+        double[] CalculateOutputDerivative(double[] prediction, int oneHot);
+        double[][] CalculateOutputDerivative(double[][] predictions, int[] oneHots);
     }
 }

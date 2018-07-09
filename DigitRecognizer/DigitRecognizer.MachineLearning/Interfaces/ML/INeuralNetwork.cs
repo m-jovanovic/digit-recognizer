@@ -8,6 +8,7 @@ namespace DigitRecognizer.MachineLearning.Interfaces.ML
     public interface INeuralNetwork
     {
         double[][] FeedForward(double[][] input);
+        void Backpropagate(double[][] outputError);
 
         void AddLayer(NnLayer layer);
     }

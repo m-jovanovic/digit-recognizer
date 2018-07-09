@@ -8,6 +8,8 @@ namespace DigitRecognizer.MachineLearning.Data
     {
         private readonly Core.DataStructures.LinkedList<NnLayer> _layers;
 
+        private double _learningRate = 0.003;
+
         /// <summary>
         /// 
         /// </summary>
@@ -45,9 +47,29 @@ namespace DigitRecognizer.MachineLearning.Data
         /// <returns></returns>
         public double[][] FeedForward(double[][] input)
         {
-            var result = _layers.First.Value.FeedForward(input);
+            Core.DataStructures.LinkedListNode<NnLayer> currentLayer = _layers.First;
+            double[][] output = input;
+            while (currentLayer != null)
+            {
+                output = currentLayer.Value.FeedForward(output);
+                currentLayer = currentLayer.Next;
+            }
 
-            return result;
+            return output;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Backpropagate(double[][] outputError, int[] oneHot)
+        {
+            Core.DataStructures.LinkedListNode<NnLayer> currentLayer = _layers.Last;
+            double[][] currentError = outputError;
+            while (currentLayer != null)
+            {
+                currentError = currentLayer.Value.BackPropagate(currentError, oneHot, _learningRate);
+                currentLayer = currentLayer.Previous;
+            }
         }
 
         /// <summary>

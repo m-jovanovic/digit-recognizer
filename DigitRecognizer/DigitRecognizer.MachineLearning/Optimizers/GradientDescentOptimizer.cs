@@ -1,4 +1,5 @@
-﻿using DigitRecognizer.Core.Utilities;
+﻿using System.Threading.Tasks;
+using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Data;
 using DigitRecognizer.MachineLearning.Interfaces.Functions;
 using DigitRecognizer.MachineLearning.Interfaces.Optimization;
@@ -13,46 +14,40 @@ namespace DigitRecognizer.MachineLearning.Optimizers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="activationFunction"></param>
         /// <param name="lossFunction"></param>
-        public GradientDescentOptimizer(IActivationFunction activationFunction, ILossFunction lossFunction) 
-            : base(activationFunction, lossFunction)
+        public GradientDescentOptimizer(ILossFunction lossFunction) 
+            : base(lossFunction)
         {
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="activation"></param>
         /// <param name="prediction"></param>
         /// <param name="oneHot"></param>
         /// <returns></returns>
-        public Gradient CalculateGradient(double[] activation, double[] prediction, int oneHot)
+        public double[] CalculateOutputDerivative(double[] prediction, int oneHot)
         {
-            var biasGrad = VectorUtilities.CreateMatrix(1, prediction.Length);
-
-            var rowIndex = 0;
-            var length = biasGrad[0].Length;
-            for(var i =0; i < length; i++)
+            int length = prediction.Length;
+            var gradient = new double[length];
+            for (var i = 0; i < length; i++)
             {
-                biasGrad[rowIndex][i] = LossFunction.Derivative(prediction, i, oneHot) *
-                              ActivationFunction.Derivative(prediction, i, oneHot);
+                gradient[i] = LossFunction.Derivative(prediction, i, oneHot);
             }
 
-            var weightGrad = VectorUtilities.CreateMatrix(activation.Length, prediction.Length);
-            
-            var height = activation.Length;
-            var width = prediction.Length;
-            for (var j = 0; j < width; j++)
-            {
-                for (var i = 0; i < height; i++)
-                {
-                    weightGrad[i][j] = LossFunction.Derivative(prediction, j, oneHot)
-                                       * ActivationFunction.Derivative(prediction, j, oneHot) * activation[i];
-                }
-            }
+            return gradient;
+        }
 
-            return new Gradient(weightGrad, biasGrad);
+        public double[][] CalculateOutputDerivative(double[][] predictions, int[] oneHots)
+        {
+            int length = predictions.Length;
+            double[][] gradient = VectorUtilities.CreateMatrix(length, predictions[0].Length);
+            Parallel.For(0, length, i =>
+            {
+                gradient[i] = CalculateOutputDerivative(predictions[i], oneHots[i]);
+            });
+
+            return gradient;
         }
     }
 }

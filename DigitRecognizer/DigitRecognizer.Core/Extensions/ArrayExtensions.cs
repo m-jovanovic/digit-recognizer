@@ -32,6 +32,27 @@ namespace DigitRecognizer.Core.Extensions
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="arr1"></param>
+        /// <param name="arr2"></param>
+        /// <returns></returns>
+        public static double[] Product(this double[] arr1, double[] arr2)
+        {
+            return VectorUtilities.Product(arr1, arr2);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public static double[] Average(this double[][] m)
+        {
+            return VectorUtilities.Avg(m);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="m"></param>
         /// <param name="arr"></param>
         /// <returns></returns>
