@@ -1,4 +1,5 @@
 ﻿using System;
+using DigitRecognizer.Core.Extensions;
 
 namespace DigitRecognizer.Core.Utilities
 {
@@ -14,13 +15,13 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>The array with softmax values.</returns>
         public static double[] Softmax(double[] arr)
         {
-            var length = arr.Length;
+            int length = arr.Length;
             var result = new double[length];
 
             // The epsilon is used for numerical stability.
-            var epsilon = -VectorUtilities.Max(arr);
+            double epsilon = -arr.Max();
 
-            var l1Norm = L1Norm(arr);
+            double l1Norm = L1Norm(arr);
             for (var i = 0; i < length; i++)
             {
                 result[i] = Softmax(arr[i] + epsilon) / l1Norm;
@@ -46,11 +47,11 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>The array with sigmoid values.</returns>
         public static double[] Sigmoid(double[] arr)
         {
-            var length = arr.Length;
+            int length = arr.Length;
             var result = new double[length];
 
             // The epsilon is used for numerical stability.
-            var epsilon = VectorUtilities.Max(arr);
+            double epsilon = arr.Max();
 
             for (var i = 0; i < length; i++)
             {
@@ -77,7 +78,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>The array with RELU values.</returns>
         public static double[] Relu(double[] arr)
         {
-            var length = arr.Length;
+            int length = arr.Length;
             var result = new double[length];
 
             for (var i = 0; i < length; i++)
@@ -105,11 +106,11 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>The array with softplus values.</returns>
         public static double[] Softplus(double[] arr)
         {
-            var length = arr.Length;
+            int length = arr.Length;
             var result = new double[length];
 
             // The epsilon is used for numerical stability.
-            var epsilon = -VectorUtilities.Max(arr);
+            double epsilon = -arr.Max();
 
             for (var i = 0; i < length; i++)
             {
@@ -136,11 +137,11 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>The array with tanh values.</returns>
         public static double[] Tanh(double[] arr)
         {
-            var length = arr.Length;
+            int length = arr.Length;
             var result = new double[length];
 
             // The epsilon is used for numerical stability.
-            var epsilon = VectorUtilities.Max(arr);
+            double epsilon = arr.Max();
 
             for (var i = 0; i < length; i++)
             {
@@ -168,7 +169,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>The param. RELU value array.</returns>
         public static double[] LeakyRelu(double[] arr, double alpha)
         {
-            var length = arr.Length;
+            int length = arr.Length;
             var result = new double[length];
 
             for (var i = 0; i < length; i++)
@@ -198,11 +199,11 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>The exp. RELU value array.</returns>
         public static double[] Elu(double[] arr, double alpha)
         {
-            var length = arr.Length;
+            int length = arr.Length;
             var result = new double[length];
 
             // The epsilon is used for numerical stability.
-            var epsilon = -VectorUtilities.Max(arr);
+            double epsilon = -arr.Max();
 
             for (var i = 0; i < arr.Length; i++)
             {
@@ -233,9 +234,9 @@ namespace DigitRecognizer.Core.Utilities
         {
             Contracts.ValuesMatch(estArr.Length, actArr.Length, nameof(estArr.Length));
 
-            var actValIndex = VectorUtilities.ArgMax(actArr);
+            int actValIndex = actArr.ArgMax();
 
-            var result = CrossEntropy(estArr[actValIndex], 1.0);
+            double result = CrossEntropy(estArr[actValIndex], 1.0);
 
             return -result;
         }
@@ -261,7 +262,7 @@ namespace DigitRecognizer.Core.Utilities
         {
             Contracts.ValuesMatch(estArr.Length, actArr.Length, nameof(estArr.Length));
 
-            var length = estArr.Length;
+            int length = estArr.Length;
             var result = 0.0;
 
             for (var i = 0; i < length; i++)
@@ -284,7 +285,7 @@ namespace DigitRecognizer.Core.Utilities
         {
             Contracts.ValuesMatch(estArr.Length, actArr.Length, nameof(estArr.Length));
 
-            var length = estArr.Length;
+            int length = estArr.Length;
             var result = 0.0;
 
             for (var i = 0; i < length; i++)
@@ -305,7 +306,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>The square distance between the values.</returns>
         public static double SquareDistance(double estVal, double actVal)
         {
-            var result = estVal - actVal;
+            double result = estVal - actVal;
 
             return result * result;
         }
@@ -318,7 +319,7 @@ namespace DigitRecognizer.Core.Utilities
         public static double L1Norm(double[] arr)
         {
             var result = 0.0;
-            var length = arr.Length;
+            int length = arr.Length;
             for (var i = 0; i < length; i++)
             {
                 result += arr[i];
@@ -337,7 +338,7 @@ namespace DigitRecognizer.Core.Utilities
         public static double L2Norm(double[] arr)
         {
             var result = 0.0;
-            var length = arr.Length;
+            int length = arr.Length;
             for (var i = 0; i < length; i++)
             {
                 result += Math.Pow(arr[i], 2);

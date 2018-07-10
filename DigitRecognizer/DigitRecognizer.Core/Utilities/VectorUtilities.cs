@@ -40,7 +40,7 @@ namespace DigitRecognizer.Core.Utilities
         {
             Contracts.ValueGreaterThanZero(flattenedData.Length, nameof(flattenedData.Length));
 
-            var result = CreateMatrix(rowCount, colCount);
+            double[][] result = CreateMatrix(rowCount, colCount);
 
             var offset = 0;
 
@@ -62,7 +62,7 @@ namespace DigitRecognizer.Core.Utilities
         /// </summary>
         /// <param name="arr"></param>
         /// <returns></returns>
-        public static double[][] CreateMatrix(double[] arr)
+        internal static double[][] AsMatrix(double[] arr)
         {
             var result = new[]
             {
@@ -77,18 +77,18 @@ namespace DigitRecognizer.Core.Utilities
         /// </summary>
         /// <param name="m"></param>
         /// <returns></returns>
-        public static double[][] Transpose(double[][] m)
+        internal static double[][] Transpose(double[][] m)
         {
-            var rowCount = m.Length;
-            var colCount = m[0].Length;
+            int rowCount = m.Length;
+            int colCount = m[0].Length;
 
-            var result = CreateMatrix(colCount, rowCount);
+            double[][] result = CreateMatrix(colCount, rowCount);
 
-            Parallel.For(0, colCount, i =>
+            Parallel.For(0, colCount, col =>
             {
-                for (var j = 0; j < rowCount; j++)
+                for (var row = 0; row < rowCount; row++)
                 {
-                    result[i][j] = m[j][i];
+                    result[col][row] = m[row][col];
                 }
             });
 
@@ -101,9 +101,9 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="arr1">The first array.</param>
         /// <param name="arr2">The second array.</param>
         /// <returns>The elementwise sum of two vectors.</returns>
-        public static double[] ElementwiseAdd(double[] arr1, double[] arr2)
+        internal static double[] ElementwiseAdd(double[] arr1, double[] arr2)
         {
-            var length = arr1.Length;
+            int length = arr1.Length;
             Contracts.ValuesMatch(length, arr2.Length, nameof(length));
 
             var result = new double[length];
@@ -121,17 +121,42 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="m">The matrix.</param>
         /// <param name="arr">The array.</param>
         /// <returns>The elementwise summ of the vector with the matrix rows.</returns>
-        public static double[][] ElementwiseAdd(double[][] m, double[] arr)
+        internal static double[][] ElementwiseAdd(double[][] m, double[] arr)
         {
-            var rowCount = m.Length;
-            var colCount = m[0].Length;
+            int rowCount = m.Length;
+            int colCount = m[0].Length;
             Contracts.ValuesMatch(colCount, arr.Length, nameof(arr.Length));
 
-            var result = CreateMatrix(rowCount, colCount);
+            double[][] result = CreateMatrix(rowCount, colCount);
 
             Parallel.For(0, rowCount, i =>
             {
                 result[i] = ElementwiseAdd(m[i], arr);
+            });
+
+            return result;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="m1"></param>
+        /// <param name="m2"></param>
+        /// <returns></returns>
+        internal static double[][] Add(double[][] m1, double[][] m2)
+        {
+            int rowCount = m1.Length;
+            int colCount = m1[0].Length;
+            Contracts.ValuesMatch(rowCount, m2.Length, nameof(rowCount));
+            Contracts.ValuesMatch(colCount, m2[0].Length, nameof(colCount));
+
+            double[][] result = CreateMatrix(rowCount, colCount);
+            Parallel.For(0, rowCount, i =>
+            {
+                for (var j = 0; j < colCount; j++)
+                {
+                    result[i][j] = m1[i][j] + m2[i][j];
+                }
             });
 
             return result;
@@ -143,13 +168,13 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="m1">The first matrix.</param>
         /// <param name="m2">The second matrix.</param>
         /// <returns>The result of the multiplication.</returns>
-        public static double[][] Multiply(double[][] m1, double[][] m2)
+        internal static double[][] Multiply(double[][] m1, double[][] m2)
         {
-            var colCount = m1[0].Length;
-            var rowCount = m2.Length;
+            int colCount = m1[0].Length;
+            int rowCount = m2.Length;
             Contracts.ValuesMatch(rowCount, colCount, nameof(rowCount));
 
-            var result = CreateMatrix(m1.Length, m2[0].Length);
+            double[][] result = CreateMatrix(m1.Length, m2[0].Length);
 
             Parallel.For(0, result.Length, i => OptimizedMultiply(m1, m2, result, i));
 
@@ -165,15 +190,15 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="row">The current row being processed.</param>
         private static void OptimizedMultiply(double[][] m1, double[][] m2, double[][] result, int row)
         {
-            var iRowA = m1[row];
-            var iRowC = result[row];
-            var kLength = m2.Length;
-            var jLength = result[0].Length;
+            double[] iRowA = m1[row];
+            double[] iRowC = result[row];
+            int kLength = m2.Length;
+            int jLength = result[0].Length;
 
             for (var k = 0; k < kLength; k++)
             {
-                var kRowB = m2[k];
-                var ikA = iRowA[k];
+                double[] kRowB = m2[k];
+                double ikA = iRowA[k];
                 for (var j = 0; j < jLength; j++)
                 {
                     iRowC[j] += ikA * kRowB[j];
@@ -187,19 +212,19 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="m1"></param>
         /// <param name="m2"></param>
         /// <returns></returns>
-        public static double[][] HadamardProduct(double[][] m1, double[][] m2)
+        internal static double[][] HadamardProduct(double[][] m1, double[][] m2)
         {
-            var rowCount = m1.Length;
-            var colCount = m1[0].Length;
+            int rowCount = m1.Length;
+            int colCount = m1[0].Length;
 
             Contracts.ValuesMatch(rowCount, m2.Length, nameof(rowCount));
             Contracts.ValuesMatch(colCount, m2[0].Length, nameof(colCount));
 
-            var result = CreateMatrix(rowCount, colCount);
+            double[][] result = CreateMatrix(rowCount, colCount);
 
             Parallel.For(0, rowCount, i =>
             {
-                result[i] = Product(m1[i], m2[i]);
+                result[i] = HadamardProduct(m1[i], m2[i]);
             });
 
             return result;
@@ -211,9 +236,9 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="arr1"></param>
         /// <param name="arr2"></param>
         /// <returns></returns>
-        public static double[] Product(double[] arr1, double[] arr2)
+        internal static double[] HadamardProduct(double[] arr1, double[] arr2)
         {
-            var length = arr1.Length;
+            int length = arr1.Length;
             Contracts.ValuesMatch(length, arr2.Length, nameof(length));
 
             var result = new double[length];
@@ -230,11 +255,10 @@ namespace DigitRecognizer.Core.Utilities
         /// </summary>
         /// <param name="arr">The array.</param>
         /// <returns>The sum of the vector.</returns>
-        public static double Sum(double[] arr)
+        internal static double Sum(double[] arr)
         {
+            int length = arr.Length;
             var sum = 0.0;
-            var length = arr.Length;
-
             for (var i = 0; i < length; i++)
             {
                 sum += arr[i];
@@ -243,9 +267,24 @@ namespace DigitRecognizer.Core.Utilities
             return sum;
         }
 
-        public static double[] Avg(double[][] m)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        internal static double[] Avg(double[][] m)
         {
-            throw new NotImplementedException();
+            double[][] transposed = Transpose(m);
+
+            int denominator = m.Length;
+            int length = transposed.Length;
+            var result = new double[length];
+            for (var i = 0; i < length; i++)
+            {
+                result[i] = Sum(transposed[i]) / denominator;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -253,13 +292,13 @@ namespace DigitRecognizer.Core.Utilities
         /// </summary>
         /// <param name="arr">The array.</param>
         /// <returns>The average of the array.</returns>
-        public static double Avg(double[] arr)
+        internal static double Avg(double[] arr)
         {
             var length = (double) arr.Length;
 
-            var sum = Sum(arr);
+            double sum = Sum(arr);
 
-            var avg = sum / length;
+            double avg = sum / length;
 
             return avg;
         }
@@ -270,7 +309,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="index">The 0 based index of the hot value.</param>
         /// <param name="length">The length of the resulting array.</param>
         /// <returns>The one-hot encoded array.</returns>
-        public static int[] OneHot(int index, int length)
+        internal static int[] OneHot(int index, int length)
         {
             Contracts.ValueGreaterThanZero(index, nameof(index));
             Contracts.ValueGreaterThanZero(length, nameof(length));
@@ -288,7 +327,7 @@ namespace DigitRecognizer.Core.Utilities
         /// </summary>
         /// <param name="arr">The array.</param>
         /// <returns>The 0 based index.</returns>
-        public static int ArgMax(int[] arr)
+        internal static int ArgMax(int[] arr)
         {
             if (arr.Length == 0)
             {
@@ -309,22 +348,22 @@ namespace DigitRecognizer.Core.Utilities
 
             return iMax;
         }
-        
+
         /// <summary>
         /// Returns the 0 based index of the maximum value of the array.
         /// </summary>
         /// <param name="arr">The array.</param>
         /// <returns>The 0 based index.</returns>
-        public static int ArgMax(double[] arr)
+        internal static int ArgMax(double[] arr)
         {
-            var length = arr.Length;
+            int length = arr.Length;
             if (length == 0)
             {
                 return -1;
             }
 
-            var max = double.MinValue;
-            var iMax = -1;
+            double max = double.MinValue;
+            int iMax = -1;
             for (var i = 0; i < length; i++)
             {
                 if (arr[i] > max)
@@ -342,11 +381,11 @@ namespace DigitRecognizer.Core.Utilities
         /// </summary>
         /// <param name="arr">The array.</param>
         /// <returns>The max value.</returns>
-        public static double Max(double[] arr)
+        internal static double Max(double[] arr)
         {
-            var max = double.MinValue;
+            double max = double.MinValue;
 
-            var length = arr.Length;
+            int length = arr.Length;
             for (var i = 0; i < length; i++)
             {
                 max = Math.Max(max, arr[i]);
@@ -360,10 +399,10 @@ namespace DigitRecognizer.Core.Utilities
         /// </summary>
         /// <param name="m">The two dimensional vector.</param>
         /// <returns>The one dimensional vector.</returns>
-        public static double[] Flatten(double[][] m)
+        internal static double[] Flatten(double[][] m)
         {
-            var rowCount = m.Length;
-            var colCount = m[0].Length;
+            int rowCount = m.Length;
+            int colCount = m[0].Length;
 
             var result = new double[rowCount * colCount];
             var offset = 0;

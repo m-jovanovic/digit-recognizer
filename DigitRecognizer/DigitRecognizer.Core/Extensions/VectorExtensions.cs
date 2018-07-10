@@ -5,7 +5,7 @@ namespace DigitRecognizer.Core.Extensions
     /// <summary>
     /// 
     /// </summary>
-    public static class ArrayExtensions
+    public static class VectorExtensions
     {
         /// <summary>
         /// 
@@ -35,9 +35,9 @@ namespace DigitRecognizer.Core.Extensions
         /// <param name="arr1"></param>
         /// <param name="arr2"></param>
         /// <returns></returns>
-        public static double[] Product(this double[] arr1, double[] arr2)
+        public static double[] HadamardProduct(this double[] arr1, double[] arr2)
         {
-            return VectorUtilities.Product(arr1, arr2);
+            return VectorUtilities.HadamardProduct(arr1, arr2);
         }
 
         /// <summary>
@@ -48,6 +48,16 @@ namespace DigitRecognizer.Core.Extensions
         public static double[] Average(this double[][] m)
         {
             return VectorUtilities.Avg(m);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        public static double Average(this double[] arr)
+        {
+            return VectorUtilities.Avg(arr);
         }
 
         /// <summary>
@@ -69,6 +79,57 @@ namespace DigitRecognizer.Core.Extensions
         public static double[][] Transpose(this double[][] m)
         {
             return VectorUtilities.Transpose(m);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        public static double Max(this double[] arr)
+        {
+            return VectorUtilities.Max(arr);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        public static int ArgMax(this double[] arr)
+        {
+            return VectorUtilities.ArgMax(arr);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        public static int ArgMax(this int[] arr)
+        {
+            return VectorUtilities.ArgMax(arr);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="m1"></param>
+        /// <param name="m2"></param>
+        /// <returns></returns>
+        public static double[][] Add(this double[][] m1, double[][] m2)
+        {
+            return VectorUtilities.Add(m1, m2);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        public static double[][] AsMatrix(this double[] arr)
+        {
+            return VectorUtilities.AsMatrix(arr);
         }
     }
 }

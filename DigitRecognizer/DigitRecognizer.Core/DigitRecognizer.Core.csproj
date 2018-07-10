@@ -44,7 +44,7 @@
     <Compile Include="DataStructures\LinkedListNode.cs" />
     <Compile Include="DataStructures\MnistImage.cs" />
     <Compile Include="DataStructures\MnistImageBatch.cs" />
-    <Compile Include="Extensions\ArrayExtensions.cs" />
+    <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />

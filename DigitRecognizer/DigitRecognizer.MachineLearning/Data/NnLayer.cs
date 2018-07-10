@@ -128,7 +128,7 @@ namespace DigitRecognizer.MachineLearning.Data
 
             double[][] gradients = VectorUtilities.CreateMatrix(_numberOfInputs, _numberOfOutputs);
 
-            Parallel.For(0, _numberOfInputs, i => { gradients[i] = outputError[i].Product(wSumDerivative[i]); });
+            Parallel.For(0, _numberOfInputs, i => { gradients[i] = outputError[i].HadamardProduct(wSumDerivative[i]); });
 
             double[][] currentLayerError = { gradients.Average() };
 
