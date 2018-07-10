@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using DigitRecognizer.Core.Utilities;
-using DigitRecognizer.MachineLearning.Data;
 using DigitRecognizer.MachineLearning.Interfaces.Functions;
 using DigitRecognizer.MachineLearning.Interfaces.Optimization;
 

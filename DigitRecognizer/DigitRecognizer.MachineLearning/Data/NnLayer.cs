@@ -102,7 +102,7 @@ namespace DigitRecognizer.MachineLearning.Data
         {
             _activationCache = input;
 
-            double[][] weightedSum = input.Multiply(_weights.Value).ElementwiseAdd(_bias.Value);
+            double[][] weightedSum = input.Multiply(_weights).ElementwiseAdd(_bias);
 
             _weightedSumCache = weightedSum;
 
@@ -130,9 +130,9 @@ namespace DigitRecognizer.MachineLearning.Data
 
             Parallel.For(0, _numberOfInputs, i => { gradients[i] = outputError[i].HadamardProduct(wSumDerivative[i]); });
 
-            double[][] currentLayerError = { gradients.Average() };
+            double[][] currentLayerError = gradients.Average().AsMatrix();
 
-            double[][] averageActivation = {_activationCache.Average()};
+            double[][] averageActivation = _activationCache.Average().AsMatrix();
 
             double[][] weightGradients = averageActivation.Transpose().Multiply(currentLayerError);
 
@@ -140,7 +140,7 @@ namespace DigitRecognizer.MachineLearning.Data
 
             _bias.AdjustValue(currentLayerError, learningRate);
 
-            return currentLayerError.Multiply(_weights.Value);
+            return currentLayerError.Multiply(_weights.Value.Transpose());
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace DigitRecognizer.MachineLearning.Data
             {
                 for (var j = 0; j < colCount; j++)
                 {
-                    result[i][j] = _activationFunction.Derivative(_weightedSumCache[i], j, oneHot[i]);
+                    result[i][j] = _activationFunction.Derivative(_weightedSumCache[i], j/*, oneHot[i]*/);
                 }
             }
 

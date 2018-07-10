@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="Api\LearningPipeline.cs" />
     <Compile Include="Api\PredictionModel.cs" />
-    <Compile Include="Data\Gradient.cs" />
     <Compile Include="Data\NeuralNetwork.cs" />
     <Compile Include="Data\NnLayer.cs" />
     <Compile Include="Interfaces\Functions\IFunction.cs" />

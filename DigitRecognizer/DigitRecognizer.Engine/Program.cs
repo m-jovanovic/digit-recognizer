@@ -1,5 +1,4 @@
-﻿using System;
-using DigitRecognizer.Core.Utilities;
+﻿using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Data;
 using DigitRecognizer.MachineLearning.Functions;
 using DigitRecognizer.MachineLearning.Optimizers;
@@ -10,71 +9,32 @@ namespace DigitRecognizer.Engine
     {
         private static void Main(string[] args)
         {
-            //var m1 = VectorUtilities.CreateMatrix(50, 75);
+            var optimizer = new GradientDescentOptimizer(new CrossEntropy());
+            var nn = new NeuralNetwork();
 
-            //var m23 = new double [][]
-            //{
-            //    new double [] {1.0, 2.0, 3.0, 4.0, 5.0},
-            //    new double[] {1.0, 2.0, 3.0, 4.0, 5.0},
-            //    new double[] {1.0, 2.0, 3.0, 4.0, 5.0}
-            //};
+            var layer1 = new NnLayer(784, 200) {ActivationFunction = new Relu() };
+            var layer2 = new NnLayer(200, 60) { ActivationFunction = new Relu() };
+            var layer3 = new NnLayer(60, 10) { ActivationFunction = new Softmax() };
 
-            //var test = VectorUtilities.Transpose(m23);
+            nn.AddLayer(layer1);
+            nn.AddLayer(layer2);
+            nn.AddLayer(layer3);
 
-            //var m2 = VectorUtilities.CreateMatrix(5, 5);
+            double[][] m = VectorUtilities.CreateMatrix(200, 784);
 
-            //for (var i = 0; i < m1.Length; i++)
-            //{
-            //    for (var j = 0; j < m1.Length; j++)
-            //    {
-            //        m1[i][j] = i * j;
-            //        m2[i][j] = i * j;
-            //    }
-            //}
-            //for (var i = 0; i < m1.Length; i++)
-            //{
-            //    for (var j = 0; j < m1.Length; j++)
-            //    {
-            //        Console.Write($"{m1[i][j]} ");
-            //    }
-            //    Console.WriteLine();
-            //}
-            //for (var i = 0; i < m1.Length; i++)
-            //{
-            //    for (var j = 0; j < m1.Length; j++)
-            //    {
-            //        Console.Write($"{m2[i][j]} ");
-            //    }
-            //    Console.WriteLine();
-            //}
-
-            //var m3 = VectorUtilities.Multiply(m1, m2);
-            //for (var i = 0; i < m1.Length; i++)
-            //{
-            //    for (var j = 0; j < m1.Length; j++)
-            //    {
-            //        Console.Write($"{m3[i][j]} ");
-            //    }
-            //    Console.WriteLine();
-            //}
-        }
-
-        private static double[][] MatMul(double[][] m1, double[][] m2)
-        {
-            var result = VectorUtilities.CreateMatrix(m1.Length, m2[0].Length);
-
-            for (var i = 0; i < m1.Length; i++)
+            for (var i = 0; i < m.Length; i++)
             {
-                for (var j = 0; j < m2[0].Length; j++)
+                for (var j = 0; j < m[0].Length; j++)
                 {
-                    for (var k = 0; k < m1[0].Length; k++)
-                    {
-                        result[i][j] += m1[i][k] * m2[k][j];
-                    }
+                    m[i][j] = i * 0.001 + j * 0.0002;
                 }
             }
 
-            return result;
+            var prediction = nn.FeedForward(m);
+            var onehot = new int[200];
+            var gradient = optimizer.CalculateOutputDerivative(prediction, onehot);
+
+            nn.Backpropagate(gradient, onehot);
         }
     }
 }

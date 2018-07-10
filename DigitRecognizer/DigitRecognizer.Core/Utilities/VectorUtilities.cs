@@ -399,7 +399,7 @@ namespace DigitRecognizer.Core.Utilities
         /// </summary>
         /// <param name="m">The two dimensional vector.</param>
         /// <returns>The one dimensional vector.</returns>
-        internal static double[] Flatten(double[][] m)
+        public static double[] Flatten(double[][] m)
         {
             int rowCount = m.Length;
             int colCount = m[0].Length;

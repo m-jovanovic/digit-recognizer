@@ -11,6 +11,11 @@ namespace DigitRecognizer.MachineLearning.Data
     {
         private double[] _bias;
 
+        public static implicit operator double[] (BiasVector b)
+        {
+            return b.Value;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -58,6 +63,11 @@ namespace DigitRecognizer.MachineLearning.Data
             Contracts.ValueGreaterThanZero(length, nameof(length));
 
             _bias = new double[length];
+            var rnd = new Random();
+            for (var i = 0; i < length; i++)
+            {
+                _bias[i] = rnd.NextDouble();
+            }
         }
 
         public void AdjustValue(double[][] gradient, double learningRate)
@@ -65,7 +75,7 @@ namespace DigitRecognizer.MachineLearning.Data
             var rowCount = gradient.Length;
             var colCount = gradient[0].Length;
 
-            var rowIndex = 1;
+            var rowIndex = 0;
             Contracts.ValuesMatch(1, rowCount, nameof(rowCount));
             Contracts.ValuesMatch(_bias.Length, colCount, nameof(colCount));
 

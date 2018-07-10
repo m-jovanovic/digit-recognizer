@@ -1,4 +1,4 @@
-﻿using System.Dynamic;
+﻿using System;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Interfaces.Optimization;
 
@@ -10,6 +10,11 @@ namespace DigitRecognizer.MachineLearning.Data
     public class WeightMatrix : IValueAdjustable
     {
         private double[][] _weights;
+
+        public static implicit operator double[][](WeightMatrix m)
+        {
+            return m.Value;
+        }
 
         /// <summary>
         /// 
@@ -85,6 +90,15 @@ namespace DigitRecognizer.MachineLearning.Data
             Contracts.ValueGreaterThanZero(width, nameof(width));
 
             _weights = VectorUtilities.CreateMatrix(height, width);
+
+            var rnd = new Random();
+            for (var i = 0; i < Height; i++)
+            {
+                for (var j = 0; j < Width; j++)
+                {
+                    _weights[i][j] = 0.5 - rnd.NextDouble();
+                }
+            }
         }
 
         /// <summary>
