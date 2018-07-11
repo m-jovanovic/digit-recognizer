@@ -32,6 +32,7 @@ namespace DigitRecognizer.Engine
 
             var prediction = nn.FeedForward(m);
             var onehot = new int[200];
+            var error = optimizer.CalculateError(prediction[0], 8);
             var gradient = optimizer.CalculateOutputDerivative(prediction, onehot);
 
             nn.Backpropagate(gradient, onehot);

@@ -128,5 +128,18 @@ namespace DigitRecognizer.Core.Utilities
                 throw new ArgumentNullException(paramName, "Value can not be null.");
             }
         }
+
+        /// <summary>
+        /// Checks if the specified value is not null.
+        /// </summary>
+        /// <param name="val">The value being checked.</param>
+        /// <param name="paramName">The name of the parameter.</param>
+        public static void ValueIsNull(object val, string paramName)
+        {
+            if (val != null)
+            {
+                throw new ArgumentException("Value must be null.", paramName);
+            }
+        }
     }
 }

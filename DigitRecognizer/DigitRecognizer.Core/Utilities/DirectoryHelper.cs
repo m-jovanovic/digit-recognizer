@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides utility for accessing commonly required folders.
     /// </summary>
-    public static class DirectoryUtilities
+    public static class DirectoryHelper
     {
         /// <summary>
         /// The path to the dataset folder.
@@ -13,7 +13,7 @@
         /// <summary>
         /// The path to the models folder.
         /// </summary>
-        private const string ModelsPath = @"../../../Dataset";
+        private const string ModelsPath = @"../../../Models";
 
         /// <summary>
         /// Gets the path to the dataset folder.

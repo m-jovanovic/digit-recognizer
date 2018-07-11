@@ -70,7 +70,7 @@
     <Compile Include="Providers\StohasticTrainDataProvider.cs" />
     <Compile Include="Providers\BatchTestDataProvider.cs" />
     <Compile Include="Providers\BatchTrainDataProvider.cs" />
-    <Compile Include="Utilities\DirectoryUtilities.cs" />
+    <Compile Include="Utilities\DirectoryHelper.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Utilities\Contracts.cs" />
     <Compile Include="Utilities\VectorUtilities.cs" />

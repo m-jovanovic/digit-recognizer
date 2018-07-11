@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Interfaces.Functions;
 using DigitRecognizer.MachineLearning.Interfaces.Optimization;
@@ -17,6 +18,19 @@ namespace DigitRecognizer.MachineLearning.Optimizers
         public GradientDescentOptimizer(ILossFunction lossFunction) 
             : base(lossFunction)
         {
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="prediction"></param>
+        /// <param name="oneHot"></param>
+        /// <returns></returns>
+        public double CalculateError(double[] prediction, int oneHot)
+        {
+            double error = LossFunction.Loss(prediction, oneHot.OneHot(prediction.Length));
+
+            return error;
         }
 
         /// <summary>

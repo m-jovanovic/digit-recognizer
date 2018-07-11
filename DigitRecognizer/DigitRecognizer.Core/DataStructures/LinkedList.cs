@@ -9,8 +9,15 @@ namespace DigitRecognizer.Core.DataStructures
     /// <typeparam name="T"></typeparam>
     public class LinkedList<T>
     {
+        /// <summary>
+        /// The head of the linked list.
+        /// </summary>
         private LinkedListNode<T> _head;
+        /// <summary>
+        /// The last element of the linked list.
+        /// </summary>
         private LinkedListNode<T> _last;
+
         private int _count;
 
         /// <summary>
@@ -38,6 +45,8 @@ namespace DigitRecognizer.Core.DataStructures
         public LinkedList(LinkedListNode<T> node)
         {
             Contracts.ValueNotNull(node, nameof(node));
+            Contracts.ValueIsNull(node.Next, nameof(node.Next));
+            Contracts.ValueIsNull(node.Previous, nameof(node.Previous));
 
             AddFirst(node);
         }
