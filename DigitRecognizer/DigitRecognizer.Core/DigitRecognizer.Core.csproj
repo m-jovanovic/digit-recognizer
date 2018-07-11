@@ -40,10 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\LinkedList.cs" />
-    <Compile Include="DataStructures\LinkedListNode.cs" />
-    <Compile Include="DataStructures\MnistImage.cs" />
-    <Compile Include="DataStructures\MnistImageBatch.cs" />
+    <Compile Include="Data\LinkedList.cs" />
+    <Compile Include="Data\LinkedListNode.cs" />
+    <Compile Include="Data\MnistImage.cs" />
+    <Compile Include="Data\MnistImageBatch.cs" />
     <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
