@@ -6,7 +6,7 @@ namespace DigitRecognizer.MachineLearning.Data
 {
     public class NeuralNetwork : INeuralNetwork
     {
-        private readonly Core.DataStructures.LinkedList<NnLayer> _layers;
+        private readonly Core.Data.LinkedList<NnLayer> _layers;
 
         private double _learningRate = 0.003;
 
@@ -15,7 +15,7 @@ namespace DigitRecognizer.MachineLearning.Data
         /// </summary>
         public NeuralNetwork()
         {
-            _layers = new Core.DataStructures.LinkedList<NnLayer>();
+            _layers = new Core.Data.LinkedList<NnLayer>();
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace DigitRecognizer.MachineLearning.Data
         {
             Contracts.ValueNotNull(layer, nameof(layer));
             
-            _layers = new Core.DataStructures.LinkedList<NnLayer>(layer);
+            _layers = new Core.Data.LinkedList<NnLayer>(layer);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace DigitRecognizer.MachineLearning.Data
         {
             Contracts.ValueNotNull(layers, nameof(layers));
             
-            _layers = new Core.DataStructures.LinkedList<NnLayer>(layers);
+            _layers = new Core.Data.LinkedList<NnLayer>(layers);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace DigitRecognizer.MachineLearning.Data
         /// <returns></returns>
         public double[][] FeedForward(double[][] input)
         {
-            Core.DataStructures.LinkedListNode<NnLayer> currentLayer = _layers.First;
+            Core.Data.LinkedListNode<NnLayer> currentLayer = _layers.First;
             double[][] output = input;
             while (currentLayer != null)
             {
@@ -63,7 +63,7 @@ namespace DigitRecognizer.MachineLearning.Data
         /// </summary>
         public void Backpropagate(double[][] outputError, int[] oneHot)
         {
-            Core.DataStructures.LinkedListNode<NnLayer> currentLayer = _layers.Last;
+            Core.Data.LinkedListNode<NnLayer> currentLayer = _layers.Last;
             double[][] currentError = outputError;
             while (currentLayer != null)
             {

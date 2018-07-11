@@ -70,7 +70,7 @@ namespace DigitRecognizer.Core.Extensions
 
             var buffer = new byte[count];
 
-            var bytesRead = stream.Read(buffer, 0, count);
+            int bytesRead = stream.Read(buffer, 0, count);
 
             if (bytesRead == count)
             {

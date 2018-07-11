@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace DigitRecognizer.Core.Extensions
 {
@@ -48,7 +47,17 @@ namespace DigitRecognizer.Core.Extensions
         /// <returns>A byte array.</returns>
         public static byte[] GetBytes(this double[] array)
         {
-            var result = array.SelectMany(BitConverter.GetBytes).ToArray();
+            int length = array.Length;
+            const int sizeOfDouble = sizeof(double);
+            var result = new byte[length * sizeOfDouble];
+
+            var offset = 0;
+            for (var i = 0; i < length; i++)
+            {
+                byte[] bytes = BitConverter.GetBytes(array[i]);
+                Buffer.BlockCopy(bytes, 0, result, offset, sizeOfDouble);
+                offset += sizeOfDouble;
+            }
 
             return result;
         }

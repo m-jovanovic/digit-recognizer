@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DigitRecognizer.Core.Utilities;
 
-namespace DigitRecognizer.Core.DataStructures
+namespace DigitRecognizer.Core.Data
 {
     /// <summary>
     /// Doubly linked list of a generic type. Supports adding nodes to the collection and converting to a list.

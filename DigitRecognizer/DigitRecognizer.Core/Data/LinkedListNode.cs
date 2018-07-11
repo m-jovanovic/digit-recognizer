@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.Core.DataStructures
+﻿namespace DigitRecognizer.Core.Data
 {
     /// <summary>
     /// Doubly linked list node of a generic type.
