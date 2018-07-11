@@ -30,12 +30,12 @@ namespace DigitRecognizer.Core.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Creates a new matrix of the specified dimensions.
         /// </summary>
-        /// <param name="rowCount"></param>
-        /// <param name="colCount"></param>
-        /// <param name="flattenedData"></param>
-        /// <returns></returns>
+        /// <param name="rowCount">The number of rows of the matrix.</param>
+        /// <param name="colCount">The number of columns of the matrix.</param>
+        /// <param name="flattenedData">The data for the matrix.</param>
+        /// <returns>The matrix of the specified size.</returns>
         public static double[][] CreateMatrix(int rowCount, int colCount, double[] flattenedData)
         {
             Contracts.ValueGreaterThanZero(flattenedData.Length, nameof(flattenedData.Length));
@@ -58,10 +58,10 @@ namespace DigitRecognizer.Core.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Converts an array to a matrix with one element.
         /// </summary>
-        /// <param name="arr"></param>
-        /// <returns></returns>
+        /// <param name="arr">The array to be converted.</param>
+        /// <returns>A jagged array a.k.a. matrix.</returns>
         internal static double[][] AsMatrix(double[] arr)
         {
             var result = new[]
@@ -73,10 +73,10 @@ namespace DigitRecognizer.Core.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Transposes the specified matrix.
         /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
+        /// <param name="m">The matrix to be transposed.</param>
+        /// <returns>The transposed matrix.</returns>
         internal static double[][] Transpose(double[][] m)
         {
             int rowCount = m.Length;
@@ -138,11 +138,11 @@ namespace DigitRecognizer.Core.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Adds two identical size matrices.
         /// </summary>
-        /// <param name="m1"></param>
-        /// <param name="m2"></param>
-        /// <returns></returns>
+        /// <param name="m1">First matrix for addition.</param>
+        /// <param name="m2">Second matrix for addition.</param>
+        /// <returns>The sum of the matrices.</returns>
         internal static double[][] Add(double[][] m1, double[][] m2)
         {
             int rowCount = m1.Length;
@@ -207,11 +207,11 @@ namespace DigitRecognizer.Core.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Performs an element by element product of two identical size matrices.
         /// </summary>
-        /// <param name="m1"></param>
-        /// <param name="m2"></param>
-        /// <returns></returns>
+        /// <param name="m1">The first matrix of the product.</param>
+        /// <param name="m2">The second matrix of the product.</param>
+        /// <returns>The Hadamard product of two matrices.</returns>
         internal static double[][] HadamardProduct(double[][] m1, double[][] m2)
         {
             int rowCount = m1.Length;
@@ -231,11 +231,11 @@ namespace DigitRecognizer.Core.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Performs an element by element product of two identical size arrays.
         /// </summary>
-        /// <param name="arr1"></param>
-        /// <param name="arr2"></param>
-        /// <returns></returns>
+        /// <param name="arr1">The first array of the product.</param>
+        /// <param name="arr2">The second array of the product.</param>
+        /// <returns>The Hadamard product of two arrays.</returns>
         internal static double[] HadamardProduct(double[] arr1, double[] arr2)
         {
             int length = arr1.Length;
@@ -268,10 +268,10 @@ namespace DigitRecognizer.Core.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Calculates the average of the specified matrix, column-wise.
         /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
+        /// <param name="m">The matrix whose average is being calculated.</param>
+        /// <returns>The average value of the matrix, per column.</returns>
         internal static double[] Avg(double[][] m)
         {
             double[][] transposed = Transpose(m);
@@ -290,7 +290,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <summary>
         /// Calculates the average of the specified vector.
         /// </summary>
-        /// <param name="arr">The array.</param>
+        /// <param name="arr">The array whose average is being calculated.</param>
         /// <returns>The average of the array.</returns>
         internal static double Avg(double[] arr)
         {
@@ -309,13 +309,13 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="index">The 0 based index of the hot value.</param>
         /// <param name="length">The length of the resulting array.</param>
         /// <returns>The one-hot encoded array.</returns>
-        internal static int[] OneHot(int index, int length)
+        internal static double[] OneHot(int index, int length)
         {
             Contracts.ValueGreaterThanZero(index, nameof(index));
             Contracts.ValueGreaterThanZero(length, nameof(length));
             Contracts.ValueWithinBounds(index, 0, length - 1, nameof(index));
 
-            var result = new int[length];
+            var result = new double[length];
 
             result[index] = 1;
 
@@ -334,9 +334,9 @@ namespace DigitRecognizer.Core.Utilities
                 return -1;
             }
 
-            var max = int.MinValue;
-            var iMax = -1;
-            var length = arr.Length;
+            int max = int.MinValue;
+            int iMax = -1;
+            int length = arr.Length;
             for (var i = 0; i < length; i++)
             {
                 if (arr[i] > max)
