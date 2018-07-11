@@ -21,10 +21,15 @@ namespace DigitRecognizer.Core.Utilities
             // The epsilon is used for numerical stability.
             double epsilon = -arr.Max();
 
-            double l1Norm = L1Norm(arr);
             for (var i = 0; i < length; i++)
             {
-                result[i] = Softmax(arr[i] + epsilon) / l1Norm;
+                result[i] = Softmax(arr[i] + epsilon);
+            }
+
+            double denominator = result.Sum();
+            for (var i = 0; i < length; i++)
+            {
+                result[i] /= denominator;
             }
 
             return result;
@@ -358,7 +363,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>A very small positive value - epsilon, or the value passed in.</returns>
         private static double ZeroSumCheck(double value)
         {
-            return Math.Abs(value) < double.Epsilon && System.Math.Abs(value) > -double.Epsilon ? double.Epsilon : value;
+            return Math.Abs(value) < double.Epsilon && Math.Abs(value) > -double.Epsilon ? double.Epsilon : value;
         }
     }
 }
