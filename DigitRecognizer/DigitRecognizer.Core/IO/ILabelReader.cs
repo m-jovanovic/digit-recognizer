@@ -3,10 +3,9 @@
     /// <summary>
     /// Interface that should be implemented by a label provider class.
     /// </summary>
-    /// <typeparam name="T">The type of the data.</typeparam>
-    public interface ILabelProvider<T>
+    public interface ILabelReader
     {
-        T Read();
-        T[] ReadBatch();
+        int ReadLabel();
+        int[] ReadLabels(int count);
     }
 }

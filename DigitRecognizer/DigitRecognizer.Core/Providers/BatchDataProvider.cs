@@ -17,12 +17,12 @@ namespace DigitRecognizer.Core.Providers
         /// <summary>
         /// Gets the memory stream reader for labels.
         /// </summary>
-        private readonly LabelProvider _labelProvider;
+        private readonly ILabelReader _labelReader;
 
         /// <summary>
         /// Gets the memory stream reader for images.
         /// </summary>
-        private readonly PixelProvider _pixelProvider;
+        private readonly IPixelReader _pixelReader;
 
         /// <summary>
         /// Gets the batch size.
@@ -44,8 +44,8 @@ namespace DigitRecognizer.Core.Providers
             Contracts.ValueGreaterThanZero(batchSize, nameof(batchSize));
             Contracts.ValuesMatch(_batchSize, MiniBatchSize, nameof(_batchSize));
 
-            _labelProvider = new LabelProvider(labelFilename, batchSize);
-            _pixelProvider = new PixelProvider(labelFilename, batchSize);
+            _labelReader = new LabelReader(labelFilename);
+            _pixelReader = new PixelReader(labelFilename);
 
             _batchSize = batchSize;
         }
@@ -56,8 +56,8 @@ namespace DigitRecognizer.Core.Providers
         /// <returns></returns>
         public MnistImageBatch GetData()
         {
-            var label = _labelProvider.ReadBatch();
-            var pixels = _pixelProvider.ReadBatch();
+            var label = _labelReader.ReadLabels(_batchSize);
+            var pixels = _pixelReader.ReadPixels(_batchSize, 784);
 
             var result = new MnistImageBatch(label, pixels);
 

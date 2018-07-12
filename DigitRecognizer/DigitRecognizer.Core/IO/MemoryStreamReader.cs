@@ -8,7 +8,7 @@ namespace DigitRecognizer.Core.IO
     /// <summary>
     /// Provides methods for working with an in-memory stream of data.
     /// </summary>
-    internal class MemoryStreamReader : IDisposable
+    public class MemoryStreamReader : IDisposable
     {
         /// <summary>
         /// The offset (if it exsists) in bytes, that need to be skipped at the beginning of the stream. 
@@ -23,14 +23,14 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoryStreamReader"/> class, from the specified file.
         /// </summary>
-        /// <param name="filePath">The file path used for instantiating a stream.</param>
+        /// <param name="filename">The file path used for instantiating a stream.</param>
         /// <param name="offset">The magic number.</param>
-        internal MemoryStreamReader(string filePath, int offset = 0)
+        public MemoryStreamReader(string filename, int offset = 0)
         {
             Contracts.ValueGreaterThanZero(offset, nameof(offset));
-            Contracts.FileExists(filePath, nameof(filePath));
+            Contracts.FileExists(filename, nameof(filename));
 
-            _memoryStream = StreamExtensions.GetMemoryStreamFromFile(filePath);
+            _memoryStream = StreamExtensions.GetMemoryStreamFromFile(filename);
 
             _offset = offset;
 
@@ -43,7 +43,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Initialies a new instance of the <see cref="MemoryStreamReader"/> class.
         /// </summary>
-        internal MemoryStreamReader()
+        public MemoryStreamReader()
         {
             _memoryStream = new MemoryStream();
             _offset = 0;
@@ -54,7 +54,7 @@ namespace DigitRecognizer.Core.IO
         /// </summary>
         /// <param name="count">The number of elements to read from the stream.</param>
         /// <returns>A byte array.</returns>
-        internal byte[] Read(int count)
+        public byte[] Read(int count)
         {
             Contracts.ValueGreaterThanZero(count, nameof(count));
 
@@ -76,7 +76,7 @@ namespace DigitRecognizer.Core.IO
         /// <param name="count">The number of elements to read from the stream.</param>
         /// <param name="blockSize">The length of each element.</param>
         /// <returns>A list of byte arrays.</returns>
-        internal byte[][] Read(int count, int blockSize)
+        public byte[][] Read(int count, int blockSize)
         {
             Contracts.ValueGreaterThanZero(count, nameof(count));
             Contracts.ValueGreaterThanZero(blockSize, nameof(blockSize));
@@ -96,7 +96,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Checks if the current position of the stream has reached the end of the stream, and resets it if true.
         /// </summary>
-        internal void CheckForOverflow()
+        private void CheckForOverflow()
         {
             if (_memoryStream.Position == _memoryStream.Length)
             {
@@ -107,7 +107,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Resets the in-memory stream to the starting position for further reading.
         /// </summary>
-        internal void Reset()
+        public void Reset()
         {
             _memoryStream.SetPosition(_offset);
         }
@@ -115,7 +115,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Indicates if the disposing operation has been completed or not.
         /// </summary>
-        private bool _disposed;
+        public bool _disposed;
 
         /// <summary>
         /// Releases all resources used by the <see cref="MemoryStreamReader"/>.

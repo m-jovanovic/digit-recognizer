@@ -11,23 +11,13 @@ namespace DigitRecognizer.Core.Extensions
         private const double DoubleOffsetNorm = 127.5D;
 
         /// <summary>
-        /// Returns a double, parsed from the specified byte.
-        /// </summary>
-        /// <param name="value">The value that will be converted to a double.</param>
-        /// <returns>A double.</returns>
-        public static double FromByte(byte value)
-        {
-            return value;
-        }
-
-        /// <summary>
         /// Returns a double in the range [0, 1], parsed from the specified byte.
         /// </summary>
         /// <param name="value">The value that will be parsed then normalized.</param>
         /// <returns>A double in the range [0,1].</returns>
         public static double FromByteNormalized(byte value)
         {
-            return FromByte(value) / DoubleNorm;
+            return value / DoubleNorm;
         }
 
         /// <summary>
@@ -37,7 +27,7 @@ namespace DigitRecognizer.Core.Extensions
         /// <returns>A double in the range [-0.5,0.5].</returns>
         public static double FromByteOffset(byte value)
         {
-            return FromByte(value) / DoubleOffsetNorm - 1;
+            return value / DoubleOffsetNorm - 1;
         }
 
         /// <summary>
