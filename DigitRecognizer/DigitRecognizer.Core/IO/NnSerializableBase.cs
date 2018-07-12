@@ -5,12 +5,12 @@ using DigitRecognizer.Core.Utilities;
 namespace DigitRecognizer.Core.IO
 {
     /// <summary>
-    /// 
+    /// An abstract base class for serialization of neural network files.
     /// </summary>
-    public class NnBinaryAdapter : INnBinaryAdapter
+    public abstract class NnSerializableBase : IDisposable
     {
         /// <summary>
-        /// 
+        /// The file extension of a neural network file.
         /// </summary>
         private const string NnFileExtension = ".nn";
         
@@ -20,11 +20,11 @@ namespace DigitRecognizer.Core.IO
         protected readonly FileStream FileStream;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NnBinaryAdapter"/> class.
+        /// Initializes a new instance of the <see cref="NnSerializableBase"/> class.
         /// </summary>
         /// <param name="filename">The name of the file, used for opening a file stream.</param>
         /// <param name="fileMode">The file acces mode of the adapter.</param>
-        public NnBinaryAdapter(string filename, FileMode fileMode)
+        protected NnSerializableBase(string filename, FileMode fileMode)
         {
             Contracts.StringNotNullOrEmpty(filename, nameof(filename));
             Contracts.FileHasExtension(filename, nameof(filename));
@@ -40,7 +40,7 @@ namespace DigitRecognizer.Core.IO
         private bool _disposed;
 
         /// <summary>
-        /// Releases all resources used by the <see cref="NnBinaryAdapter"/>.
+        /// Releases all resources used by the <see cref="NnSerializableBase"/>.
         /// </summary>
         public void Dispose()
         {
@@ -49,7 +49,7 @@ namespace DigitRecognizer.Core.IO
         }
 
         /// <summary>
-        /// Releases all resources used by the <see cref="NnBinaryAdapter"/>.
+        /// Releases all resources used by the <see cref="NnSerializableBase"/>.
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {
@@ -60,7 +60,7 @@ namespace DigitRecognizer.Core.IO
 
             if (disposing)
             {
-                FileStream.Dispose();
+                FileStream?.Dispose();
             }
 
             _disposed = true;

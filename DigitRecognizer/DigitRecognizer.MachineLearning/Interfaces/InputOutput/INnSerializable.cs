@@ -7,6 +7,6 @@ namespace DigitRecognizer.MachineLearning.Interfaces.InputOutput
     /// </summary>
     public interface INnSerializable
     {
-        NnFile Serialize();
+        NnSerializationContext Serialize();
     }
 }

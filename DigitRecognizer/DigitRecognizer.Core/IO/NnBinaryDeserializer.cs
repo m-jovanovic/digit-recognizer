@@ -7,117 +7,126 @@ using DigitRecognizer.Core.Utilities;
 namespace DigitRecognizer.Core.IO
 {
     /// <summary>
-    /// 
+    /// A class that can efficiently read and parse neural network information from a file.
     /// </summary>
-    public class NnBinaryDeserializer : NnBinaryAdapter, INnBinaryDeserializer
+    public class NnBinaryDeserializer : NnSerializableBase
     {
         /// <summary>
-        /// 
+        /// The <see cref="BinaryReader"/> instance used for serialization.
         /// </summary>
         private readonly BinaryReader _reader;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="NnBinaryDeserializer"/> class.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="fileMode"></param>
+        /// <param name="filename">The name of the file to write to.</param>
+        /// <param name="fileMode">The file mode</param>
         public NnBinaryDeserializer(string filename, FileMode fileMode) : base(filename, fileMode)
         {
             _reader = new BinaryReader(FileStream);
         }
 
         /// <summary>
-        /// 
+        /// Deserializes an <see cref="IEnumerable{T}"/> of type <see cref="NnSerializationContext"/> from a file.
         /// </summary>
-        /// <returns></returns>
-        public NnFile Deserialize()
+        /// <returns>A list of serialization contexts.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        /// <exception cref="NullReferenceException"></exception>
+        public IEnumerable<NnSerializationContext> Deserialize()
         {
-            var count = DeserializeFileCount();
+            int count = DeserializeContextCount();
             Contracts.ValueGreaterThanZero(count, nameof(count));
 
-            var fileInfo = DeserializeFileInfo();
-
-            var fileData = DeserializeFileData(fileInfo.DataSizeInBytes);
-
-            var file = new NnFile(fileData, fileInfo);
-
-            return file;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public IEnumerable<NnFile> DeserializeMany()
-        {
-            var files = new List<NnFile>();
-            var fileInfoDict = new Dictionary<int, NnFileInfo>();
-
-            var count = DeserializeFileCount();
-            Contracts.ValueGreaterThanZero(count, nameof(count));
+            var contexts = new List<NnSerializationContext>();
+            var contextInfoDictionary = new Dictionary<int, NnSerializationContextInfo>();
 
             for (var i = 0; i < count; i++)
             {
-                var fInfo = DeserializeFileInfo();
+                var fInfo = DeserializeContextInfo();
 
-                fileInfoDict.Add(i, fInfo);
+                contextInfoDictionary.Add(i, fInfo);
             }
 
             for (var i = 0; i < count; i++)
             {
-                if (!fileInfoDict.TryGetValue(i, out var fileInfo))
+                if (!contextInfoDictionary.TryGetValue(i, out var contextInfo))
                 {
                     throw new NullReferenceException("No file info with was found for the given key.");
                 }
 
-                var fileData = DeserializeFileData(fileInfo.DataSizeInBytes);
+                double[] contextData = DeserializeContextData(contextInfo.DataSizeInBytes);
 
-                var file = new NnFile(fileData, fileInfo);
+                var context = new NnSerializationContext(contextData, contextInfo);
 
-                files.Add(file);
+                contexts.Add(context);
             }
 
-            return files;
+            return contexts;
         }
 
         /// <summary>
-        /// 
+        /// Deserializes a <see cref="NnSerializationContext"/> from a file.
         /// </summary>
-        /// <param name="count"></param>
-        /// <returns></returns>
-        private double[] DeserializeFileData(int count)
+        /// <returns>A serialization context.</returns>
+        /// <exception cref="NotSupportedException"></exception>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public NnSerializationContext DeserializeSingle()
         {
-            var byteData = _reader.ReadBytes(count);
+            int count = DeserializeContextCount();
+            Contracts.ValueGreaterThanZero(count, nameof(count));
 
-            var data = byteData.ToDoubles();
+            if (count > 1)
+            {
+                throw new NotSupportedException("Can not deserialize a single context, from a file that stores multiple contexts.");
+            }
 
-            return data;
+            var contextInfo = DeserializeContextInfo();
+
+            double[] contextData = DeserializeContextData(contextInfo.DataSizeInBytes);
+
+            var context = new NnSerializationContext(contextData, contextInfo);
+
+            return context;
         }
 
         /// <summary>
-        /// 
+        /// Reads the context count from a file.
         /// </summary>
         /// <returns></returns>
-        private NnFileInfo DeserializeFileInfo()
+        private int DeserializeContextCount()
         {
-            var mWidth = _reader.ReadInt32();
-            var mHeight = _reader.ReadInt32();
-            var bLength = _reader.ReadInt32();
-
-            var fileInfo = new NnFileInfo(mWidth, mHeight, bLength);
-
-            return fileInfo;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private int DeserializeFileCount()
-        {
-            var count = _reader.ReadInt32();
+            int count = _reader.ReadInt32();
 
             return count;
+        }
+
+        /// <summary>
+        /// Deserialize a <see cref="NnSerializationContextInfo"/> from a file.
+        /// </summary>
+        /// <returns>A context info.</returns>
+        private NnSerializationContextInfo DeserializeContextInfo()
+        {
+            int weightMatrixRowCount = _reader.ReadInt32();
+            int weightMatrixColCount = _reader.ReadInt32();
+            int biasLength = _reader.ReadInt32();
+
+            var contextInfo = new NnSerializationContextInfo(weightMatrixRowCount, weightMatrixColCount, biasLength);
+
+            return contextInfo;
+        }
+
+        /// <summary>
+        /// Deserializes the data from a file.
+        /// </summary>
+        /// <param name="count">The number of bytes to read from the file.</param>
+        /// <returns>An array of doubles.</returns>
+        private double[] DeserializeContextData(int count)
+        {
+            byte[] byteData = _reader.ReadBytes(count);
+
+            double[] data = byteData.ToDoubles();
+
+            return data;
         }
 
         /// <summary>

@@ -10,6 +10,6 @@ namespace DigitRecognizer.MachineLearning.Interfaces.InputOutput
     public interface INnDeserializer<out T> where T: INnSerializable
     {
         IEnumerable<T> Deseralize(string filename);
-        T Deserialize(NnFile file);
+        T Deserialize(NnSerializationContext serializationContext);
     }
 }

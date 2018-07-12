@@ -76,9 +76,9 @@ namespace DigitRecognizer.MachineLearning.Data
         /// 
         /// </summary>
         /// <returns></returns>
-        public NnFile Serialize()
+        public NnSerializationContext Serialize()
         {
-            var fileInfo = new NnFileInfo(_weights.Width, _weights.Height, _bias.Length);
+            var fileInfo = new NnSerializationContextInfo(_weights.Width, _weights.Height, _bias.Length);
 
             int weightsLength = _weights.Width * _weights.Height;
             int biasLength = _bias.Length;
@@ -88,7 +88,7 @@ namespace DigitRecognizer.MachineLearning.Data
             Buffer.BlockCopy(_weights.Flattened, 0, data, 0, _weights.SizeInBytes);
             Buffer.BlockCopy(_bias.Flattened, 0, data, _weights.SizeInBytes, _bias.SizeInBytes);
 
-            var file = new NnFile(data, fileInfo);
+            var file = new NnSerializationContext(data, fileInfo);
 
             return file;
         }

@@ -7,83 +7,83 @@ using DigitRecognizer.Core.Extensions;
 namespace DigitRecognizer.Core.IO
 {
     /// <summary>
-    /// 
+    /// A class that can efficiently write neural network information to a file.
     /// </summary>
-    public class NnBinarySerializer : NnBinaryAdapter, INnBinarySerializer
+    public class NnBinarySerializer : NnSerializableBase
     {
         /// <summary>
-        /// 
+        /// The <see cref="BinaryWriter"/> instance used for serialization.
         /// </summary>
         private readonly BinaryWriter _writer;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="NnBinarySerializer"/> class.
         /// </summary>
-        /// <param name="filename"></param>
-        /// <param name="fileMode"></param>
+        /// <param name="filename">The name of the file to write to.</param>
+        /// <param name="fileMode">The file mode</param>
         public NnBinarySerializer(string filename, FileMode fileMode) : base(filename, fileMode)
         {
             _writer = new BinaryWriter(FileStream);
         }
 
         /// <summary>
-        /// 
+        /// Serializes the specified <see cref="NnSerializationContext"/> to a file.
         /// </summary>
-        /// <param name="file"></param>
-        public void Serialize(NnFile file)
+        /// <param name="serializationContext"></param>
+        public void Serialize(NnSerializationContext serializationContext)
         {
-            SerializeFileCount(1);
-            SerializeFileInfo(file.FileInfo);
-            SerializeFileData(file.FileData);
+            SerializeContextCount(1);
+            SerializeContextInfo(serializationContext.SerializationContextInfo);
+            SerializeContextData(serializationContext.FileData);
         }
 
         /// <summary>
-        /// 
+        /// Serializes the specified <see cref="IEnumerable{T}"/> of type <see cref="NnSerializationContext"/> to a file.
         /// </summary>
         /// <param name="files"></param>
-        public void Serialize(IEnumerable<NnFile> files)
+        public void Serialize(IEnumerable<NnSerializationContext> files)
         {
-            var nnFiles = files as NnFile[] ?? files.ToArray();
-            var count = nnFiles.Length;
+            NnSerializationContext[] contexts = files as NnSerializationContext[] ?? files.ToArray();
+            int count = contexts.Length;
 
-            SerializeFileCount(count);
+            SerializeContextCount(count);
 
             for (var i = 0; i < count; i++)
             {
-                SerializeFileInfo(nnFiles[i].FileInfo);
+                SerializeContextInfo(contexts[i].SerializationContextInfo);
             }
 
             for (var i = 0; i < count; i++)
             {
-                SerializeFileData(nnFiles[i].FileData);
+                SerializeContextData(contexts[i].FileData);
             }
         }
 
         /// <summary>
-        /// 
+        /// Writes the specified number to a file.
         /// </summary>
-        /// <param name="count"></param>
-        private void SerializeFileCount(int count)
+        /// <param name="count">The number of contexts being serialized.</param>
+        private void SerializeContextCount(int count)
         {
             _writer.Write(count);
         }
 
         /// <summary>
-        /// 
+        /// Writes the specified <see cref="NnSerializationContextInfo"/> to a file.
         /// </summary>
-        /// <param name="fileInfo"></param>
-        private void SerializeFileInfo(NnFileInfo fileInfo)
+        /// <param name="serializationContextInfo">The context info being serialized.</param>
+        private void SerializeContextInfo(NnSerializationContextInfo serializationContextInfo)
         {
-            _writer.Write(fileInfo.WeightMatrixWidth);
-            _writer.Write(fileInfo.WeightMatrixHeight);
-            _writer.Write(fileInfo.BiasLength);
+            _writer.Write(serializationContextInfo.WeightMatrixRowCount);
+            _writer.Write(serializationContextInfo.WeightMatrixColCount);
+            _writer.Write(serializationContextInfo.BiasLength);
         }
 
         /// <summary>
-        /// 
+        /// Writes the specified data to a file.
         /// </summary>
-        /// <param name="fileData"></param>
-        private void SerializeFileData(double[] fileData)
+        /// <param name="fileData">The data of the file</param>
+        private void SerializeContextData(double[] fileData)
         {
             _writer.Write(fileData.ToBytes());
         }

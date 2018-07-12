@@ -8,7 +8,7 @@ namespace DigitRecognizer.Core.IO
     /// <summary>
     /// Provides methods for working with an in-memory stream of data.
     /// </summary>
-    public class MemoryStreamReader : IDisposable
+    internal class MemoryStreamReader : IDisposable
     {
         /// <summary>
         /// The offset (if it exsists) in bytes, that need to be skipped at the beginning of the stream. 
@@ -25,7 +25,7 @@ namespace DigitRecognizer.Core.IO
         /// </summary>
         /// <param name="filePath">The file path used for instantiating a stream.</param>
         /// <param name="offset">The magic number.</param>
-        public MemoryStreamReader(string filePath, int offset = 0)
+        internal MemoryStreamReader(string filePath, int offset = 0)
         {
             Contracts.ValueGreaterThanZero(offset, nameof(offset));
             Contracts.FileExists(filePath, nameof(filePath));
@@ -43,7 +43,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Initialies a new instance of the <see cref="MemoryStreamReader"/> class.
         /// </summary>
-        public MemoryStreamReader()
+        internal MemoryStreamReader()
         {
             _memoryStream = new MemoryStream();
             _offset = 0;
@@ -54,7 +54,7 @@ namespace DigitRecognizer.Core.IO
         /// </summary>
         /// <param name="count">The number of elements to read from the stream.</param>
         /// <returns>A byte array.</returns>
-        public byte[] Read(int count)
+        internal byte[] Read(int count)
         {
             Contracts.ValueGreaterThanZero(count, nameof(count));
 
@@ -76,7 +76,7 @@ namespace DigitRecognizer.Core.IO
         /// <param name="count">The number of elements to read from the stream.</param>
         /// <param name="blockSize">The length of each element.</param>
         /// <returns>A list of byte arrays.</returns>
-        public byte[][] Read(int count, int blockSize)
+        internal byte[][] Read(int count, int blockSize)
         {
             Contracts.ValueGreaterThanZero(count, nameof(count));
             Contracts.ValueGreaterThanZero(blockSize, nameof(blockSize));
@@ -96,7 +96,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Checks if the current position of the stream has reached the end of the stream, and resets it if true.
         /// </summary>
-        private void CheckForOverflow()
+        internal void CheckForOverflow()
         {
             if (_memoryStream.Position == _memoryStream.Length)
             {
@@ -107,7 +107,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Resets the in-memory stream to the starting position for further reading.
         /// </summary>
-        public void Reset()
+        internal void Reset()
         {
             _memoryStream.SetPosition(_offset);
         }

@@ -21,7 +21,7 @@ namespace DigitRecognizer.MachineLearning.Utilities
         {
             using (var deserializer = new NnBinaryDeserializer(filename, FileMode.Open))
             {
-                var files = deserializer.DeserializeMany();
+                var files = deserializer.Deserialize();
 
                 var result = files.Select(Deserialize).ToList();
 
@@ -32,14 +32,14 @@ namespace DigitRecognizer.MachineLearning.Utilities
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="file"></param>
+        /// <param name="serializationContext"></param>
         /// <returns></returns>
-        public NnLayer Deserialize(NnFile file)
+        public NnLayer Deserialize(NnSerializationContext serializationContext)
         {
-            var fileInfo = file.FileInfo;
-            var data = file.FileData;
+            var fileInfo = serializationContext.SerializationContextInfo;
+            var data = serializationContext.FileData;
 
-            var layer = new NnLayer(fileInfo.WeightMatrixHeight,fileInfo.WeightMatrixWidth, fileInfo.BiasLength, data);
+            var layer = new NnLayer(fileInfo.WeightMatrixColCount,fileInfo.WeightMatrixRowCount, fileInfo.BiasLength, data);
 
             return layer;
         }
