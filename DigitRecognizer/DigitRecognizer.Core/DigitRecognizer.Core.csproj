@@ -49,7 +49,6 @@
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="IO\ILabelProvider.cs" />
-    <Compile Include="IO\IMemoryStreamReader.cs" />
     <Compile Include="IO\INnBinaryAdapter.cs" />
     <Compile Include="IO\INnBinaryDeserializer.cs" />
     <Compile Include="IO\INnBinarySerializer.cs" />

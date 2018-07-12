@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
@@ -9,7 +8,7 @@ namespace DigitRecognizer.Core.IO
     /// <summary>
     /// Provides methods for working with an in-memory stream of data.
     /// </summary>
-    public class MemoryStreamReader : IMemoryStreamReader<byte>, IDisposable
+    public class MemoryStreamReader : IDisposable
     {
         /// <summary>
         /// The offset (if it exsists) in bytes, that need to be skipped at the beginning of the stream. 
@@ -26,9 +25,10 @@ namespace DigitRecognizer.Core.IO
         /// </summary>
         /// <param name="filePath">The file path used for instantiating a stream.</param>
         /// <param name="offset">The magic number.</param>
-        public MemoryStreamReader(string filePath, int offset) : this()
+        public MemoryStreamReader(string filePath, int offset = 0)
         {
             Contracts.ValueGreaterThanZero(offset, nameof(offset));
+            Contracts.FileExists(filePath, nameof(filePath));
 
             _memoryStream = StreamExtensions.GetMemoryStreamFromFile(filePath);
 
@@ -57,14 +57,13 @@ namespace DigitRecognizer.Core.IO
         public byte[] Read(int count)
         {
             Contracts.ValueGreaterThanZero(count, nameof(count));
-            CheckForOverflow();
 
             var result = new byte[count];
 
             for (var i = 0; i < count; i++)
             {
                 var byteVal = (byte) _memoryStream.ReadByte();
-
+                CheckForOverflow();
                 result[i] = byteVal;
             }
 
@@ -75,32 +74,23 @@ namespace DigitRecognizer.Core.IO
         /// Reads the specified ammount of bytes from the stream, of the specified length.
         /// </summary>
         /// <param name="count">The number of elements to read from the stream.</param>
-        /// <param name="length">The length of each element.</param>
+        /// <param name="blockSize">The length of each element.</param>
         /// <returns>A list of byte arrays.</returns>
-        public byte[][] Read(int count, int length)
+        public byte[][] Read(int count, int blockSize)
         {
             Contracts.ValueGreaterThanZero(count, nameof(count));
-            Contracts.ValueGreaterThanZero(length, nameof(length));
-            CheckForOverflow();
+            Contracts.ValueGreaterThanZero(blockSize, nameof(blockSize));
 
-            var result = new List<byte[]>();
+            var result = new byte[count][];
 
             for (var i = 0; i < count; i++)
             {
-                var byteArray = _memoryStream.ReadBytes(length);
-                
-                result.Add(byteArray);
+                byte[] byteArray = _memoryStream.ReadBytes(blockSize);
+                CheckForOverflow();
+                result[i] = byteArray;
             }
 
-            return result.ToArray();
-        }
-
-        /// <summary>
-        /// Resets the in-memory stream to the starting position for further reading.
-        /// </summary>
-        public void Reset()
-        {
-            _memoryStream.SetPosition(_offset);
+            return result;
         }
 
         /// <summary>
@@ -112,6 +102,14 @@ namespace DigitRecognizer.Core.IO
             {
                 Reset();
             }
+        }
+
+        /// <summary>
+        /// Resets the in-memory stream to the starting position for further reading.
+        /// </summary>
+        public void Reset()
+        {
+            _memoryStream.SetPosition(_offset);
         }
 
         /// <summary>
