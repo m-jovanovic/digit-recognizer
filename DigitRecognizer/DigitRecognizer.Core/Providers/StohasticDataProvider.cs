@@ -1,63 +1,32 @@
 ﻿using DigitRecognizer.Core.Data;
-using DigitRecognizer.Core.IO;
-using DigitRecognizer.Core.Utilities;
 
 namespace DigitRecognizer.Core.Providers
 {
     /// <summary>
-    /// 
+    /// A data provider, that only retrieves a single <see cref="MnistImage"/> per request.
     /// </summary>
-    public abstract class StohasticDataProvider : IDataProvider<MnistImage>
+    public class StohasticDataProvider : DataProviderBase<MnistImage>
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        protected const int StohasticBatchSize = 1;
+        private const int StohasticBatchSize = 1;
 
         /// <summary>
-        /// Gets the memory stream reader for labels.
+        /// Initializes a new instance of the <see cref="StohasticDataProvider"/> class.
         /// </summary>
-        private readonly ILabelReader _labelReader;
-
-        /// <summary>
-        /// Gets the memory stream reader for images.
-        /// </summary>
-        private readonly IPixelReader _pixelReader;
-
-        /// <summary>
-        /// Gets the batch size.
-        /// </summary>
-        private readonly int _batchSize;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="labelFilename"></param>
-        /// <param name="imageFilename"></param>
-        /// <param name="batchSize"></param>
-        protected StohasticDataProvider(string labelFilename, string imageFilename, int batchSize)
+        /// <param name="labelFilename">The path to the file containing the labels.</param>
+        /// <param name="imageFilename">The path to the file containing the images.</param>
+        public StohasticDataProvider(string labelFilename, string imageFilename)
+            : base(labelFilename, imageFilename, StohasticBatchSize)
         {
-            Contracts.StringNotNullOrEmpty(labelFilename, nameof(labelFilename));
-            Contracts.StringNotNullOrEmpty(imageFilename, nameof(imageFilename));
-            Contracts.FileExists(labelFilename, nameof(labelFilename));
-            Contracts.FileExists(imageFilename, nameof(imageFilename));
-            Contracts.ValueGreaterThanZero(batchSize, nameof(batchSize));
-            Contracts.ValuesMatch(_batchSize, StohasticBatchSize, nameof(_batchSize));
-
-            _labelReader = new LabelReader(labelFilename);
-            _pixelReader = new PixelReader(labelFilename);
-
-            _batchSize = batchSize;
         }
 
         /// <summary>
-        /// 
+        /// Gets the data from the fily sistem.
         /// </summary>
         /// <returns></returns>
-        public MnistImage GetData()
+        public override MnistImage GetData()
         {
-            var label = _labelReader.ReadLabel();
-            var pixels = _pixelReader.ReadPixels(784);
+            int label = LabelReader.ReadLabel();
+            double[] pixels = PixelReader.ReadPixels(ImageSizeInPixels);
 
             var result = new MnistImage(label, pixels);
 
