@@ -1,4 +1,6 @@
-﻿namespace DigitRecognizer.Core.Data
+﻿using DigitRecognizer.Core.Utilities;
+
+namespace DigitRecognizer.Core.Data
 {
     /// <summary>
     /// Doubly linked list node of a generic type.
@@ -9,6 +11,7 @@
         private LinkedListNode<T> _previous;
         private LinkedListNode<T> _next;
         private readonly T _item;
+        private int _depth;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LinkedListNode{T}"/> class.
@@ -41,5 +44,19 @@
         /// Gets the value of the node. This field is readonly.
         /// </summary>
         public T Value => _item;
+
+        /// <summary>
+        /// Gets or sets the depth of the node.
+        /// </summary>
+        public int Depth
+        {
+            get => _depth;
+            set
+            {
+                Contracts.ValueGreaterThanZero(value, nameof(value));
+
+                _depth = value;
+            }
+        }
     }
 }

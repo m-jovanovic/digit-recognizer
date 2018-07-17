@@ -68,7 +68,7 @@ namespace DigitRecognizer.Core.Data
         /// <summary>
         /// Adds the specified item to the last spot in the list.
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="item">The item to add to the head of the list.</param>
         public void AddLast(T item)
         {
             var node = new LinkedListNode<T>(item);
@@ -79,9 +79,11 @@ namespace DigitRecognizer.Core.Data
         /// <summary>
         /// Adds the specified <see cref="LinkedListNode{T}"/> to the last spot in the list.
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="node">The node to add to the head of the list.</param>
         public void AddLast(LinkedListNode<T> node)
         {
+            node.Depth = _count;
+            
             if (_head == null)
             {
                 AddFirst(node);
@@ -98,7 +100,7 @@ namespace DigitRecognizer.Core.Data
         /// <summary>
         /// Adds the specified <see cref="LinkedListNode{T}"/> to the head of the list.
         /// </summary>
-        /// <param name="node"></param>
+        /// <param name="node">The node to add to the head of the list.</param>
         private void AddFirst(LinkedListNode<T> node)
         {
             _head = node;
@@ -111,7 +113,7 @@ namespace DigitRecognizer.Core.Data
         /// <summary>
         /// Converts the <see cref="LinkedList{T}"/> to a <see cref="List{T}"/>.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A <see cref="List{T}"/>.</returns>
         public List<T> ToList()
         {
             var result = new List<T>();
@@ -124,6 +126,11 @@ namespace DigitRecognizer.Core.Data
             }
 
             return result;
+        }
+
+        public static implicit operator List<T>(LinkedList<T> list)
+        {
+            return list.ToList();
         }
 
         /// <summary>

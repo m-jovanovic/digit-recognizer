@@ -41,26 +41,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\LearningPipeline.cs" />
-    <Compile Include="Api\PredictionModel.cs" />
-    <Compile Include="Data\NeuralNetwork.cs" />
-    <Compile Include="Data\NnLayer.cs" />
-    <Compile Include="Interfaces\Functions\IFunction.cs" />
-    <Compile Include="Interfaces\Functions\IActivationFunction.cs" />
-    <Compile Include="Interfaces\Functions\IDifferentiable.cs" />
-    <Compile Include="Interfaces\Functions\ILossFunction.cs" />
-    <Compile Include="Interfaces\InputOutput\INnDeserializer.cs" />
-    <Compile Include="Interfaces\InputOutput\INnSerializable.cs" />
-    <Compile Include="Interfaces\InputOutput\INnSerializer.cs" />
-    <Compile Include="Interfaces\ML\INeuralNetwork.cs" />
-    <Compile Include="Interfaces\Optimization\IOptimizer.cs" />
-    <Compile Include="Interfaces\Optimization\IValueAdjustable.cs" />
-    <Compile Include="Data\BiasVector.cs" />
-    <Compile Include="Interfaces\ML\INnLayer.cs" />
-    <Compile Include="Data\WeightMatrix.cs" />
+    <Compile Include="Infrastructure\PredictionModel.cs" />
+    <Compile Include="Infrastructure\CalculationCache.cs" />
+    <Compile Include="Infrastructure\NeuralNetwork.cs" />
+    <Compile Include="Infrastructure\NnLayer.cs" />
+    <Compile Include="Functions\IFunction.cs" />
+    <Compile Include="Functions\IActivationFunction.cs" />
+    <Compile Include="Functions\IDifferentiable.cs" />
+    <Compile Include="Functions\ILossFunction.cs" />
     <Compile Include="Providers\BatchDataProvider.cs" />
     <Compile Include="Providers\DataProviderBase.cs" />
     <Compile Include="Providers\IDataProvider.cs" />
     <Compile Include="Providers\StohasticDataProvider.cs" />
+    <Compile Include="Serialization\INnDeserializer.cs" />
+    <Compile Include="Serialization\INnSerializable.cs" />
+    <Compile Include="Serialization\INnSerializer.cs" />
+    <Compile Include="Infrastructure\INeuralNetwork.cs" />
+    <Compile Include="Optimization\IOptimizer.cs" />
+    <Compile Include="Optimization\IValueAdjustable.cs" />
+    <Compile Include="Infrastructure\BiasVector.cs" />
+    <Compile Include="Infrastructure\WeightMatrix.cs" />
     <Compile Include="Functions\CrossEntropy.cs" />
     <Compile Include="Functions\Elu.cs" />
     <Compile Include="Functions\LeakyRelu.cs" />
@@ -70,15 +70,15 @@
     <Compile Include="Functions\Softmax.cs" />
     <Compile Include="Functions\Softplus.cs" />
     <Compile Include="Functions\Tanh.cs" />
-    <Compile Include="Interfaces\Pipeline\ILearningPipelineDataLoader.cs" />
-    <Compile Include="Interfaces\Pipeline\ILearningPipelineItem.cs" />
-    <Compile Include="Interfaces\Pipeline\ILearningPipelineNeuralNetworkModel.cs" />
-    <Compile Include="Interfaces\Pipeline\ILearningPipelineOptimizer.cs" />
-    <Compile Include="Optimizers\BaseOptimizer.cs" />
-    <Compile Include="Optimizers\GradientDescentOptimizer.cs" />
+    <Compile Include="Api\ILearningPipelineDataLoader.cs" />
+    <Compile Include="Api\ILearningPipelineItem.cs" />
+    <Compile Include="Api\ILearningPipelineNeuralNetworkModel.cs" />
+    <Compile Include="Api\ILearningPipelineOptimizer.cs" />
+    <Compile Include="Optimization\BaseOptimizer.cs" />
+    <Compile Include="Optimization\GradientDescentOptimizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\NnDeserializer.cs" />
-    <Compile Include="Utilities\NnSerializer.cs" />
+    <Compile Include="Serialization\NnDeserializer.cs" />
+    <Compile Include="Serialization\NnSerializer.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

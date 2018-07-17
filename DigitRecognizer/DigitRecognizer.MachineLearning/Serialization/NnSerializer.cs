@@ -2,14 +2,14 @@
 using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.IO;
+using DigitRecognizer.MachineLearning.Data;
 using DigitRecognizer.MachineLearning.Interfaces.InputOutput;
-using DigitRecognizer.MachineLearning.Interfaces.ML;
 
 namespace DigitRecognizer.MachineLearning.Utilities
 {
-    public class NnSerializer : INnSerializer<INnLayer>
+    public class NnSerializer : INnSerializer<NnLayer>
     {
-        public void Serialize(string filename, IEnumerable<INnLayer> collection)
+        public void Serialize(string filename, IEnumerable<NnLayer> collection)
         {
             using (var serializer = new NnBinarySerializer(filename, FileMode.Create))
             {

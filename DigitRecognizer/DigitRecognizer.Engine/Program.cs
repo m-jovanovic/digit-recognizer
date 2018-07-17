@@ -12,9 +12,9 @@ namespace DigitRecognizer.Engine
             var optimizer = new GradientDescentOptimizer(new CrossEntropy());
             var nn = new NeuralNetwork();
 
-            var layer1 = new NnLayer(784, 200) {ActivationFunction = new Relu() };
-            var layer2 = new NnLayer(200, 60) { ActivationFunction = new Relu() };
-            var layer3 = new NnLayer(60, 10) { ActivationFunction = new Softmax() };
+            var layer1 = new NnLayer(784, 200, new Relu());
+            var layer2 = new NnLayer(200, 60, new Relu());
+            var layer3 = new NnLayer(60, 10, new Softmax());
 
             nn.AddLayer(layer1);
             nn.AddLayer(layer2);
