@@ -1,8 +1,8 @@
 ﻿using System;
 using DigitRecognizer.Core.Utilities;
-using DigitRecognizer.MachineLearning.Interfaces.Optimization;
+using DigitRecognizer.MachineLearning.Optimization;
 
-namespace DigitRecognizer.MachineLearning.Data
+namespace DigitRecognizer.MachineLearning.Infrastructure
 {
     /// <summary>
     /// 

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using DigitRecognizer.MachineLearning.Interfaces.Pipeline;
+using DigitRecognizer.MachineLearning.Infrastructure;
 
 namespace DigitRecognizer.MachineLearning.Api
 {

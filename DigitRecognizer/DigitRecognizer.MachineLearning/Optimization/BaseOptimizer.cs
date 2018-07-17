@@ -1,7 +1,7 @@
 ﻿using DigitRecognizer.Core.Utilities;
-using DigitRecognizer.MachineLearning.Interfaces.Functions;
+using DigitRecognizer.MachineLearning.Functions;
 
-namespace DigitRecognizer.MachineLearning.Optimizers
+namespace DigitRecognizer.MachineLearning.Optimization
 {
     /// <summary>
     /// 

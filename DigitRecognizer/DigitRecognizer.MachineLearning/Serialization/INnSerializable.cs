@@ -1,6 +1,6 @@
 ﻿using DigitRecognizer.Core.IO;
 
-namespace DigitRecognizer.MachineLearning.Interfaces.InputOutput
+namespace DigitRecognizer.MachineLearning.Serialization
 {
     /// <summary>
     /// 

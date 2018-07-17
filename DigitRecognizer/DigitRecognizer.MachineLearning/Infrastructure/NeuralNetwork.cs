@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
-using DigitRecognizer.MachineLearning.Interfaces.Functions;
-using DigitRecognizer.MachineLearning.Interfaces.ML;
+using DigitRecognizer.MachineLearning.Functions;
 
-namespace DigitRecognizer.MachineLearning.Data
+namespace DigitRecognizer.MachineLearning.Infrastructure
 {
     public class NeuralNetwork : INeuralNetwork
     {

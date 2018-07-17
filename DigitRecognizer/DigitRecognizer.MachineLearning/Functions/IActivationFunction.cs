@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.MachineLearning.Interfaces.Functions
+﻿namespace DigitRecognizer.MachineLearning.Functions
 {
     /// <summary>
     /// Implement this interface on an activation function.

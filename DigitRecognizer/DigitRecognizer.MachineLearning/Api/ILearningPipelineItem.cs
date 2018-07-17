@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.MachineLearning.Interfaces.Pipeline
+﻿namespace DigitRecognizer.MachineLearning.Api
 {
     public interface ILearningPipelineItem
     {

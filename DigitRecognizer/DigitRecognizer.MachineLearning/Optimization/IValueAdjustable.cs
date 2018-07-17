@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.MachineLearning.Interfaces.Optimization
+﻿namespace DigitRecognizer.MachineLearning.Optimization
 {
     /// <summary>
     /// 

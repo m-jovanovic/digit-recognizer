@@ -2,10 +2,10 @@
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.IO;
 using DigitRecognizer.Core.Utilities;
-using DigitRecognizer.MachineLearning.Interfaces.Functions;
-using DigitRecognizer.MachineLearning.Interfaces.InputOutput;
+using DigitRecognizer.MachineLearning.Functions;
+using DigitRecognizer.MachineLearning.Serialization;
 
-namespace DigitRecognizer.MachineLearning.Data
+namespace DigitRecognizer.MachineLearning.Infrastructure
 {
     /// <summary>
     /// 

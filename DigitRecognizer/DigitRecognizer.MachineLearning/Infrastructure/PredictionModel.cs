@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.MachineLearning.Api
+﻿namespace DigitRecognizer.MachineLearning.Infrastructure
 {
     public class PredictionModel
     {

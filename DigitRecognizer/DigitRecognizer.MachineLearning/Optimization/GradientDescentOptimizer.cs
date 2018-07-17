@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
-using DigitRecognizer.MachineLearning.Interfaces.Functions;
-using DigitRecognizer.MachineLearning.Interfaces.Optimization;
+using DigitRecognizer.MachineLearning.Functions;
 
-namespace DigitRecognizer.MachineLearning.Optimizers
+namespace DigitRecognizer.MachineLearning.Optimization
 {
     /// <summary>
     /// 

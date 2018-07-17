@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using DigitRecognizer.MachineLearning.Data;
 
-namespace DigitRecognizer.MachineLearning.Interfaces.ML
+namespace DigitRecognizer.MachineLearning.Infrastructure
 {
     /// <summary>
     /// Contains basic methods that a neural network should implement.

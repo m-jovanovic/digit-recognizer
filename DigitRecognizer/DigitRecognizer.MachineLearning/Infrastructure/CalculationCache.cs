@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using DigitRecognizer.Core.Utilities;
 
-namespace DigitRecognizer.MachineLearning.Data
+namespace DigitRecognizer.MachineLearning.Infrastructure
 {
     /// <summary>
     /// 

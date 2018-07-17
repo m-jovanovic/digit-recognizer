@@ -1,5 +1,4 @@
 ﻿using DigitRecognizer.Core.Utilities;
-using DigitRecognizer.MachineLearning.Interfaces.Functions;
 
 namespace DigitRecognizer.MachineLearning.Functions
 {
@@ -16,7 +15,7 @@ namespace DigitRecognizer.MachineLearning.Functions
 
         public double Derivative(double[] input, int current, int oneHot)
         {
-            var result = input[current] >= 0 ? 1.0 : Alpha;
+            double result = input[current] >= 0 ? 1.0 : Alpha;
 
             return result;
         }

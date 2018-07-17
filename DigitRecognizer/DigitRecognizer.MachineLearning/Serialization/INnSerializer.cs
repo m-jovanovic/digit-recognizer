@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DigitRecognizer.MachineLearning.Interfaces.InputOutput
+namespace DigitRecognizer.MachineLearning.Serialization
 {
     /// <summary>
     /// 
