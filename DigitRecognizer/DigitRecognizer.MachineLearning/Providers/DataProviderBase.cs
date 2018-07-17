@@ -1,7 +1,7 @@
 ﻿using DigitRecognizer.Core.IO;
 using DigitRecognizer.Core.Utilities;
 
-namespace DigitRecognizer.Core.Providers
+namespace DigitRecognizer.MachineLearning.Providers
 {
     public abstract class DataProviderBase<T> : IDataProvider<T>
     {
@@ -47,7 +47,7 @@ namespace DigitRecognizer.Core.Providers
         }
 
         /// <summary>
-        /// Gets the data from a file.
+        /// Gets the data from the file system.
         /// </summary>
         /// <returns></returns>
         public virtual T GetData()

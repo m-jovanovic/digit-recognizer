@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides methods for reading pixels from a <see cref="System.IO.MemoryStream"/>.
     /// </summary>
-    internal class PixelReader : MemoryStreamReader, IPixelReader
+    public class PixelReader : MemoryStreamReader, IPixelReader
     {
         /// <summary>
         /// A "magic number" of bytes that needs to be skipped at the beginning of the stream. 

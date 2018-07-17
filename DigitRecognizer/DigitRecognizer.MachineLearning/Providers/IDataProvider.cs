@@ -1,4 +1,4 @@
-﻿namespace DigitRecognizer.Core.Providers
+﻿namespace DigitRecognizer.MachineLearning.Providers
 {
     /// <summary>
     /// Represents a data provider abstraction that a neural network will use for training.

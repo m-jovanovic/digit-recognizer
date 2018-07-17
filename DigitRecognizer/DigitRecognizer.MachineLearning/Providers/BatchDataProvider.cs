@@ -1,6 +1,6 @@
 ﻿using DigitRecognizer.Core.Data;
 
-namespace DigitRecognizer.Core.Providers
+namespace DigitRecognizer.MachineLearning.Providers
 {
     /// <summary>
     /// A data provider, that retrieves a <see cref="MnistImageBatch"/>. The size of the batch is configurable.
@@ -19,7 +19,7 @@ namespace DigitRecognizer.Core.Providers
         }
 
         /// <summary>
-        /// Gets the data from the fily sistem.
+        /// Gets the data from the file system.
         /// </summary>
         /// <returns></returns>
         public override MnistImageBatch GetData()

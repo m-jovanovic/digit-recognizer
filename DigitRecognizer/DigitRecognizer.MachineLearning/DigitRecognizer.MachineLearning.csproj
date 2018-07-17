@@ -57,6 +57,10 @@
     <Compile Include="Data\BiasVector.cs" />
     <Compile Include="Interfaces\ML\INnLayer.cs" />
     <Compile Include="Data\WeightMatrix.cs" />
+    <Compile Include="Providers\BatchDataProvider.cs" />
+    <Compile Include="Providers\DataProviderBase.cs" />
+    <Compile Include="Providers\IDataProvider.cs" />
+    <Compile Include="Providers\StohasticDataProvider.cs" />
     <Compile Include="Functions\CrossEntropy.cs" />
     <Compile Include="Functions\Elu.cs" />
     <Compile Include="Functions\LeakyRelu.cs" />
