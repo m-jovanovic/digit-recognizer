@@ -1,7 +1,8 @@
-﻿using DigitRecognizer.Core.Utilities;
+﻿using System;
 using DigitRecognizer.MachineLearning.Functions;
 using DigitRecognizer.MachineLearning.Infrastructure;
 using DigitRecognizer.MachineLearning.Optimization;
+using DigitRecognizer.MachineLearning.Providers;
 
 namespace DigitRecognizer.Engine
 {
@@ -10,32 +11,54 @@ namespace DigitRecognizer.Engine
         private static void Main(string[] args)
         {
             var optimizer = new GradientDescentOptimizer(new CrossEntropy());
-            var nn = new NeuralNetwork();
+            var nn = new NeuralNetwork(0.003);
 
-            var layer1 = new NnLayer(784, 200, new Relu());
-            var layer2 = new NnLayer(200, 60, new Relu());
-            var layer3 = new NnLayer(60, 10, new Softmax());
+            //var layer1 = new NnLayer(784, 200, new LeakyRelu());
+            //var layer2 = new NnLayer(200, 60, new LeakyRelu());
+            //var layer3 = new NnLayer(60, 10, new Softmax());
+            var layer1 = new NnLayer(784, 10, new Softmax());
 
             nn.AddLayer(layer1);
-            nn.AddLayer(layer2);
-            nn.AddLayer(layer3);
+            //nn.AddLayer(layer2);
+            //nn.AddLayer(layer3);
 
-            double[][] m = VectorUtilities.CreateMatrix(200, 784);
+            var provider = new BatchDataProvider(
+                "C:\\Users\\ING\\source\\repos\\ML\\digit-recognizer\\DigitRecognizer\\Dataset\\train-labels.idx1-ubyte",
+                "C:\\Users\\ING\\source\\repos\\ML\\digit-recognizer\\DigitRecognizer\\Dataset\\train-images.idx3-ubyte", 100);
 
-            for (var i = 0; i < m.Length; i++)
+            for (var i = 0; i < 6000; i++)
             {
-                for (var j = 0; j < m[0].Length; j++)
+                var data = provider.GetData();
+                
+                var predictions = nn.FeedForward(NormalizePixels(data.Pixels));
+
+                var error = 0.0;
+                for (var j = 0; j < predictions.Length; j++)
                 {
-                    m[i][j] = i * 0.001 + j * 0.0002;
+                    error += optimizer.CalculateError(predictions[j], data.Labels[j]);
+                }
+
+                error /= predictions.Length;
+
+                Console.WriteLine($"Eror for iteration {i}: {error}");
+
+                var err = optimizer.CalculateOutputDerivative(predictions, data.Labels);
+
+                nn.Backpropagate(err, data.Labels);
+            }
+        }
+
+        static double[][] NormalizePixels(double[][] pixels)
+        {
+            for (var i = 0; i < pixels.Length; i++)
+            {
+                for (var j = 0; j < pixels[0].Length; j++)
+                {
+                    pixels[i][j] = pixels[i][j] / 255d;
                 }
             }
 
-            var prediction = nn.FeedForward(m);
-            var onehot = new int[200];
-            var error = optimizer.CalculateError(prediction[0], 8);
-            var gradient = optimizer.CalculateOutputDerivative(prediction, onehot);
-
-            nn.Backpropagate(gradient, onehot);
+            return pixels;
         }
     }
 }

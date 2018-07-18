@@ -148,9 +148,9 @@ namespace DigitRecognizer.Core.Extensions
         /// <param name="index">The 0 based index of the hot value.</param>
         /// <param name="length">The length of the resulting array.</param>
         /// <returns>The one-hot encoded array.</returns>
-        public static double[] OneHot(this int value, int length)
+        public static double[] OneHot(this int index, int length)
         {
-            return VectorUtilities.OneHot(value, length);
+            return VectorUtilities.OneHot(index, length);
         }
     }
 }

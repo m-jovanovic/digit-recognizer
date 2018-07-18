@@ -47,6 +47,17 @@ namespace DigitRecognizer.MachineLearning.Optimization
                 gradient[i] = LossFunction.Derivative(prediction, i, oneHot);
             }
 
+            double threshold = 3.0;
+            double l2Norm = MathUtilities.L2Norm(gradient);
+
+            if (l2Norm > threshold)
+            {
+                for (var i = 0; i < length; i++)
+                {
+                    gradient[i] = gradient[i] * threshold / l2Norm;
+                }
+            }
+
             return gradient;
         }
 

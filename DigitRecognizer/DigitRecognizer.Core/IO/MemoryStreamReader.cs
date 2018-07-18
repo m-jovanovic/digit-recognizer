@@ -34,10 +34,7 @@ namespace DigitRecognizer.Core.IO
 
             _offset = offset;
 
-            if (_memoryStream.Position != 0)
-            {
-                Reset();
-            }
+            Reset();
         }
 
         /// <summary>
@@ -115,7 +112,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Indicates if the disposing operation has been completed or not.
         /// </summary>
-        public bool _disposed;
+        private bool _disposed;
 
         /// <summary>
         /// Releases all resources used by the <see cref="MemoryStreamReader"/>.

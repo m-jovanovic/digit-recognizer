@@ -96,7 +96,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
             {
                 for (var j = 0; j < Width; j++)
                 {
-                    _weights[i][j] = 0.5 - rnd.NextDouble();
+                    _weights[i][j] = (0.5 - rnd.NextDouble()) * 2;
                 }
             }
         }
@@ -121,7 +121,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
             {
                 for (var j = 0; j < colCount; j++)
                 {
-                    _weights[i][j] -= gradient[i][j] * learningRate;
+                    _weights[i][j] = _weights[i][j] - gradient[i][j] * learningRate;
                 }
             }
         }

@@ -66,7 +66,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
             var rnd = new Random();
             for (var i = 0; i < length; i++)
             {
-                _bias[i] = rnd.NextDouble();
+                _bias[i] = (0.5 - rnd.NextDouble()) * 2;
             }
         }
 
@@ -81,7 +81,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
 
             for (var i = 0; i < colCount; i++)
             {
-                _bias[i] -= gradient[rowIndex][i] * learningRate;
+                _bias[i] = _bias[i] - gradient[rowIndex][i] * learningRate;
             }
         }
     }

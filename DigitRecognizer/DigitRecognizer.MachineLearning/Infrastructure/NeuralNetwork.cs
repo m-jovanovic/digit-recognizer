@@ -9,7 +9,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
     {
         private readonly Core.Data.LinkedList<NnLayer> _layers;
 
-        private double _learningRate = 0.003;
+        private double _learningRate;
 
         public int NumberOfLayers => _layers.Count;
 
@@ -45,8 +45,9 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
         /// <summary>
         /// 
         /// </summary>
-        public NeuralNetwork()
+        public NeuralNetwork(double learningRate)
         {
+            _learningRate = learningRate;
             _layers = new Core.Data.LinkedList<NnLayer>();
             _weightedSumCache = new CalculationCache();
             _activationCache = new CalculationCache();
@@ -56,8 +57,10 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
         /// 
         /// </summary>
         /// <param name="layer"></param>
-        public NeuralNetwork(NnLayer layer)
+        /// <param name="learningRate"></param>
+        public NeuralNetwork(NnLayer layer, double learningRate)
         {
+            _learningRate = learningRate;
             Contracts.ValueNotNull(layer, nameof(layer));
             
             _layers = new Core.Data.LinkedList<NnLayer>(layer);
@@ -69,8 +72,10 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
         /// 
         /// </summary>
         /// <param name="layers"></param>
-        public NeuralNetwork(IEnumerable<NnLayer> layers)
+        /// <param name="learningRate"></param>
+        public NeuralNetwork(IEnumerable<NnLayer> layers, double learningRate)
         {
+            _learningRate = learningRate;
             Contracts.ValueNotNull(layers, nameof(layers));
             
             _layers = new Core.Data.LinkedList<NnLayer>(layers);
@@ -115,15 +120,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
                 double[][] wSumDeriv = WeightedSumDerivative(currentLayer.Value.ActivationFunction,
                     currentLayer.Depth, oneHot);
 
-                //double[][] gradients = VectorUtilities.CreateMatrix(currentLayer.Value.NumberOfInputs,
-                //    currentLayer.Value.NumberOfOutputs);
-
                 double[][] gradients = currentError.HadamardProduct(wSumDeriv);
-
-                //for (var i = 0; i < currentLayer.Value.NumberOfInputs; i++)
-                //{
-                //    gradients[i] = currentError[i].HadamardProduct(wSumDeriv[i]);
-                //}
 
                 double[][] currentLayerError = gradients.Average().AsMatrix();
 

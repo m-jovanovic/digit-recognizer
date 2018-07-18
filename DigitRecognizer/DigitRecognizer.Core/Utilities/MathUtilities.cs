@@ -241,20 +241,9 @@ namespace DigitRecognizer.Core.Utilities
 
             int actValIndex = actArr.ArgMax();
 
-            double result = CrossEntropy(estArr[actValIndex], 1.0);
+            double result = - Math.Log(estArr[actValIndex] + double.Epsilon);
 
-            return -result;
-        }
-
-        /// <summary>
-        /// Computes the cross entropy function for the specified values.
-        /// </summary>
-        /// <param name="estVal">The estimated value.</param>
-        /// <param name="actVal">The actual value.</param>
-        /// <returns>The cross entropy value.</returns>
-        public static double CrossEntropy(double estVal, double actVal)
-        {
-            return actVal * Math.Log(estVal + double.Epsilon);
+            return result;
         }
 
         /// <summary>
