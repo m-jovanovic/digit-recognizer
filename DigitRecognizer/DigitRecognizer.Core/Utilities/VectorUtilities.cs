@@ -413,7 +413,7 @@ namespace DigitRecognizer.Core.Utilities
                     result[offset + j] = m[i][j];
                 }
 
-                offset += rowCount;
+                offset += colCount;
             }
 
             return result;

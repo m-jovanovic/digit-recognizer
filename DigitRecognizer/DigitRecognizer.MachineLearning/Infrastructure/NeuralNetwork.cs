@@ -11,7 +11,15 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
 
         private double _learningRate;
 
+        public double LearningRate
+        {
+            get => _learningRate;
+            set => _learningRate = value;
+        }
+
         public int NumberOfLayers => _layers.Count;
+
+        public IEnumerable<NnLayer> Layers => _layers.ToList();
 
         private readonly CalculationCache _weightedSumCache;
         private readonly CalculationCache _activationCache;
@@ -120,9 +128,28 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
                 double[][] wSumDeriv = WeightedSumDerivative(currentLayer.Value.ActivationFunction,
                     currentLayer.Depth, oneHot);
 
-                double[][] gradients = currentError.HadamardProduct(wSumDeriv);
+                double[][] gradients = currentError;
+                if (currentLayer.Depth < _layers.Count - 1)
+                {
+                    gradients = gradients.HadamardProduct(wSumDeriv);
+                }
 
                 double[][] currentLayerError = gradients.Average().AsMatrix();
+
+                //double[][] activations = _activationCache.GetValue(currentLayer.Depth);
+                //double[][] weightGradients = VectorUtilities.CreateMatrix(currentLayer.Value.NumberOfInputs, currentLayer.Value.NumberOfOutputs);
+                //for (var i = 0; i < activations.Length; i++)
+                //{
+                //    var deltaW = activations[i].AsMatrix().Transpose().Multiply(gradients[i].AsMatrix());
+                //    weightGradients.Add(deltaW);
+                //}
+                //for (var i = 0; i < weightGradients.Length; i++)
+                //{
+                //    for (var j = 0; j < weightGradients[0].Length; j++)
+                //    {
+                //        weightGradients[i][j] /= activations.Length;
+                //    }
+                //}
 
                 double[][] averageActivation = _activationCache.GetValue(currentLayer.Depth).Average().AsMatrix();
 

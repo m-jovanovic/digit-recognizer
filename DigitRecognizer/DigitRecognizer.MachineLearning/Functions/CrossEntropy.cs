@@ -13,7 +13,9 @@ namespace DigitRecognizer.MachineLearning.Functions
 
         public double Derivative(double[] input, int current, int oneHot)
         {
-            double result = - 1.0 / (input[oneHot] + double.Epsilon);
+            double target = current == oneHot ? 1.0 : 0.0;
+            double result = input[current] - target;
+            //double result = - 1.0 / (input[oneHot] + double.Epsilon);
             return result;
         }
     }

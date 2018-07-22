@@ -92,11 +92,13 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
             _weights = VectorUtilities.CreateMatrix(height, width);
 
             var rnd = new Random();
+            var factor = Math.Sqrt(2.0 / 784.0);
             for (var i = 0; i < Height; i++)
             {
                 for (var j = 0; j < Width; j++)
                 {
                     _weights[i][j] = (0.5 - rnd.NextDouble()) * 2;
+                    _weights[i][j] *= factor;
                 }
             }
         }

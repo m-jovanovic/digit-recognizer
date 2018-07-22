@@ -18,6 +18,9 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
         private readonly int _numberOfInputs;
         private readonly int _numberOfOutputs;
 
+        public int NumberOfInputs => _numberOfInputs;
+        public int NumberOfOutputs => _numberOfOutputs;
+
         private readonly IActivationFunction _activationFunction;
 
         /// <summary>
@@ -101,7 +104,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
         {
             _weights.AdjustValue(weightGradients, learningRate);
 
-            _bias.AdjustValue(biasGradients, learningRate);
+            //_bias.AdjustValue(biasGradients, learningRate);
         }
 
         /// <summary>

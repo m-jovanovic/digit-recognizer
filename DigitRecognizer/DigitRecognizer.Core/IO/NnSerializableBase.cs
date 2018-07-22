@@ -29,7 +29,7 @@ namespace DigitRecognizer.Core.IO
             Contracts.StringNotNullOrEmpty(filename, nameof(filename));
             Contracts.FileHasExtension(filename, nameof(filename));
             Contracts.FileExtensionValid(filename, NnFileExtension, nameof(filename));
-            Contracts.FileExists(filename, nameof(filename));
+           // Contracts.FileExists(filename, nameof(filename));
 
             FileStream = File.Open(filename, fileMode, FileAccess.ReadWrite);
         }
