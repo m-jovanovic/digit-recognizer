@@ -76,9 +76,9 @@ namespace DigitRecognizer.Engine
                 }
             }
             acc /= 10000.0;
+            Console.WriteLine($"Accuracy on the test data is: {acc:P2}");
             var serializer = new NnSerializer();
             serializer.Serialize($"../../../Models/model{acc}.nn", nn.Layers);
-            Console.WriteLine($"Accuracy on the test data is: {acc:P2}");
             Console.ReadKey();
         }
 
