@@ -7,16 +7,25 @@ using DigitRecognizer.Core.Data;
 namespace DigitRecognizer.Core.Utilities
 {
     /// <summary>
-    /// 
+    /// Contains utility methods for commonly required image operations.
     /// </summary>
     public static class ImageUtilities
     {
-        public static Image Resize(Image srcImage, int width, int height)
+        private const int ImageSizeInPixels = 28;
+
+        /// <summary>
+        /// Resizes the image to the specified width and height.
+        /// </summary>
+        /// <param name="image">The image being resized.</param>
+        /// <param name="width">The new width in pixels.</param>
+        /// <param name="height">The new height in pixels.</param>
+        /// <returns>The resized image.</returns>
+        internal static Image Resize(Image image, int width, int height)
         {
             var destRect = new Rectangle(0, 0, width, height);
             var destImage = new Bitmap(width, height);
 
-            destImage.SetResolution(srcImage.HorizontalResolution, srcImage.VerticalResolution);
+            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
 
             using (Graphics graphics = Graphics.FromImage(destImage))
             {
@@ -29,14 +38,19 @@ namespace DigitRecognizer.Core.Utilities
                 using (var wrapMode = new ImageAttributes())
                 {
                     wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(srcImage, destRect, 0, 0, srcImage.Width, srcImage.Height, GraphicsUnit.Pixel, wrapMode);
+                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
                 }
             }
 
             return destImage;
         }
 
-        public static Image Grayscale(Image image)
+        /// <summary>
+        /// Converts the specified image to a grayscale image using the avergaging method of converting RGB to grayscale.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <returns>The grayscale representation of the original image.</returns>
+        internal static Image Grayscale(Image image)
         {
             var bmp = new Bitmap(image);
             BitmapData bmpData = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size), ImageLockMode.ReadWrite,
@@ -71,8 +85,28 @@ namespace DigitRecognizer.Core.Utilities
             return bmp;
         }
 
-        public static Image Threshold(Image image, int threshold)
+        /// <summary>
+        /// Applies the specified threshold to the pixels of the image.
+        /// Values under the threshold are replaced with the min value.
+        /// Values above the threshold are replaced with the max value, or the original value if the <paramref name="isSoftTreshold"/> is true.
+        /// </summary>
+        /// <param name="image">The image being altered.</param>
+        /// <param name="threshold">The treshold value.</param>
+        /// <param name="minValue">The min value.</param>
+        /// <param name="maxValue">The max value.</param>
+        /// <param name="isSoftTreshold"></param>
+        /// <returns></returns>
+        internal static Image Threshold(Image image, int threshold, int minValue, int maxValue,
+            bool isSoftTreshold = false)
         {
+            if (minValue < 0) minValue = 0;
+            if (maxValue > 255) maxValue = 255;
+
+            if (minValue > maxValue) throw new ArgumentException("Minimum value can not be greater than the maximum value", nameof(minValue));
+            if (maxValue < minValue) throw new ArgumentException("Maximum value can not be smaller than the minimum value", nameof(maxValue));
+            
+            Contracts.ValueWithinBounds(threshold, 0, 255, nameof(threshold));
+
             var bmp = new Bitmap(image);
             BitmapData bmpData = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size), ImageLockMode.ReadWrite,
                 PixelFormat.Format24bppRgb);
@@ -86,11 +120,20 @@ namespace DigitRecognizer.Core.Utilities
                     {
                         for (var y = 0; y < bmp.Width; y++)
                         {
-                            p[0] = p[0] > threshold ? (byte)255 : (byte)0;
+                            p[0] = p[0] > threshold ? 
+                                isSoftTreshold ? 
+                                    p[0] : (byte)maxValue : 
+                                (byte)minValue;
 
-                            p[1] = p[1] > threshold ? (byte)255 : (byte)0;
+                            p[1] = p[1] > threshold ?
+                                isSoftTreshold ?
+                                    p[1] : (byte)maxValue :
+                                (byte)minValue;
 
-                            p[2] = p[2] > threshold ? (byte)255 : (byte)0;
+                            p[2] = p[2] > threshold ?
+                                isSoftTreshold ?
+                                    p[2] : (byte)maxValue :
+                                (byte)minValue;
 
                             p += 3;
                         }
@@ -107,43 +150,12 @@ namespace DigitRecognizer.Core.Utilities
             return bmp;
         }
 
-        public static Image SoftThreshold(Image image, int threshold)
-        {
-            var bmp = new Bitmap(image);
-            BitmapData bmpData = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size), ImageLockMode.ReadWrite,
-                PixelFormat.Format24bppRgb);
-            try
-            {
-                unsafe
-                {
-                    var p = (byte*)bmpData.Scan0.ToPointer();
-                    int offset = bmpData.Stride - 3 * bmp.Width;
-                    for (var x = 0; x < bmp.Height; x++)
-                    {
-                        for (var y = 0; y < bmp.Width; y++)
-                        {
-                            p[0] = p[0] > threshold ? p[0] : (byte)0;
-
-                            p[1] = p[1] > threshold ? p[1] : (byte)0;
-
-                            p[2] = p[2] > threshold ? p[2] : (byte)0;
-
-                            p += 3;
-                        }
-
-                        p += offset * 3;
-                    }
-                }
-            }
-            finally
-            {
-                bmp.UnlockBits(bmpData);
-            }
-
-            return bmp;
-        }
-
-        public static double[] Flatten(Image image)
+        /// <summary>
+        /// Flattens all the pixels of the image to an array and clamps the values to be [0-1].
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <returns>The flattened pixels clamped to the range [0-1].</returns>
+        internal static double[] FlattenAndClamp(Image image)
         {
             var result = new double[image.Width * image.Height];
             using (var bmp = new Bitmap(image))
@@ -179,7 +191,15 @@ namespace DigitRecognizer.Core.Utilities
             return result;
         }
 
-        public static Box DetermineBox(Image image)
+        /// <summary>
+        /// Determines the coordinates of the box surrounding the raw digit in the image.
+        /// <para>
+        /// The idea is to remove all rows and columns that contain only white pixels.
+        /// </para>
+        /// </summary>
+        /// <param name="image">The image being processed.</param>
+        /// <returns>The coordinates of the outer box of the image.</returns>
+        internal static Box DetermineBox(Image image)
         {
             var result = new Box();
             var bmp = new Bitmap(image);
@@ -235,7 +255,13 @@ namespace DigitRecognizer.Core.Utilities
             return result;
         }
 
-        public static (Image, Box) ScaleToBoxAndGetPaddingCoords(Image image, Box boxCoords)
+        /// <summary>
+        /// Scales the specified image to a 20x20 box, based on the specified coordinates.
+        /// </summary>
+        /// <param name="image">The image being scaled.</param>
+        /// <param name="boxCoords">The box with coordinates used for scaling.</param>
+        /// <returns>The scaled image, and the box containing padding coordinates.</returns>
+        internal static (Image, Box) ScaleToBoxAndGetPaddingCoords(Image image, Box boxCoords)
         {
             int rows = boxCoords.Bottom - boxCoords.Top + 1;
             int cols = boxCoords.Right - boxCoords.Left + 1;
@@ -257,18 +283,24 @@ namespace DigitRecognizer.Core.Utilities
 
             var padding = new Box
             {
-                Top = (int)Math.Ceiling((28 - rows) / 2.0),
-                Bottom = (int)Math.Floor((28 - rows) / 2.0),
-                Left = (int)Math.Ceiling((28 - cols) / 2.0),
-                Right = (int)Math.Floor((28 - cols) / 2.0)
+                Top = (int)Math.Ceiling((ImageSizeInPixels - rows) / 2.0),
+                Bottom = (int)Math.Floor((ImageSizeInPixels - rows) / 2.0),
+                Left = (int)Math.Ceiling((ImageSizeInPixels - cols) / 2.0),
+                Right = (int)Math.Floor((ImageSizeInPixels - cols) / 2.0)
             };
 
             return (scaled, padding);
         }
 
-        public static Image Pad(Image image, Box coords)
+        /// <summary>
+        /// Pads the image with blank rows, using the specified coordinates.s
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="coords">The coordinates used for padding.</param>
+        /// <returns>The padded image.</returns>
+        internal static Image Pad(Image image, Box coords)
         {
-            var bmp = new Bitmap(28, 28);
+            var bmp = new Bitmap(ImageSizeInPixels, ImageSizeInPixels);
 
             for (var x = 0; x < bmp.Width; x++)
             {
@@ -294,7 +326,12 @@ namespace DigitRecognizer.Core.Utilities
             return bmp;
         }
 
-        public static Image Invert(Image image)
+        /// <summary>
+        /// Inverts the image pixels.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <returns>The inverted image.</returns>
+        internal static Image Invert(Image image)
         {
             var bmp = new Bitmap(image);
             BitmapData bmpData = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size), ImageLockMode.ReadWrite,
@@ -328,7 +365,12 @@ namespace DigitRecognizer.Core.Utilities
             return bmp;
         }
 
-        public static Point CalculateCenterOfMass(Image image)
+        /// <summary>
+        /// Calculates the center of mass of the specified image.
+        /// </summary>
+        /// <param name="image">The grayscale image.</param>
+        /// <returns>The point representing the center of mass.</returns>
+        internal static Point CalculateCenterOfMass(Image image)
         {
             using (var bmp = new Bitmap(image))
             {
@@ -355,9 +397,16 @@ namespace DigitRecognizer.Core.Utilities
             }
         }
 
-        public static Image Translate(Image image, int x, int y)
+        /// <summary>
+        /// Translates the image in the specified direction.
+        /// </summary>
+        /// <param name="image">The image.</param>
+        /// <param name="x">The value indicating how much to shift in the horizontal direction.</param>
+        /// <param name="y">The value indicating how much to shift in the vertical direction.</param>
+        /// <returns>The trasnlated image.</returns>
+        internal static Image Translate(Image image, int x, int y)
         {
-            var bmp = new Bitmap(28, 28);
+            var bmp = new Bitmap(ImageSizeInPixels, ImageSizeInPixels);
 
             for (var i = 0; i < bmp.Width; i++)
             {
@@ -373,7 +422,7 @@ namespace DigitRecognizer.Core.Utilities
                 {
                     for (var j = 0; j < tempBmp.Height; j++)
                     {
-                        bmp.SetPixel(Math.Abs((i + x) % 28), Math.Abs((j + y) % 28), tempBmp.GetPixel(i, j));
+                        bmp.SetPixel(Math.Abs((i + x) % ImageSizeInPixels), Math.Abs((j + y) % ImageSizeInPixels), tempBmp.GetPixel(i, j));
                     }
                 }
             }
@@ -381,21 +430,40 @@ namespace DigitRecognizer.Core.Utilities
             return bmp;
         }
 
+        /// <summary>
+        /// Preprocesses the specified image so that it can be fed through a neural network.
+        /// The image has to be an RGB or grayscale image with 0 being black, and 255 being white.
+        /// </summary>
+        /// <param name="image">The image being preprocessed.</param>
+        /// <returns>The flattened and clamped pixels of the preprocessed image.</returns>
         public static double[] Preprocess(this Image image)
         {
             Image grayscale = Grayscale(image);
-            Image resized = Resize(grayscale, 28, 28);
-            Image grayscaleWithTreshold = Threshold(resized, 128);
+
+            Image resized = Resize(grayscale, ImageSizeInPixels, ImageSizeInPixels);
+
+            Image grayscaleWithTreshold = Threshold(resized, 128, 0, 255);
+
             Box coords = DetermineBox(grayscaleWithTreshold);
+
             (Image, Box) imageAndPadding = ScaleToBoxAndGetPaddingCoords(grayscaleWithTreshold, coords);
+
             Image padded = Pad(imageAndPadding.Item1, imageAndPadding.Item2);
+
             Image inverted = Invert(padded);
+
             Point centerOfMass = CalculateCenterOfMass(inverted);
-            var shiftx = (int)Math.Round(28 / 2.0 - centerOfMass.X);
-            var shifty = (int)Math.Round(28 / 2.0 - centerOfMass.Y);
+
+            var shiftx = (int)Math.Round(ImageSizeInPixels / 2.0 - centerOfMass.X);
+
+            var shifty = (int)Math.Round(ImageSizeInPixels / 2.0 - centerOfMass.Y);
+
             Image centered = Translate(inverted, shiftx, shifty);
-            Image final = SoftThreshold(centered, 154);
-            double[] data = Flatten(final);
+
+            Image final = Threshold(centered, 154, 0, 255, true);
+
+            double[] data = FlattenAndClamp(final);
+
             return data;
         }
     }

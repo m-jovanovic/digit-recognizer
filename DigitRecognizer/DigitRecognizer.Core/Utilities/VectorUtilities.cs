@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace DigitRecognizer.Core.Utilities
 {
     /// <summary>
-    /// Contains utility functions for commonly required vector operations.
+    /// Contains utility methods for commonly required vector operations.
     /// </summary>
     public static class VectorUtilities
     {
