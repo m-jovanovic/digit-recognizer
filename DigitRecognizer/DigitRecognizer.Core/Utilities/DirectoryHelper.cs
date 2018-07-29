@@ -16,9 +16,24 @@
         private const string ModelsPath = @"../../../Models";
 
         /// <summary>
-        /// Gets the path to the dataset folder.
+        /// Gets the path to the training labels file.
         /// </summary>
-        public static string DatasetFolder => DatasetPath;
+        public static string TrainLabelsPath => $"{DatasetPath}/train-labels.idx1-ubyte";
+
+        /// <summary>
+        /// Gets the path to the training images file.
+        /// </summary>
+        public static string TrainImagesPath => $"{DatasetPath}/train-images.idx3-ubyte";
+
+        /// <summary>
+        /// Gets the path to the testing labels file.
+        /// </summary>
+        public static string TestLabelsPath => $"{DatasetPath}/t10k-labels.idx1-ubyte";
+
+        /// <summary>
+        /// Gets the path to the testing images file.
+        /// </summary>
+        public static string TestImagesPath => $"{DatasetPath}/t10k-images.idx3-ubyte";
 
         /// <summary>
         /// Gets the path to the models folder.
