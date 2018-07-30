@@ -93,7 +93,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Reads the context count from a file.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The number of contexts in the file.</returns>
         private int DeserializeContextCount()
         {
             int count = _reader.ReadInt32();

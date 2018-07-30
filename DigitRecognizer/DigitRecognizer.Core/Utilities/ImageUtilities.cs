@@ -94,8 +94,8 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="threshold">The treshold value.</param>
         /// <param name="minValue">The min value.</param>
         /// <param name="maxValue">The max value.</param>
-        /// <param name="isSoftTreshold"></param>
-        /// <returns></returns>
+        /// <param name="isSoftTreshold">true if the max value should be the original value.</param>
+        /// <returns>The image with the treshold applied.</returns>
         internal static Image Threshold(Image image, int threshold, int minValue, int maxValue,
             bool isSoftTreshold = false)
         {

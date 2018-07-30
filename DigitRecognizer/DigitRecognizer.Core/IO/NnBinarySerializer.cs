@@ -30,7 +30,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Serializes the specified <see cref="NnSerializationContext"/> to a file.
         /// </summary>
-        /// <param name="serializationContext"></param>
+        /// <param name="serializationContext">The serialization context.</param>
         public void Serialize(NnSerializationContext serializationContext)
         {
             SerializeContextCount(1);
@@ -41,10 +41,10 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Serializes the specified <see cref="IEnumerable{T}"/> of type <see cref="NnSerializationContext"/> to a file.
         /// </summary>
-        /// <param name="files"></param>
-        public void Serialize(IEnumerable<NnSerializationContext> files)
+        /// <param name="collection">The collection of objects to serialize.</param>
+        public void Serialize(IEnumerable<NnSerializationContext> collection)
         {
-            NnSerializationContext[] contexts = files as NnSerializationContext[] ?? files.ToArray();
+            NnSerializationContext[] contexts = collection as NnSerializationContext[] ?? collection.ToArray();
             int count = contexts.Length;
 
             SerializeContextCount(count);

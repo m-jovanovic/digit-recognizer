@@ -80,8 +80,8 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
         /// <param name="weightsColCount"></param>
         /// <param name="biasLength"></param>
         /// <param name="data"></param>
-        /// <param name="activationFunctionName"></param>
-        public NnLayer(int weightsRowCount, int weightsColCount, int biasLength, double[] data, string activationFunctionName)
+        /// <param name="activationFunction"></param>
+        public NnLayer(int weightsRowCount, int weightsColCount, int biasLength, double[] data, IActivationFunction activationFunction)
         {
             _numberOfInputs = weightsRowCount;
             _numberOfOutputs = weightsColCount;
@@ -92,11 +92,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
             Buffer.BlockCopy(data, weightsRowCount * weightsColCount * sizeof(double), biasData, 0, biasLength * sizeof(double));
             _bias = new BiasVector(biasData);
 
-            var factory = new FunctionFactory();
-
-            IFunction activationFunction = factory.GetFunction(activationFunctionName);
-
-            _activationFunction = (IActivationFunction) activationFunction;
+            _activationFunction = activationFunction;
         }
 
         /// <summary>

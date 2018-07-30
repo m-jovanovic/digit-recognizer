@@ -15,7 +15,7 @@ namespace DigitRecognizer.Presentation
     {
         private Point _currentPoint;
         private Point _previousPoint;
-        private readonly Pen _pen = new Pen(Color.Black, 55);
+        private readonly Pen _pen = new Pen(Color.Black, 70);
         private readonly Bitmap _bitmap;
         private NeuralNetwork _neuralNetwork;
 
