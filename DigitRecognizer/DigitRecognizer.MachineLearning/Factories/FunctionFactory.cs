@@ -4,10 +4,10 @@ using System.Linq;
 using System.Reflection;
 using DigitRecognizer.MachineLearning.Functions;
 
-namespace DigitRecognizer.MachineLearning.Infrastructure.Factories
+namespace DigitRecognizer.MachineLearning.Factories
 {
     /// <summary>
-    /// Factory for getting instaces of <see cref="IFunction"/> by providing the name of the function.
+    /// Factory for getting instances of <see cref="IFunction"/> by providing the name of the function.
     /// </summary>
     public class FunctionFactory
     {

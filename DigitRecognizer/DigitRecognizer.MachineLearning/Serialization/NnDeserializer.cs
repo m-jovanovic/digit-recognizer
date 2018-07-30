@@ -2,9 +2,9 @@
 using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.IO;
+using DigitRecognizer.MachineLearning.Factories;
 using DigitRecognizer.MachineLearning.Functions;
 using DigitRecognizer.MachineLearning.Infrastructure;
-using DigitRecognizer.MachineLearning.Infrastructure.Factories;
 
 namespace DigitRecognizer.MachineLearning.Serialization
 {
