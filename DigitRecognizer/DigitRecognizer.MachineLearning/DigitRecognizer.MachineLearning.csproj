@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\LearningPipeline.cs" />
-    <Compile Include="Infrastructure\FunctionFactory.cs" />
+    <Compile Include="Infrastructure\Factories\FunctionFactory.cs" />
     <Compile Include="Infrastructure\PredictionModel.cs" />
     <Compile Include="Infrastructure\CalculationCache.cs" />
     <Compile Include="Infrastructure\NeuralNetwork.cs" />
@@ -53,7 +53,6 @@
     <Compile Include="Providers\BatchDataProvider.cs" />
     <Compile Include="Providers\DataProviderBase.cs" />
     <Compile Include="Providers\IDataProvider.cs" />
-    <Compile Include="Providers\StohasticDataProvider.cs" />
     <Compile Include="Serialization\INnDeserializer.cs" />
     <Compile Include="Serialization\INnSerializable.cs" />
     <Compile Include="Serialization\INnSerializer.cs" />
