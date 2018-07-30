@@ -13,7 +13,7 @@
         /// <summary>
         /// The path to the models folder.
         /// </summary>
-        private const string ModelsPath = @"../../../Models";
+        private const string ModelsPath = @"../../../../Models";
 
         /// <summary>
         /// Gets the path to the training labels file.

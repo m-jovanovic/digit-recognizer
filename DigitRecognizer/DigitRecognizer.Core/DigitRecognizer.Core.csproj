@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Box.cs" />
     <Compile Include="Data\LinkedList.cs" />
     <Compile Include="Data\LinkedListNode.cs" />
     <Compile Include="Data\MnistImage.cs" />
@@ -60,6 +63,7 @@
     <Compile Include="IO\PixelReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\DirectoryHelper.cs" />
+    <Compile Include="Utilities\ImageUtilities.cs" />
     <Compile Include="Utilities\MathUtilities.cs" />
     <Compile Include="Utilities\Contracts.cs" />
     <Compile Include="Utilities\VectorUtilities.cs" />

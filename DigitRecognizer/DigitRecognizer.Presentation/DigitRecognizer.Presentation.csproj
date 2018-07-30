@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -77,6 +79,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DigitRecognizer.Core\DigitRecognizer.Core.csproj">
+      <Project>{BA726236-C7EC-41CA-ABB6-E4FE7E784939}</Project>
+      <Name>DigitRecognizer.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DigitRecognizer.MachineLearning\DigitRecognizer.MachineLearning.csproj">
+      <Project>{BF82C3DF-0EFE-45DB-8E3D-1FFDD548AE73}</Project>
+      <Name>DigitRecognizer.MachineLearning</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

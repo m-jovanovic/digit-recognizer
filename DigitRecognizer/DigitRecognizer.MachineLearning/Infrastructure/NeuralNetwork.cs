@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Functions;
@@ -89,6 +90,23 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
             _layers = new Core.Data.LinkedList<NnLayer>(layers);
             _weightedSumCache = new CalculationCache();
             _activationCache = new CalculationCache();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public double[][] Decide(double[][] input)
+        {
+            if (input.Length > 1)
+            {
+                throw new NotSupportedException("Running more than 1 input through the network is not supported");
+            }
+
+            double[][] prediction = FeedForward(input);
+
+            return prediction;
         }
 
         /// <summary>
