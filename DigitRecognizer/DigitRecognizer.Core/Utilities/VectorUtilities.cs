@@ -51,7 +51,7 @@ namespace DigitRecognizer.Core.Utilities
                     result[i][j] = flattenedData[offset + j];
                 }
 
-                offset += rowCount;
+                offset += colCount;
             }
 
             return result;

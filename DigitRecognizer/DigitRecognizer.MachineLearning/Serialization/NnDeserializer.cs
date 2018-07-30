@@ -20,9 +20,9 @@ namespace DigitRecognizer.MachineLearning.Serialization
         {
             using (var deserializer = new NnBinaryDeserializer(filename, FileMode.Open))
             {
-                var files = deserializer.Deserialize();
+                IEnumerable<NnSerializationContext> contexts = deserializer.Deserialize();
 
-                var result = files.Select(Deserialize).ToList();
+                List<NnLayer> result = contexts.Select(Deserialize).ToList();
 
                 return result;
             }
@@ -35,10 +35,10 @@ namespace DigitRecognizer.MachineLearning.Serialization
         /// <returns></returns>
         public NnLayer Deserialize(NnSerializationContext serializationContext)
         {
-            var fileInfo = serializationContext.SerializationContextInfo;
-            var data = serializationContext.FileData;
+            NnSerializationContextInfo contextInfo = serializationContext.SerializationContextInfo;
+            double[] data = serializationContext.FileData;
 
-            var layer = new NnLayer(fileInfo.WeightMatrixColCount,fileInfo.WeightMatrixRowCount, fileInfo.BiasLength, data);
+            var layer = new NnLayer(contextInfo.WeightMatrixRowCount, contextInfo.WeightMatrixColCount, contextInfo.BiasLength, data, contextInfo.ActivationFunctionName);
 
             return layer;
         }

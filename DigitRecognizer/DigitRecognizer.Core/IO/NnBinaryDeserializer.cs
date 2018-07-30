@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 
@@ -42,16 +43,16 @@ namespace DigitRecognizer.Core.IO
 
             for (var i = 0; i < count; i++)
             {
-                var fInfo = DeserializeContextInfo();
+                NnSerializationContextInfo contextInfo = DeserializeContextInfo();
 
-                contextInfoDictionary.Add(i, fInfo);
+                contextInfoDictionary.Add(i, contextInfo);
             }
 
             for (var i = 0; i < count; i++)
             {
-                if (!contextInfoDictionary.TryGetValue(i, out var contextInfo))
+                if (!contextInfoDictionary.TryGetValue(i, out NnSerializationContextInfo contextInfo))
                 {
-                    throw new NullReferenceException("No file info with was found for the given key.");
+                    throw new NullReferenceException("No context info with was found for the given key.");
                 }
 
                 double[] contextData = DeserializeContextData(contextInfo.DataSizeInBytes);
@@ -80,7 +81,7 @@ namespace DigitRecognizer.Core.IO
                 throw new NotSupportedException("Can not deserialize a single context, from a file that stores multiple contexts.");
             }
 
-            var contextInfo = DeserializeContextInfo();
+            NnSerializationContextInfo contextInfo = DeserializeContextInfo();
 
             double[] contextData = DeserializeContextData(contextInfo.DataSizeInBytes);
 
@@ -110,7 +111,11 @@ namespace DigitRecognizer.Core.IO
             int weightMatrixColCount = _reader.ReadInt32();
             int biasLength = _reader.ReadInt32();
 
-            var contextInfo = new NnSerializationContextInfo(weightMatrixRowCount, weightMatrixColCount, biasLength);
+            int activationFunctionNameSizeInBytes = _reader.ReadInt32();
+            byte[] activationFunctionNameBytes = _reader.ReadBytes(activationFunctionNameSizeInBytes);
+            string activationFunctionName = Encoding.Unicode.GetString(activationFunctionNameBytes);
+
+            var contextInfo = new NnSerializationContextInfo(weightMatrixRowCount, weightMatrixColCount, biasLength, activationFunctionName);
 
             return contextInfo;
         }

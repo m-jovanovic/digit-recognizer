@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\LearningPipeline.cs" />
+    <Compile Include="Infrastructure\FunctionFactory.cs" />
     <Compile Include="Infrastructure\PredictionModel.cs" />
     <Compile Include="Infrastructure\CalculationCache.cs" />
     <Compile Include="Infrastructure\NeuralNetwork.cs" />

@@ -15,18 +15,42 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
         private readonly WeightMatrix _weights;
         private readonly BiasVector _bias;
 
-        private readonly int _numberOfInputs;
-        private readonly int _numberOfOutputs;
+        private int _numberOfInputs;
+        private int _numberOfOutputs;
 
-        public int NumberOfInputs => _numberOfInputs;
-        public int NumberOfOutputs => _numberOfOutputs;
+        public int NumberOfInputs
+        {
+            get => _numberOfInputs;
+            set
+            {
+                Contracts.ValueGreaterThanZero(value, nameof(NumberOfInputs));
+                _numberOfInputs = value;
+            }
+        }
+        public int NumberOfOutputs
+        {
+            get => _numberOfOutputs;
+            set
+            {
+                Contracts.ValueGreaterThanZero(value, nameof(NumberOfOutputs));
+                _numberOfOutputs = value;
+            }
+        }
 
-        private readonly IActivationFunction _activationFunction;
+        private IActivationFunction _activationFunction;
 
         /// <summary>
         /// 
         /// </summary>
-        public IActivationFunction ActivationFunction => _activationFunction;
+        public IActivationFunction ActivationFunction
+        {
+            get => _activationFunction;
+            set
+            {
+                Contracts.ValueNotNull(value, nameof(ActivationFunction));
+                _activationFunction = value;
+            }
+        }
         
         /// <summary>
         /// 
@@ -52,17 +76,27 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="weightsHeight"></param>
-        /// <param name="weightsWidth"></param>
+        /// <param name="weightsRowCount"></param>
+        /// <param name="weightsColCount"></param>
         /// <param name="biasLength"></param>
         /// <param name="data"></param>
-        public NnLayer(int weightsHeight, int weightsWidth, int biasLength, double[] data)
+        /// <param name="activationFunctionName"></param>
+        public NnLayer(int weightsRowCount, int weightsColCount, int biasLength, double[] data, string activationFunctionName)
         {
-            _weights = new WeightMatrix(VectorUtilities.CreateMatrix(weightsHeight, weightsWidth, data));
+            _numberOfInputs = weightsRowCount;
+            _numberOfOutputs = weightsColCount;
+            
+            _weights = new WeightMatrix(VectorUtilities.CreateMatrix(weightsRowCount, weightsColCount, data));
 
             var biasData = new double[biasLength];
-            Buffer.BlockCopy(data, weightsHeight * weightsWidth * sizeof(double), biasData, 0, biasLength * sizeof(double));
+            Buffer.BlockCopy(data, weightsRowCount * weightsColCount * sizeof(double), biasData, 0, biasLength * sizeof(double));
             _bias = new BiasVector(biasData);
+
+            var factory = new FunctionFactory();
+
+            IFunction activationFunction = factory.GetFunction(activationFunctionName);
+
+            _activationFunction = (IActivationFunction) activationFunction;
         }
 
         /// <summary>
@@ -123,10 +157,10 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
         /// <returns></returns>
         public NnSerializationContext Serialize()
         {
-            var fileInfo = new NnSerializationContextInfo(_numberOfInputs, _numberOfOutputs, _bias.Length);
+            var fileInfo = new NnSerializationContextInfo(_numberOfInputs, _numberOfOutputs, _numberOfOutputs, _activationFunction.Name);
 
             int weightsLength = _numberOfInputs * _numberOfOutputs;
-            int biasLength = _bias.Length;
+            int biasLength = _numberOfOutputs;
 
             var data = new double[weightsLength + biasLength];
 

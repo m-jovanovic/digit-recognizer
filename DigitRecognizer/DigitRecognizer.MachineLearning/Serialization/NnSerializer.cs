@@ -12,7 +12,7 @@ namespace DigitRecognizer.MachineLearning.Serialization
         {
             using (var serializer = new NnBinarySerializer(filename, FileMode.Create))
             {
-                var files = collection.Select(layer => layer.Serialize()).ToList();
+                List<NnSerializationContext> files = collection.Select(layer => layer.Serialize()).ToList();
 
                 serializer.Serialize(files);
             }

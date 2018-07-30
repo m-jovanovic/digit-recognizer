@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using DigitRecognizer.Core.Extensions;
 
 namespace DigitRecognizer.Core.IO
@@ -77,6 +78,10 @@ namespace DigitRecognizer.Core.IO
             _writer.Write(serializationContextInfo.WeightMatrixRowCount);
             _writer.Write(serializationContextInfo.WeightMatrixColCount);
             _writer.Write(serializationContextInfo.BiasLength);
+
+            byte[] bytes = Encoding.Unicode.GetBytes(serializationContextInfo.ActivationFunctionName);
+            _writer.Write(serializationContextInfo.ActivationFunctionNameSizeInBytes);
+            _writer.Write(bytes);
         }
 
         /// <summary>
