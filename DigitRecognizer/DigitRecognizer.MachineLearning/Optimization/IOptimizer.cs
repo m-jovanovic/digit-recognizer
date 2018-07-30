@@ -7,7 +7,7 @@ namespace DigitRecognizer.MachineLearning.Optimization
     /// </summary>
     public interface IOptimizer
     {
-        ILossFunction LossFunction { get; }
+        ICostFunction CostFunction { get; }
 
         double CalculateError(double[] prediction, int oneHot);
         double[] CalculateOutputDerivative(double[] prediction, int oneHot);

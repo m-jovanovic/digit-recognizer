@@ -48,8 +48,8 @@
     <Compile Include="Infrastructure\NnLayer.cs" />
     <Compile Include="Functions\IFunction.cs" />
     <Compile Include="Functions\IActivationFunction.cs" />
-    <Compile Include="Functions\IDifferentiable.cs" />
-    <Compile Include="Functions\ILossFunction.cs" />
+    <Compile Include="Functions\IDifferentiableFunction.cs" />
+    <Compile Include="Functions\ICostFunction.cs" />
     <Compile Include="Providers\BatchDataProvider.cs" />
     <Compile Include="Providers\DataProviderBase.cs" />
     <Compile Include="Providers\IDataProvider.cs" />

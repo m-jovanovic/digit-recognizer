@@ -1,10 +1,15 @@
 ﻿namespace DigitRecognizer.MachineLearning.Functions
 {
     /// <summary>
-    /// Implement this interface on an activation function.
+    /// Implement that all activation functions must implement.
     /// </summary>
-    public interface IActivationFunction : IDifferentiable, IFunction
+    public interface IActivationFunction : IDifferentiableFunction, IFunction
     {
+        /// <summary>
+        /// Applies the activation function on every element of the specified array.
+        /// </summary>
+        /// <param name="arr">The array of values.</param>
+        /// <returns>The array with values fed through the activation function.</returns>
         double[] Activate(double[] arr);
     }
 }

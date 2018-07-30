@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using DigitRecognizer.MachineLearning.Functions;
 using DigitRecognizer.MachineLearning.Infrastructure;
 using DigitRecognizer.MachineLearning.Optimization;
 using DigitRecognizer.MachineLearning.Providers;
 using DigitRecognizer.Core.Extensions;
+using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Serialization;
 
 namespace DigitRecognizer.Engine
@@ -31,7 +33,7 @@ namespace DigitRecognizer.Engine
                 "../../../Dataset/train-images.idx3-ubyte", 1);
 
             var iter = 60000;
-            for (var epoch = 0; epoch < 30; epoch++)
+            for (var epoch = 0; epoch < 2; epoch++)
             {
                 if (epoch > 0 && epoch % 10 == 0)
                 {
@@ -60,9 +62,8 @@ namespace DigitRecognizer.Engine
                     nn.Backpropagate(err, data.Labels);
                 }
             }
-            var provider1 = new BatchDataProvider(
-                "../../../Dataset/t10k-labels.idx1-ubyte",
-                "../../../Dataset/t10k-images.idx3-ubyte", 100);
+
+            var provider1 = new BatchDataProvider(DirectoryHelper.TestLabelsPath, DirectoryHelper.TestImagesPath, 100);
             double acc = 0.0;
             for (var i = 0; i < 100; i++)
             {
@@ -76,9 +77,15 @@ namespace DigitRecognizer.Engine
                 }
             }
             acc /= 10000.0;
+
             Console.WriteLine($"Accuracy on the test data is: {acc:P2}");
+
             var serializer = new NnSerializer();
-            serializer.Serialize($"../../../Models/model{acc}.nn", nn.Layers);
+            string basePath = Path.GetFullPath(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory) +
+                                               DirectoryHelper.ModelsFolder);
+            string modelName = $"{Guid.NewGuid()}-{acc:N5}.nn";
+            string filename = $"{basePath}/{modelName}";
+            serializer.Serialize(filename, nn.Layers);
             Console.ReadKey();
         }
 

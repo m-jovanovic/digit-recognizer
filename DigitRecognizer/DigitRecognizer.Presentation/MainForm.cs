@@ -29,7 +29,7 @@ namespace DigitRecognizer.Presentation
             }
             _pen.SetLineCap(LineCap.Round, LineCap.Round, DashCap.Round);
 
-            openFileDialog.InitialDirectory = Path.GetFullPath(Path.GetDirectoryName(Application.ExecutablePath) + DirectoryHelper.ModelsFolder);
+            openFileDialog.InitialDirectory = Path.GetFullPath(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory) + DirectoryHelper.ModelsFolder);
             openFileDialog.Filter = @"Neural network files (*.nn)|*.nn";
 
             drawingPanel.MouseDown += DrawingPanel_MouseDown;

@@ -13,9 +13,9 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="lossFunction"></param>
-        public GradientDescentOptimizer(ILossFunction lossFunction) 
-            : base(lossFunction)
+        /// <param name="costFunction"></param>
+        public GradientDescentOptimizer(ICostFunction costFunction) 
+            : base(costFunction)
         {
         }
 
@@ -27,7 +27,7 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <returns></returns>
         public double CalculateError(double[] prediction, int oneHot)
         {
-            double error = LossFunction.Loss(prediction, oneHot.OneHot(prediction.Length));
+            double error = CostFunction.Cost(prediction, oneHot.OneHot(prediction.Length));
 
             return error;
         }
@@ -41,13 +41,9 @@ namespace DigitRecognizer.MachineLearning.Optimization
         public double[] CalculateOutputDerivative(double[] prediction, int oneHot)
         {
             int length = prediction.Length;
-            var gradient = new double[length];
-            for (var i = 0; i < length; i++)
-            {
-                gradient[i] = LossFunction.Derivative(prediction, i, oneHot);
-            }
+            double[] gradient = CostFunction.Derivative(prediction, oneHot.OneHot(length));
 
-            double threshold = 3.0;
+            const double threshold = 4.0;
             double l2Norm = MathUtilities.L2Norm(gradient);
 
             if (l2Norm > threshold)

@@ -42,10 +42,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure
 
             for (var i = 0; i < rowCount; i++)
             {
-                for (var j = 0; j < colCount; j++)
-                {
-                    result[i][j] = activationFunction.Derivative(cachedWeightedSum[i], j, oneHot[i]);
-                }
+                result[i] = activationFunction.Derivative(cachedWeightedSum[i], oneHot[i].OneHot(colCount));
             }
 
             return result;

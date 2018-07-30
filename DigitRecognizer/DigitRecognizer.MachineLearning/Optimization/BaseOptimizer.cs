@@ -11,17 +11,17 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <summary>
         /// 
         /// </summary>
-        public ILossFunction LossFunction { get; }
+        public ICostFunction CostFunction { get; }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="lossFunction"></param>
-        protected BaseOptimizer(ILossFunction lossFunction)
+        /// <param name="costFunction"></param>
+        protected BaseOptimizer(ICostFunction costFunction)
         {
-            Contracts.ValueNotNull(lossFunction, nameof(lossFunction));
+            Contracts.ValueNotNull(costFunction, nameof(costFunction));
             
-            LossFunction = lossFunction;
+            CostFunction = costFunction;
         }
     }
 }

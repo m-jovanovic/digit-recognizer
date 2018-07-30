@@ -2,20 +2,41 @@
 
 namespace DigitRecognizer.MachineLearning.Functions
 {
+    /// <summary>
+    /// Implements the hyperbolic tangent activation function.
+    /// </summary>
     public class Tanh : IActivationFunction
     {
         public string Name => "Tanh";
 
+        /// <summary>
+        /// Applies the activation function on every element of the specified array.
+        /// </summary>
+        /// <param name="arr">The array of values.</param>
+        /// <returns>The array with values fed through the activation function.</returns>
         public double[] Activate(double[] arr)
         {
-            return MathUtilities.Tanh(arr);
+            double[] activations = MathUtilities.Tanh(arr);
+
+            return activations;
         }
 
-        public double Derivative(double[] input, int current, int oneHot)
+        /// <summary>
+        /// Determines the derivative of the <see cref="Tanh"/> function for the specified inputs.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="oneHot">The one hot encoded element.</param>
+        /// <returns>The derivative of the function for every input.</returns>
+        public double[] Derivative(double[] input, double[] oneHot)
         {
-            double value = input[current];
-            double tanh = MathUtilities.Tanh(value);
-            double result = 1 - tanh * tanh;
+            var result = new double[input.Length];
+
+            for (var i = 0; i < input.Length; i++)
+            {
+                double tanh = MathUtilities.Tanh(input[i]);
+
+                result[i] = 1 - tanh * tanh;
+            }
 
             return result;
         }
