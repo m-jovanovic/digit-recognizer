@@ -127,12 +127,7 @@ namespace DigitRecognizer.Core.Data
 
             return result;
         }
-
-        public static implicit operator List<T>(LinkedList<T> list)
-        {
-            return list.ToList();
-        }
-
+        
         /// <summary>
         /// Gets the count property. This field is readonly.
         /// </summary>
