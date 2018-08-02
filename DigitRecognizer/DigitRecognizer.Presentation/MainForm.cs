@@ -1,13 +1,11 @@
 ﻿using DigitRecognizer.Core.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
 using DigitRecognizer.Core.Extensions;
-using DigitRecognizer.MachineLearning.Infrastructure;
-using DigitRecognizer.MachineLearning.Serialization;
+using DigitRecognizer.MachineLearning.Infrastructure.Models;
 
 namespace DigitRecognizer.Presentation
 {
@@ -17,7 +15,7 @@ namespace DigitRecognizer.Presentation
         private Point _previousPoint;
         private readonly Pen _pen = new Pen(Color.Black, 70);
         private readonly Bitmap _bitmap;
-        private NeuralNetwork _neuralNetwork;
+        private PredictionModel _predictionModel;
 
         public MainForm()
         {
@@ -109,7 +107,7 @@ namespace DigitRecognizer.Presentation
         
         private void BtnDecide_Click(object sender, EventArgs e)
         {
-            if (_neuralNetwork == null)
+            if (_predictionModel == null)
             {
                 MessageBox.Show(@"No neural network is currently loaded", @"Neural Network Info", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
@@ -117,9 +115,9 @@ namespace DigitRecognizer.Presentation
             }
 
             double[] pixels = _bitmap.Preprocess();
-            double[][] prediction = _neuralNetwork.Decide(pixels.AsMatrix());
-            int argMax = prediction[0].ArgMax();
-            double percent = prediction[0][argMax];
+            double[] prediction = _predictionModel.Predict(pixels);
+            int argMax = prediction.ArgMax();
+            double percent = prediction[argMax];
             lblDecision.Text = $@"Network: {argMax} ({percent:P2})";
         }
 
@@ -129,9 +127,7 @@ namespace DigitRecognizer.Presentation
 
             if (dialogResult == DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
             {
-                NnDeserializer deserializer = new NnDeserializer();
-                IEnumerable<NnLayer> layers = deserializer.Deseralize(openFileDialog.FileName);
-                _neuralNetwork = new NeuralNetwork(layers, 1.0);
+                _predictionModel = PredictionModel.FromFile(openFileDialog.FileName);
             }
         }
     }

@@ -60,7 +60,7 @@ namespace DigitRecognizer.Core.IO
         /// <summary>
         /// Gets the length of the data array.
         /// </summary>
-        public int DataLength => _weightMatrixRowCount * _weightMatrixColCount * _biasLength;
+        public int DataLength => _weightMatrixRowCount * _weightMatrixColCount + _biasLength;
         
         /// <summary>
         /// Gets the size of the data array in bytes.

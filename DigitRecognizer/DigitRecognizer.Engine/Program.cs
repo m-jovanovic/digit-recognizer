@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
-using DigitRecognizer.MachineLearning.Functions;
-using DigitRecognizer.MachineLearning.Infrastructure;
 using DigitRecognizer.MachineLearning.Optimization;
 using DigitRecognizer.MachineLearning.Providers;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
+using DigitRecognizer.MachineLearning.Infrastructure.Functions;
+using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
+using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
+using DigitRecognizer.MachineLearning.Pipeline;
 using DigitRecognizer.MachineLearning.Serialization;
 
 namespace DigitRecognizer.Engine
@@ -14,26 +16,24 @@ namespace DigitRecognizer.Engine
     {
         private static void Main(string[] args)
         {
-            var optimizer = new GradientDescentOptimizer(new CrossEntropy());
-            var nn = new NeuralNetwork(1.0);
-            //var deserializer = new NnDeserializer();
-            //var serilaztionContext = deserializer.Deseralize("../../../Models/model0.nn");
-            //var layer1 = new NnLayer(784, 200, new LeakyRelu());
-            //var layer2 = new NnLayer(200, 60, new LeakyRelu());
-            //var layer3 = new NnLayer(60, 10, new Softmax());
-            var layer1 = new NnLayer(784, 10, new Softmax());
-            //var layer2 = new NnLayer(30, 10, new Softmax());
+            var nn = new NeuralNetwork(0.001);
+            var optimizer = new GradientDescentOptimizer(nn, new CrossEntropy());
+
+            PipelineSettings.Instance.UseGradientClipping = true;
+            PipelineSettings.Instance.WeightsInitializerType = InitializerType.RandomInitialization;
+
+            var layer1 = new NnLayer(784, 200, new Relu());
+            var layer2 = new NnLayer(200, 10, new Softmax());
+            //var layer3 = new NnLayer(30, 10, new Softmax());
 
             nn.AddLayer(layer1);
-            //nn.AddLayer(layer2);
+            nn.AddLayer(layer2);
             //nn.AddLayer(layer3);
 
-            var provider = new BatchDataProvider(
-                "../../../Dataset/train-labels.idx1-ubyte",
-                "../../../Dataset/train-images.idx3-ubyte", 1);
+            var provider = new BatchDataProvider(DirectoryHelper.TrainLabelsPath, DirectoryHelper.TrainImagesPath, 100);
 
-            var iter = 60000;
-            for (var epoch = 0; epoch < 2; epoch++)
+            var iter = 600;
+            for (var epoch = 0; epoch < 20; epoch++)
             {
                 if (epoch > 0 && epoch % 10 == 0)
                 {
@@ -44,7 +44,7 @@ namespace DigitRecognizer.Engine
                     var data = provider.GetData();
 
                     var predictions = nn.FeedForward(NormalizePixels(data.Pixels));
-                    if (i % 100 == 0)
+                    if (i % 10 == 0)
                     {
                         var error = 0.0;
                         for (var j = 0; j < predictions.Length; j++)
@@ -54,7 +54,7 @@ namespace DigitRecognizer.Engine
 
                         error /= predictions.Length;
 
-                        Console.WriteLine($"Eror for iteration {epoch * 60000 + i}: {error}");
+                        Console.WriteLine($"Eror for iteration {epoch * iter + i}: {error}");
                     }
 
                     var err = optimizer.CalculateOutputDerivative(predictions, data.Labels);
@@ -85,7 +85,7 @@ namespace DigitRecognizer.Engine
                                                DirectoryHelper.ModelsFolder);
             string modelName = $"{Guid.NewGuid()}-{acc:N5}.nn";
             string filename = $"{basePath}/{modelName}";
-            serializer.Serialize(filename, nn.Layers);
+            serializer.Serialize(filename, nn.Layers.ToList());
             Console.ReadKey();
         }
 

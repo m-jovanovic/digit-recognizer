@@ -2,9 +2,10 @@
 using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.IO;
-using DigitRecognizer.MachineLearning.Factories;
-using DigitRecognizer.MachineLearning.Functions;
 using DigitRecognizer.MachineLearning.Infrastructure;
+using DigitRecognizer.MachineLearning.Infrastructure.Factories;
+using DigitRecognizer.MachineLearning.Infrastructure.Functions;
+using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
 
 namespace DigitRecognizer.MachineLearning.Serialization
 {
@@ -40,7 +41,7 @@ namespace DigitRecognizer.MachineLearning.Serialization
             NnSerializationContextInfo contextInfo = serializationContext.SerializationContextInfo;
             double[] data = serializationContext.FileData;
 
-            var activationFunction = (IActivationFunction) FunctionFactory.Instance.GetFunction(contextInfo.ActivationFunctionName);
+            var activationFunction = (IActivationFunction) FunctionFactory.Instance.GetInstance(contextInfo.ActivationFunctionName);
             
             var layer = new NnLayer(contextInfo.WeightMatrixRowCount, contextInfo.WeightMatrixColCount, contextInfo.BiasLength, data, activationFunction);
 

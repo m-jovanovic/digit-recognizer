@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.IO;
 using DigitRecognizer.MachineLearning.Infrastructure;
+using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
 
 namespace DigitRecognizer.MachineLearning.Serialization
 {
@@ -20,9 +21,9 @@ namespace DigitRecognizer.MachineLearning.Serialization
         {
             using (var serializer = new NnBinarySerializer(filename, FileMode.Create))
             {
-                IEnumerable<NnSerializationContext> files = collection.Select(layer => layer.Serialize());
+                IEnumerable<NnSerializationContext> contexts = collection.Select(layer => layer.Serialize());
 
-                serializer.Serialize(files);
+                serializer.Serialize(contexts);
             }
         }
     }
