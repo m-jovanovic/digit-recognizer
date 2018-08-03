@@ -14,7 +14,6 @@ namespace DigitRecognizer.MachineLearning.Optimization
     {
         private readonly ICostFunction _costFunction;
         private readonly INeuralNetwork _neuralNetwork;
-
         private List<double[][]> _weightedSumDerivatives;
         private List<double[][]> _activations;
 
@@ -50,9 +49,19 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <returns>The cost.</returns>
         public double CalculateError(double[] prediction, int oneHot)
         {
-            double error = CostFunction.Cost(prediction, oneHot.OneHot(prediction.Length));
+            double error = _costFunction.Cost(prediction, oneHot.OneHot(prediction.Length));
 
             return error;
+        }
+
+        /// <summary>
+        /// Optimizes the specified parameters.
+        /// </summary>
+        /// <param name="predictons">The predictions.</param>
+        /// <param name="oneHots">The one hot values.</param>
+        public void Optimize(double[][] predictons, int[] oneHots)
+        {
+            Backpropagate(predictons, oneHots);
         }
 
         /// <summary>

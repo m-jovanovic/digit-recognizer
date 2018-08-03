@@ -25,11 +25,41 @@ namespace DigitRecognizer.MachineLearning.Providers
         public override MnistImageBatch GetData()
         {
             int[] label = LabelReader.ReadLabels(BatchSize);
+
             double[][] pixels = PixelReader.ReadPixels(BatchSize, ImageSizeInPixels);
+
+            pixels = NormalizePixels(pixels);
 
             var result = new MnistImageBatch(label, pixels);
 
             return result;
+        }
+
+        /// <summary>
+        /// Normalizes the specified matrix of pixels to be in the rande [0,1].
+        /// </summary>
+        /// <param name="pixels">The pixels.</param>
+        /// <returns>The clamped pixels.</returns>
+        private double[][] NormalizePixels(double[][] pixels)
+        {
+            for (var i = 0; i < pixels.Length; i++)
+            {
+                for (var j = 0; j < pixels[0].Length; j++)
+                {
+                    pixels[i][j] = pixels[i][j] / 255d;
+                }
+            }
+
+            return pixels;
+        }
+
+        /// <summary>
+        /// Loads the data from a source file.
+        /// </summary>
+        /// <returns>The data object.</returns>
+        public override object LoadData()
+        {
+            return GetData();
         }
     }
 }

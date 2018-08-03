@@ -1,4 +1,4 @@
-﻿using DigitRecognizer.MachineLearning.Infrastructure.Data;
+﻿using System;
 using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
 
 namespace DigitRecognizer.MachineLearning.Pipeline
@@ -6,10 +6,10 @@ namespace DigitRecognizer.MachineLearning.Pipeline
     /// <summary>
     /// Represents a singleton class with settings for configuring behaviour of the pipeline.
     /// </summary>
-    public class PipelineSettings
+    internal class PipelineSettings
     {
         private static PipelineSettings _instance;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="PipelineSettings"/> class.
         /// This constructor is only called by the singleton instance.
@@ -22,7 +22,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// <summary>
         /// Resets the <seealso cref="Instance"/>.
         /// </summary>
-        public void Reset()
+        internal void Reset()
         {
             _instance = new PipelineSettings();
         }
@@ -35,7 +35,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// <summary>
         /// Gets the singleton instance of the <see cref="PipelineSettings"/> class.
         /// </summary>
-        public static PipelineSettings Instance
+        internal static PipelineSettings Instance
         {
             get
             {
@@ -47,13 +47,18 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         }
 
         /// <summary>
+        /// Gets or sets a value indicating if the current environment is a training environment.
+        /// </summary>
+        internal bool IsTrainingEnvironment { get; set; }
+
+        /// <summary>
         /// Gets or sets the use gradient clipping property.
         /// </summary>
         /// <remarks>
         /// If true, gradient clipping technique is used in the gradient calculation method.
         /// This is useful to avoid large gradient values, that could break learning.
         /// </remarks>
-        public bool UseGradientClipping { get; set; }
+        internal bool UseGradientClipping { get; set; }
 
         /// <summary>
         /// Gets or sets the use L2 regularization property.
@@ -63,7 +68,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// L2 regularization is used to avoid large weight or bias values.
         /// It is applied on biases, if <seealso cref="UseBiasRegularization"/> is true.  
         /// </remarks>
-        public bool UseL2Regularization { get; set; }
+        internal bool UseL2Regularization { get; set; }
 
         /// <summary>
         /// Gets or sets the use bias regularization property.
@@ -71,11 +76,31 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// <remarks>
         /// If true, regularization is applied on bias updates.
         /// </remarks>
-        public bool UseBiasRegularization { get; set; }
-        
+        internal bool UseBiasRegularization { get; set; }
+
         /// <summary>
         /// Gets or sets the weights <see cref="InitializerType"/>.
         /// </summary>
-        public InitializerType WeightsInitializerType { get; set; }
+        internal InitializerType WeightsInitializerType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of epochs.
+        /// </summary>
+        internal int EpochCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the batch size.
+        /// </summary>
+        internal int BatchSize { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the dataset size.
+        /// </summary>
+        internal int DatasetSize { get; set; }
+
+        /// <summary>
+        /// Gets the number of iterations of the training cycle.
+        /// </summary>
+        internal int TrainingIterationsCount => (int) Math.Round(DatasetSize / (double)BatchSize);
     }
 }

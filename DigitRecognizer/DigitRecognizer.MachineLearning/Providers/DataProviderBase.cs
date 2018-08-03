@@ -3,8 +3,16 @@ using DigitRecognizer.Core.Utilities;
 
 namespace DigitRecognizer.MachineLearning.Providers
 {
+    /// <summary>
+    /// Represents a base class for a data provider.
+    /// </summary>
+    /// <typeparam name="T">The type of data the provider returns.</typeparam>
     public abstract class DataProviderBase<T> : IDataProvider<T>
     {
+        private readonly string _labelFilename;
+        private readonly string _imageFilename;
+        private readonly int _batchSize;
+
         /// <summary>
         /// The size of a single MNIST image in pixels.
         /// </summary>
@@ -19,11 +27,21 @@ namespace DigitRecognizer.MachineLearning.Providers
         /// The <see cref="IPixelReader"/> instance, used for fetching pixels.
         /// </summary>
         protected readonly IPixelReader PixelReader;
+        
+        /// <summary>
+        /// Gets the batch size of the data provider.
+        /// </summary>
+        public int BatchSize => _batchSize;
 
         /// <summary>
-        /// The batch size for the data provider.
+        /// Gets the name of the file containing labels.
         /// </summary>
-        protected readonly int BatchSize;
+        public string LabelFilename => _labelFilename;
+
+        /// <summary>
+        /// Gets the name of the file containing images.
+        /// </summary>
+        public string ImageFilename => _imageFilename;
 
         /// <summary>
         /// Initialzies a new instance of the <see cref="DataProviderBase{T}"/> class.
@@ -43,7 +61,9 @@ namespace DigitRecognizer.MachineLearning.Providers
 
             LabelReader = new LabelReader(labelFilename);
             PixelReader = new PixelReader(imageFilename);
-            BatchSize = batchSize;
+            _labelFilename = labelFilename;
+            _imageFilename = imageFilename;
+            _batchSize = batchSize;
         }
 
         /// <summary>
@@ -53,6 +73,15 @@ namespace DigitRecognizer.MachineLearning.Providers
         public virtual T GetData()
         {
             return default(T);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public virtual object LoadData()
+        {
+            return GetData();
         }
     }
 }

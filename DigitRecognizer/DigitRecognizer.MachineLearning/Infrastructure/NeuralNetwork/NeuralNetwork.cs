@@ -112,10 +112,20 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         }
 
         /// <summary>
-        /// 
+        /// Generates a prediction based on the specified input.
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
+        /// <param name="input">The input.</param>
+        /// <returns>The prediction.</returns>
+        public double[][] Predict(double[][] input)
+        {
+            return FeedForward(input);
+        }
+
+        /// <summary>
+        /// Feeds the input values forward thorugh the network layers.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <returns>The output activation of the last layer.</returns>
         public double[][] FeedForward(double[][] input)
         {
             Core.Data.LinkedListNode<NnLayer> currentLayer = _layers.First;

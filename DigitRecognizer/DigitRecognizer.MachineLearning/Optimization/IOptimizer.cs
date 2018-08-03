@@ -1,13 +1,13 @@
-﻿using DigitRecognizer.MachineLearning.Infrastructure;
-using DigitRecognizer.MachineLearning.Infrastructure.Functions;
+﻿using DigitRecognizer.MachineLearning.Infrastructure.Functions;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
+using DigitRecognizer.MachineLearning.Pipeline;
 
 namespace DigitRecognizer.MachineLearning.Optimization
 {
     /// <summary>
     /// Interface that an optimization algorithm should implement.
     /// </summary>
-    public interface IOptimizer
+    public interface IOptimizer : ILearningPipelineOptimizer
     {
         /// <summary>
         /// Gets the <see cref="INeuralNetwork"/>.

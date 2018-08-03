@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DigitRecognizer.Core.Extensions;
+﻿using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
 using DigitRecognizer.MachineLearning.Serialization;
@@ -7,7 +6,7 @@ using DigitRecognizer.MachineLearning.Serialization;
 namespace DigitRecognizer.MachineLearning.Infrastructure.Models
 {
     /// <summary>
-    /// Represents a model that runs an internal <see cref="NeuralNetwork.NeuralNetwork"/> to predict input values.
+    /// Represents a model that runs an internal neural network to predict input values.
     /// </summary>
     public class PredictionModel
     {
@@ -36,6 +35,22 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.Models
             return prediction[0];
         }
 
+        /// <summary>
+        /// Saves the <see cref="PredictionModel"/> to the specified file.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        public void Save(string filename)
+        {
+            var serializer = new NnSerializer();
+
+            serializer.Serialize(filename, _neuralNetwork);
+        }
+
+        /// <summary>
+        /// Creates a <see cref="PredictionModel"/> from the specified file.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <returns>The deserialized prediction model.</returns>
         public static PredictionModel FromFile(string filename)
         {
             Contracts.FileExists(filename, nameof(filename));
@@ -43,9 +58,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.Models
             
             var deserializer = new NnDeserializer();
 
-            IEnumerable<NnLayer> layers = deserializer.Deseralize(filename);
-
-            var neuralNetwork = new NeuralNetwork.NeuralNetwork(layers, 1.0);
+            NeuralNetwork.NeuralNetwork neuralNetwork = deserializer.Deserialize(filename);
 
             return new PredictionModel(neuralNetwork);
         }

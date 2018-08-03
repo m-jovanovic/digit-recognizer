@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using DigitRecognizer.MachineLearning.Pipeline;
 
 namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
 {
     /// <summary>
     /// Contains basic methods that a neural network should implement.
     /// </summary>
-    public interface INeuralNetwork
+    public interface INeuralNetwork : ILearningPipelineNeuralNetworkModel
     {
         double LearningRate { get; set; }
         Core.Data.LinkedList<NnLayer> Layers { get; }
@@ -13,7 +14,6 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         List<double[][]> ActivationCache { get; }
 
         double[][] FeedForward(double[][] input);
-        void Backpropagate(double[][] outputError, int[] oneHot);
         void AddLayer(IEnumerable<NnLayer> layers);
         void AddLayer(NnLayer layer);
     }

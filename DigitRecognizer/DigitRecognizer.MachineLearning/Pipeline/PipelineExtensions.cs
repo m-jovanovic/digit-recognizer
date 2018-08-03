@@ -1,4 +1,5 @@
-﻿using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
+﻿using DigitRecognizer.Core.Utilities;
+using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
 
 namespace DigitRecognizer.MachineLearning.Pipeline
 {
@@ -9,35 +10,62 @@ namespace DigitRecognizer.MachineLearning.Pipeline
     {
         public static LearningPipeline UseGradientClipping(this LearningPipeline pipeline)
         {
-            PipelineSettings.Instance.UseGradientClipping = true;
+            pipeline.PipelineSettings.UseGradientClipping = true;
 
             return pipeline;
         }
 
         public static LearningPipeline UseL2Regularization(this LearningPipeline pipeline)
         {
-            PipelineSettings.Instance.UseL2Regularization = true;
+            pipeline.PipelineSettings.UseL2Regularization = true;
 
             return pipeline;
         }
 
         public static LearningPipeline UseBiasRegularization(this LearningPipeline pipeline)
         {
-            PipelineSettings.Instance.UseBiasRegularization = true;
+            pipeline.PipelineSettings.UseBiasRegularization = true;
 
             return pipeline;
         }
         
         public static LearningPipeline SetWeightsInitializer(this LearningPipeline pipeline, InitializerType initializerType)
         {
-            PipelineSettings.Instance.WeightsInitializerType = initializerType;
+            pipeline.PipelineSettings.WeightsInitializerType = initializerType;
+
+            return pipeline;
+        }
+
+        public static LearningPipeline SetEpochCount(this LearningPipeline pipeline, int epochCount)
+        {
+            Contracts.ValueGreaterThanZero(epochCount, nameof(epochCount));
+
+            pipeline.PipelineSettings.EpochCount = epochCount;
+
+            return pipeline;
+        }
+
+        public static LearningPipeline SetBatchSize(this LearningPipeline pipeline, int batchSize)
+        {
+            Contracts.ValueGreaterThanZero(batchSize, nameof(batchSize));
+
+            pipeline.PipelineSettings.BatchSize = batchSize;
+
+            return pipeline;
+        }
+
+        public static LearningPipeline SetDatasetSize(this LearningPipeline pipeline, int datasetSize)
+        {
+            Contracts.ValueGreaterThanZero(datasetSize, nameof(datasetSize));
+
+            pipeline.PipelineSettings.DatasetSize = datasetSize;
 
             return pipeline;
         }
 
         public static LearningPipeline ResetPipelineSettings(this LearningPipeline pipeline)
         {
-            PipelineSettings.Instance.Reset();
+            pipeline.PipelineSettings.Reset();
 
             return pipeline;
         }
