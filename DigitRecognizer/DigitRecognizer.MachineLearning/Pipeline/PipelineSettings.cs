@@ -49,7 +49,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// <summary>
         /// Gets or sets a value indicating if the current environment is a training environment.
         /// </summary>
-        internal bool IsTrainingEnvironment { get; set; }
+        internal bool IsPipelingRunning { get; set; }
 
         /// <summary>
         /// Gets or sets the use gradient clipping property.

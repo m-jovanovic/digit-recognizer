@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Functions;
@@ -57,11 +59,17 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <summary>
         /// Optimizes the specified parameters.
         /// </summary>
-        /// <param name="predictons">The predictions.</param>
+        /// <param name="predictions">The predictions.</param>
         /// <param name="oneHots">The one hot values.</param>
-        public void Optimize(double[][] predictons, int[] oneHots)
+        public void Optimize(double[][] predictions, int[] oneHots)
         {
-            Backpropagate(predictons, oneHots);
+            var error = predictions.Select((prediction, i) => CalculateError(prediction, oneHots[i])).Sum();
+
+            error /= predictions.Length;
+
+            Debug.WriteLine(error);
+
+            Backpropagate(predictions, oneHots);
         }
 
         /// <summary>
@@ -74,7 +82,7 @@ namespace DigitRecognizer.MachineLearning.Optimization
             ProcessCaches(oneHots);
 
             double[][] gradients = CalculateOutputDerivative(predictions, oneHots);
-            
+
             for (var i = 0; i < predictions.Length; i++)
             {
                 double[][] currentGradient = gradients[i].AsMatrix();
@@ -90,10 +98,10 @@ namespace DigitRecognizer.MachineLearning.Optimization
                     {
                         delta = delta.HadamardProduct(_weightedSumDerivatives[currentLayer.Depth][i].AsMatrix());
                     }
-                    
-                    double[][] actvation = _activations[currentLayer.Depth][i].AsMatrix();
 
-                    double[][] weightGradients = actvation.Transpose().Multiply(delta);
+                    double[][] activation = _activations[currentLayer.Depth][i].AsMatrix();
+
+                    double[][] weightGradients = activation.Transpose().Multiply(delta);
 
                     currentLayer.Value.AdjustParameters(delta, weightGradients, _neuralNetwork.LearningRate);
 

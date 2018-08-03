@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.Data;
-using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
 using DigitRecognizer.MachineLearning.Optimization;
@@ -250,27 +250,29 @@ namespace DigitRecognizer.MachineLearning.Pipeline
             }
 
             // Indicate the start of training.
-            PipelineSettings.IsTrainingEnvironment = true;
+            PipelineSettings.IsPipelingRunning = true;
 
             for (var epoch = 0; epoch < PipelineSettings.EpochCount; epoch++)
             {
+                Debug.WriteLine(epoch);
+
                 for (var i = 0; i < PipelineSettings.TrainingIterationsCount; i++)
                 {
                     // A training iteration is constited of three steeps
-                    // 1. Load data
-                    // 2. Feedforward step
-                    // 3. Backpropagation step
 
+                    // 1. Load data
                     var data = (MnistImageBatch)dataLoader.LoadData();
 
+                    // 2. Feedforward step
                     double[][] prediction = neuralNetworkModel.Predict(data.Pixels);
 
+                    // 3. Backpropagation step
                     optimizer.Optimize(prediction, data.Labels);
                 }
             }
 
             // Indicate the end of training.
-            PipelineSettings.IsTrainingEnvironment = false;
+            PipelineSettings.IsPipelingRunning = false;
 
             return new PredictionModel((INeuralNetwork) neuralNetworkModel);
         }

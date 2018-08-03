@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DigitRecognizer.Core.Data;
 using DigitRecognizer.MachineLearning.Optimization;
 using DigitRecognizer.MachineLearning.Providers;
@@ -16,14 +17,14 @@ namespace DigitRecognizer.Engine
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
             LearningPipeline pipeline = new LearningPipeline()
                 .UseGradientClipping()
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
-                .SetEpochCount(1);
+                .SetEpochCount(30);
 
-            var nn = new NeuralNetwork(0.001);
+            var nn = new NeuralNetwork(0.0003);
 
             var optimizer = new GradientDescentOptimizer(nn, new CrossEntropy());
 
@@ -45,17 +46,11 @@ namespace DigitRecognizer.Engine
 
             var provider1 = new BatchDataProvider(DirectoryHelper.TestLabelsPath, DirectoryHelper.TestImagesPath, 10000);
             var acc = 0.0;
-            var predictions = new List<double[]>();
-            
+
             MnistImageBatch data = provider1.GetData();
 
-            foreach (double[] pixels in data.Pixels)
-            {
-                double[] output = model.Predict(pixels);
-
-                predictions.Add(output);
-            }
-
+            List<double[]> predictions = data.Pixels.Select(pixels => model.Predict(pixels)).ToList();
+            
             for (var i = 0; i < data.Labels.Length; i++)
             {
                 if (data.Labels[i] == predictions[i].ArgMax())

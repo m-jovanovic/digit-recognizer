@@ -8,8 +8,8 @@
         /// <summary>
         /// Optimizes the specified parameters.
         /// </summary>
-        /// <param name="predictons">The predictions.</param>
+        /// <param name="predictions">The predictions.</param>
         /// <param name="oneHots">The one hot values.</param>
-        void Optimize(double[][] predictons, int[] oneHots);
+        void Optimize(double[][] predictions, int[] oneHots);
     }
 }
