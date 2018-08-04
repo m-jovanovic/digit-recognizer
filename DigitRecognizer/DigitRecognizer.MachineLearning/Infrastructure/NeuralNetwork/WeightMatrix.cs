@@ -73,11 +73,18 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
             Contracts.ValuesMatch(RowCount, rowCount, nameof(RowCount));
             Contracts.ValuesMatch(ColCount, colCount, nameof(RowCount));
 
+            var regularizationFactor = 1.0;
+
+            if (PipelineSettings.Instance.UseL2Regularization)
+            {
+                regularizationFactor = 1 - PipelineSettings.Instance.RegularizationFactor * learningRate / PipelineSettings.Instance.DatasetSize;
+            }
+
             for (var i = 0; i < rowCount; i++)
             {
                 for (var j = 0; j < colCount; j++)
                 {
-                    _weights[i][j] = _weights[i][j] - gradient[i][j] * learningRate;
+                    _weights[i][j] = regularizationFactor * _weights[i][j] - gradient[i][j] * learningRate;
                 }
             }
         }

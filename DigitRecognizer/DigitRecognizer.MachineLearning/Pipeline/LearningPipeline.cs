@@ -251,13 +251,15 @@ namespace DigitRecognizer.MachineLearning.Pipeline
 
             // Indicate the start of training.
             PipelineSettings.IsPipelingRunning = true;
-
+            PipelineSettings.CurrentIteration = 0;
             for (var epoch = 0; epoch < PipelineSettings.EpochCount; epoch++)
             {
-                Debug.WriteLine(epoch);
+                Debug.WriteLine($"Current epoch: {epoch + 1}");
 
                 for (var i = 0; i < PipelineSettings.TrainingIterationsCount; i++)
                 {
+                    PipelineSettings.CurrentIteration++;
+                    
                     // A training iteration is constited of three steeps
 
                     // 1. Load data

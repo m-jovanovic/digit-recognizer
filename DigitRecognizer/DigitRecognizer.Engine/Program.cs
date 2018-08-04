@@ -22,19 +22,21 @@ namespace DigitRecognizer.Engine
             LearningPipeline pipeline = new LearningPipeline()
                 .UseGradientClipping()
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
-                .SetEpochCount(30);
+                .UseL2Regularization()
+                .SetRegularizationFactor(10.0)
+                .SetEpochCount(25);
 
-            var nn = new NeuralNetwork(0.0003);
+            var nn = new NeuralNetwork(0.0005);
+            
+            var layer1 = new NnLayer(784, 100, new Relu());
+            var layer2 = new NnLayer(100, 10, new Softmax());
+
+            nn.AddLayer(layer1);
+            nn.AddLayer(layer2);
 
             var optimizer = new GradientDescentOptimizer(nn, new CrossEntropy());
 
             var provider = new BatchDataProvider(DirectoryHelper.TrainLabelsPath, DirectoryHelper.TrainImagesPath, 100);
-
-            var layer1 = new NnLayer(784, 200, new Relu());
-            var layer2 = new NnLayer(200, 10, new Softmax());
-
-            nn.AddLayer(layer1);
-            nn.AddLayer(layer2);
 
             pipeline.Add(optimizer);
 

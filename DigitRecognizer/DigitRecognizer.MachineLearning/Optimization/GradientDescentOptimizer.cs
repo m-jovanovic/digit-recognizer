@@ -63,11 +63,14 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <param name="oneHots">The one hot values.</param>
         public void Optimize(double[][] predictions, int[] oneHots)
         {
-            var error = predictions.Select((prediction, i) => CalculateError(prediction, oneHots[i])).Sum();
+            if (PipelineSettings.Instance.CurrentIteration % 10 == 0)
+            {
+                double error = predictions.Select((prediction, i) => CalculateError(prediction, oneHots[i])).Sum();
 
-            error /= predictions.Length;
+                error /= predictions.Length;
 
-            Debug.WriteLine(error);
+                Debug.WriteLine($"Eror for iteration {PipelineSettings.Instance.CurrentIteration}: {error}");
+            }
 
             Backpropagate(predictions, oneHots);
         }

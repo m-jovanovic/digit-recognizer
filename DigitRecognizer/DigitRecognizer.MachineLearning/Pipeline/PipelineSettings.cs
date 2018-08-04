@@ -64,19 +64,15 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// Gets or sets the use L2 regularization property.
         /// </summary>
         /// <remarks>
-        /// If true, L2 regularization is applied  on weight or bias updates.
-        /// L2 regularization is used to avoid large weight or bias values.
-        /// It is applied on biases, if <seealso cref="UseBiasRegularization"/> is true.  
+        /// If true, L2 regularization is applied  on weight updates.
+        /// L2 regularization is used to avoid large weights.
         /// </remarks>
         internal bool UseL2Regularization { get; set; }
 
         /// <summary>
-        /// Gets or sets the use bias regularization property.
+        /// Gets or sets the regularization factor, also called lambda.
         /// </summary>
-        /// <remarks>
-        /// If true, regularization is applied on bias updates.
-        /// </remarks>
-        internal bool UseBiasRegularization { get; set; }
+        internal double RegularizationFactor { get; set; }
 
         /// <summary>
         /// Gets or sets the weights <see cref="InitializerType"/>.
@@ -102,5 +98,10 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// Gets the number of iterations of the training cycle.
         /// </summary>
         internal int TrainingIterationsCount => (int) Math.Round(DatasetSize / (double)BatchSize);
+
+        /// <summary>
+        /// Gets or sets the current training iteration.
+        /// </summary>
+        internal int CurrentIteration { get; set; }
     }
 }
