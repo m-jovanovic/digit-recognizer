@@ -23,16 +23,18 @@ namespace DigitRecognizer.Engine
                 .UseGradientClipping()
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
                 .UseL2Regularization()
-                .SetRegularizationFactor(10.0)
-                .SetEpochCount(25);
+                .SetRegularizationFactor(6.5)
+                .SetEpochCount(20);
 
-            var nn = new NeuralNetwork(0.0005);
+            var nn = new NeuralNetwork(0.0001);
             
-            var layer1 = new NnLayer(784, 100, new Relu());
-            var layer2 = new NnLayer(100, 10, new Softmax());
+            var layer1 = new NnLayer(784, 100, new LeakyRelu());
+            var layer2 = new NnLayer(100, 30, new LeakyRelu());
+            var layer3 = new NnLayer(30, 10, new Softmax());
 
             nn.AddLayer(layer1);
             nn.AddLayer(layer2);
+            nn.AddLayer(layer3);
 
             var optimizer = new GradientDescentOptimizer(nn, new CrossEntropy());
 
