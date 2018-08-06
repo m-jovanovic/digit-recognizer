@@ -24,9 +24,9 @@ namespace DigitRecognizer.Engine
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
                 .UseL2Regularization()
                 .SetRegularizationFactor(6.5)
-                .SetEpochCount(20);
+                .SetEpochCount(60);
 
-            var nn = new NeuralNetwork(0.0001);
+            var nn = new NeuralNetwork(0.0003);
             
             var layer1 = new NnLayer(784, 100, new LeakyRelu());
             var layer2 = new NnLayer(100, 30, new LeakyRelu());
