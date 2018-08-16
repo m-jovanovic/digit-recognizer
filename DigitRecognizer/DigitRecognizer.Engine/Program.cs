@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.Data;
-using DigitRecognizer.MachineLearning.Optimization;
-using DigitRecognizer.MachineLearning.Providers;
 using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
+using DigitRecognizer.MachineLearning.Pipeline;
 using DigitRecognizer.MachineLearning.Infrastructure.Functions;
 using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
-using DigitRecognizer.MachineLearning.Pipeline;
+using DigitRecognizer.MachineLearning.Optimization;
+using DigitRecognizer.MachineLearning.Optimization.LearningRateDecay;
+using DigitRecognizer.MachineLearning.Providers;
 
 namespace DigitRecognizer.Engine
 {
@@ -19,14 +20,18 @@ namespace DigitRecognizer.Engine
     {
         private static void Main()
         {
+            var learningRate = 0.0003;
+            var epochs = 60;
+            var regularizationFactor = 6.5;
+            
             LearningPipeline pipeline = new LearningPipeline()
                 .UseGradientClipping()
+                .UseL2Regularization(regularizationFactor)
+                .UseLearningRateDecay(new StepDecay(0.5, 10))
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
-                .UseL2Regularization()
-                .SetRegularizationFactor(6.5)
-                .SetEpochCount(60);
+                .SetEpochCount(epochs);
 
-            var nn = new NeuralNetwork(0.0003);
+            var nn = new NeuralNetwork(learningRate);
             
             var layer1 = new NnLayer(784, 100, new LeakyRelu());
             var layer2 = new NnLayer(100, 30, new LeakyRelu());

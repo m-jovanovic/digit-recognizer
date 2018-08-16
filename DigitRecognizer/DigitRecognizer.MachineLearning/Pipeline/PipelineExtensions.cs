@@ -1,5 +1,6 @@
 ﻿using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
+using DigitRecognizer.MachineLearning.Optimization.LearningRateDecay;
 
 namespace DigitRecognizer.MachineLearning.Pipeline
 {
@@ -24,10 +25,25 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// Configures the <see cref="LearningPipeline"/> to use L2 regularization.
         /// </summary>
         /// <param name="pipeline">The learning pipeline.</param>
+        /// <param name="regularizationFactor">The regularization factor.</param>
         /// <returns>The configured pipeline.</returns>
-        public static LearningPipeline UseL2Regularization(this LearningPipeline pipeline)
+        public static LearningPipeline UseL2Regularization(this LearningPipeline pipeline, double regularizationFactor)
         {
             pipeline.PipelineSettings.UseL2Regularization = true;
+
+            return pipeline.SetRegularizationFactor(regularizationFactor);
+        }
+
+        /// <summary>
+        /// Configures the <see cref="LearningPipeline"/> to use learning rate decay.
+        /// </summary>
+        /// <param name="pipeline"></param>
+        /// <param name="learingRateDecay">The learning rate decay scheduler.</param>
+        /// <returns></returns>
+        public static LearningPipeline UseLearningRateDecay(this LearningPipeline pipeline, ILearningRateDecay learingRateDecay)
+        {
+            pipeline.PipelineSettings.UseLearningRateDecay = true;
+            pipeline.PipelineSettings.LearningRateScheduler = learingRateDecay;
 
             return pipeline;
         }
@@ -38,7 +54,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// <param name="pipeline">The learning pipeline.</param>
         /// <param name="regularizationFactor">The regularization factor.</param>
         /// <returns>The configured pipeline.</returns>
-        public static LearningPipeline SetRegularizationFactor(this LearningPipeline pipeline, double regularizationFactor)
+        internal static LearningPipeline SetRegularizationFactor(this LearningPipeline pipeline, double regularizationFactor)
         {
             Contracts.ValueGreaterThanZero(regularizationFactor, nameof(regularizationFactor));
 
@@ -104,7 +120,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
 
             return pipeline;
         }
-
+        
         /// <summary>
         /// Resets the <see cref="LearningPipeline"/> settings to default values.
         /// </summary>

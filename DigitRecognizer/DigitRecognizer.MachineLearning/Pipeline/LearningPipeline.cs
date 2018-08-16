@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.Data;
+using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
 using DigitRecognizer.MachineLearning.Optimization;
@@ -32,8 +33,104 @@ namespace DigitRecognizer.MachineLearning.Pipeline
             _items = new List<ILearningPipelineItem>();
         }
 
-        #region ICollection implementation
+        #region Methods
+
+        /// <summary>
+        /// Runs the learning pipeline and generates a <see cref="PredictionModel"/>.
+        /// </summary>
+        /// <returns>The prediction model.</returns>
+        public PredictionModel Run()
+        {
+            ILearningPipelineDataLoader dataLoader = null;
+            ILearningPipelineOptimizer optimizer = null;
+            ILearningPipelineNeuralNetworkModel neuralNetworkModel = null;
+
+            foreach (ILearningPipelineItem item in this)
+            {
+                switch (item)
+                {
+                    case ILearningPipelineDataLoader loader:
+                        dataLoader = loader;
+                        break;
+                    case ILearningPipelineOptimizer opt:
+                        optimizer = opt;
+                        break;
+                    case ILearningPipelineNeuralNetworkModel networkModel:
+                        neuralNetworkModel = networkModel;
+                        break;
+                }
+            }
+
+            if (dataLoader == null)
+            {
+                throw new ArgumentNullException(nameof(dataLoader));
+            }
+
+            if (optimizer == null)
+            {
+                throw new ArgumentNullException(nameof(optimizer));
+            }
+
+            if (neuralNetworkModel == null)
+            {
+                throw new ArgumentNullException(nameof(neuralNetworkModel));
+            }
+
+            // Indicate the start of training.
+            PipelineSettings.IsPipelingRunning = true;
+            PipelineSettings.CurrentIteration = 0;
+
+            for (var epoch = 0; epoch < PipelineSettings.EpochCount; epoch++)
+            {
+                PipelineSettings.CurrentEpoch = epoch + 1;
+
+                Debug.WriteLine($"Current epoch: {PipelineSettings.CurrentEpoch}");
+
+                if (PipelineSettings.UseLearningRateDecay)
+                {
+                    ApplyLearningRateScheduler(neuralNetworkModel);
+                }
+
+                for (var i = 0; i < PipelineSettings.TrainingIterationsCount; i++)
+                {
+                    PipelineSettings.CurrentIteration++;
+
+                    // A training iteration is constited of three steeps:
+
+                    // 1. Load data
+                    var data = (MnistImageBatch)dataLoader.LoadData();
+
+                    // 2. Feedforward step
+                    double[][] prediction = neuralNetworkModel.Predict(data.Pixels);
+
+                    // 3. Backpropagation step
+                    optimizer.Optimize(prediction, data.Labels);
+                }
+            }
+
+            // Indicate the end of training.
+            PipelineSettings.IsPipelingRunning = false;
+
+            return new PredictionModel((INeuralNetwork)neuralNetworkModel);
+        }
         
+        /// <summary>
+        /// Applies the learning rate scheduler if the <see cref="LearningPipeline"/> is configured to use learning rate decay.
+        /// </summary>
+        /// <param name="neuralNetworkModel">The neural network model.</param>
+        private void ApplyLearningRateScheduler(ILearningPipelineNeuralNetworkModel neuralNetworkModel)
+        {
+            Contracts.ValueNotNull(PipelineSettings.LearningRateScheduler, nameof(PipelineSettings.LearningRateScheduler));
+
+            var nerualNetwork = (INeuralNetwork)neuralNetworkModel;
+
+            nerualNetwork.LearningRate = PipelineSettings.LearningRateScheduler.DecayLearningRate(nerualNetwork.LearningRate);
+        }
+
+        #endregion
+
+        #region ICollection implementation
+
         /// <summary>
         /// Returns an enumerator that iterates through the <see cref="LearningPipeline"/>.
         /// </summary>
@@ -69,7 +166,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
                     ConfigurePipeline(neuralNetworkModel);
                     break;
             }
-        } 
+        }
 
         /// <summary>
         /// Removes all elements from <see cref="LearningPipeline"/>.
@@ -117,7 +214,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// <param name="dataLoader">The data loader.</param>
         private void ConfigurePipeline(ILearningPipelineDataLoader dataLoader)
         {
-            var provider = (BatchDataProvider) dataLoader;
+            var provider = (BatchDataProvider)dataLoader;
 
             this.SetBatchSize(provider.BatchSize);
 
@@ -132,7 +229,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// <param name="optimizer">The optimizer.</param>
         private void ConfigurePipeline(ILearningPipelineOptimizer optimizer)
         {
-            var opt = (IOptimizer) optimizer;
+            var opt = (IOptimizer)optimizer;
 
             // TODO: Finish this method.
         }
@@ -143,7 +240,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// <param name="neuralNetworkModel">The neural network model.</param>
         private void ConfigurePipeline(ILearningPipelineNeuralNetworkModel neuralNetworkModel)
         {
-            var network = (INeuralNetwork) neuralNetworkModel;
+            var network = (INeuralNetwork)neuralNetworkModel;
 
             // TODO: Finish this method.
         }
@@ -207,76 +304,5 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         }
 
         #endregion
-
-        /// <summary>
-        /// Runs the learning pipeline and generates a <see cref="PredictionModel"/>.
-        /// </summary>
-        /// <returns>The prediction model.</returns>
-        public PredictionModel Run()
-        {
-            ILearningPipelineDataLoader dataLoader = null;
-            ILearningPipelineOptimizer optimizer = null;
-            ILearningPipelineNeuralNetworkModel neuralNetworkModel = null;
-
-            foreach (ILearningPipelineItem item in this)
-            {
-                switch (item)
-                {
-                    case ILearningPipelineDataLoader loader:
-                        dataLoader = loader;
-                        break;
-                    case ILearningPipelineOptimizer opt:
-                        optimizer = opt;
-                        break;
-                    case ILearningPipelineNeuralNetworkModel networkModel:
-                        neuralNetworkModel = networkModel;
-                        break;
-                }
-            }
-
-            if (dataLoader == null)
-            {
-                throw new ArgumentNullException(nameof(dataLoader));
-            }
-
-            if (optimizer == null)
-            {
-                throw new ArgumentNullException(nameof(optimizer));
-            }
-
-            if (neuralNetworkModel == null)
-            {
-                throw new ArgumentNullException(nameof(neuralNetworkModel));
-            }
-
-            // Indicate the start of training.
-            PipelineSettings.IsPipelingRunning = true;
-            PipelineSettings.CurrentIteration = 0;
-            for (var epoch = 0; epoch < PipelineSettings.EpochCount; epoch++)
-            {
-                Debug.WriteLine($"Current epoch: {epoch + 1}");
-
-                for (var i = 0; i < PipelineSettings.TrainingIterationsCount; i++)
-                {
-                    PipelineSettings.CurrentIteration++;
-                    
-                    // A training iteration is constited of three steeps
-
-                    // 1. Load data
-                    var data = (MnistImageBatch)dataLoader.LoadData();
-
-                    // 2. Feedforward step
-                    double[][] prediction = neuralNetworkModel.Predict(data.Pixels);
-
-                    // 3. Backpropagation step
-                    optimizer.Optimize(prediction, data.Labels);
-                }
-            }
-
-            // Indicate the end of training.
-            PipelineSettings.IsPipelingRunning = false;
-
-            return new PredictionModel((INeuralNetwork) neuralNetworkModel);
-        }
     }
 }

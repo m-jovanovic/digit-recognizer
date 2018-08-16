@@ -48,6 +48,10 @@
     <Compile Include="Infrastructure\Initialization\RandomInitializer.cs" />
     <Compile Include="Infrastructure\Initialization\XavierInitializer.cs" />
     <Compile Include="Infrastructure\Initialization\ZeroInitializer.cs" />
+    <Compile Include="Optimization\LearningRateDecay\ExponentailDecay.cs" />
+    <Compile Include="Optimization\LearningRateDecay\ILearningRateDecay.cs" />
+    <Compile Include="Optimization\LearningRateDecay\StepDecay.cs" />
+    <Compile Include="Optimization\LearningRateDecay\TimeBasedDecay.cs" />
     <Compile Include="Pipeline\LearningPipeline.cs" />
     <Compile Include="Infrastructure\Factories\FunctionFactory.cs" />
     <Compile Include="Infrastructure\Models\PredictionModel.cs" />

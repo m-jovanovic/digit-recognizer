@@ -1,5 +1,6 @@
 ﻿using System;
 using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
+using DigitRecognizer.MachineLearning.Optimization.LearningRateDecay;
 
 namespace DigitRecognizer.MachineLearning.Pipeline
 {
@@ -17,6 +18,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         private PipelineSettings()
         {
             WeightsInitializerType = InitializerType.RandomInitialization;
+            LearningRateScheduler = null;
         }
 
         /// <summary>
@@ -85,6 +87,11 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         internal int EpochCount { get; set; }
 
         /// <summary>
+        /// Gets or sets the current epoch.
+        /// </summary>
+        internal int CurrentEpoch { get; set; }
+
+        /// <summary>
         /// Gets or sets the batch size.
         /// </summary>
         internal int BatchSize { get; set; }
@@ -103,5 +110,18 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// Gets or sets the current training iteration.
         /// </summary>
         internal int CurrentIteration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the use learning rate decay property.
+        /// </summary>
+        /// <remarks>
+        /// If true, learning rate decay will be aplied to the model during training.
+        /// </remarks>
+        internal bool UseLearningRateDecay { get; set; }
+
+        /// <summary>
+        /// Gets or sets the learning rate schduler.
+        /// </summary>
+        internal ILearningRateDecay LearningRateScheduler { get; set; }
     }
 }
