@@ -20,14 +20,14 @@ namespace DigitRecognizer.Engine
     {
         private static void Main()
         {
-            var learningRate = 0.0003;
+            var learningRate = 0.001;
             var epochs = 60;
             var regularizationFactor = 6.5;
             
             LearningPipeline pipeline = new LearningPipeline()
                 .UseGradientClipping()
                 .UseL2Regularization(regularizationFactor)
-                .UseLearningRateDecay(new StepDecay(0.5, 10))
+                .UseLearningRateDecay(new StepDecay(learningRate, 0.2, 5))
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
                 .SetEpochCount(epochs);
 
