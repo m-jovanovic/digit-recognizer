@@ -5,7 +5,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
     /// <summary>
     /// Represents a bias vector that is part of a <see cref="NnLayer"/>.
     /// </summary>
-    public class BiasVector : IValueAdjustable
+    public class BiasVector// : IValueAdjustable
     {
         private double[] _bias;
 
@@ -44,25 +44,25 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         /// </summary>
         public int SizeInBytes => Length * sizeof(double);
 
-        /// <summary>
-        /// Adjusts the biases of the <see cref="BiasVector"/> using the specified gradient.
-        /// </summary>
-        /// <param name="gradient">The gradient with respect to the biases.</param>
-        /// <param name="learningRate">The learning rate.</param>
-        public void AdjustValue(double[][] gradient, double learningRate)
-        {
-            int rowCount = gradient.Length;
-            int colCount = gradient[0].Length;
+        ///// <summary>
+        ///// Adjusts the biases of the <see cref="BiasVector"/> using the specified gradient.
+        ///// </summary>
+        ///// <param name="gradient">The gradient with respect to the biases.</param>
+        ///// <param name="learningRate">The learning rate.</param>
+        //public void AdjustValue(double[][] gradient, double learningRate)
+        //{
+        //    int rowCount = gradient.Length;
+        //    int colCount = gradient[0].Length;
 
-            const int rowIndex = 0;
-            Contracts.ValuesMatch(1, rowCount, nameof(rowCount));
-            Contracts.ValuesMatch(_bias.Length, colCount, nameof(colCount));
+        //    const int rowIndex = 0;
+        //    Contracts.ValuesMatch(1, rowCount, nameof(rowCount));
+        //    Contracts.ValuesMatch(_bias.Length, colCount, nameof(colCount));
 
-            for (var i = 0; i < colCount; i++)
-            {
-                _bias[i] = _bias[i] - gradient[rowIndex][i] * learningRate;
-            }
-        }
+        //    for (var i = 0; i < colCount; i++)
+        //    {
+        //        _bias[i] = _bias[i] - gradient[rowIndex][i] * learningRate;
+        //    }
+        //}
 
         public static implicit operator double[] (BiasVector b)
         {

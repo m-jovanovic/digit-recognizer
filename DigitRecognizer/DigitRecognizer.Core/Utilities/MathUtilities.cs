@@ -202,7 +202,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="arr">The array with values for the computation.</param>
         /// <param name="alpha"></param>
         /// <returns>The exp. RELU value array.</returns>
-        public static double[] Elu(double[] arr, double alpha)
+        public static double[] ExponentialRelu(double[] arr, double alpha)
         {
             int length = arr.Length;
             var result = new double[length];
@@ -212,7 +212,7 @@ namespace DigitRecognizer.Core.Utilities
 
             for (var i = 0; i < arr.Length; i++)
             {
-                result[i] = Elu(arr[i] < 0 ? arr[i] + epsilon : arr[i], alpha);
+                result[i] = ExponentialRelu(arr[i] < 0 ? arr[i] + epsilon : arr[i], alpha);
             }
 
             return result;
@@ -224,7 +224,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="val">The value that is used for the computation.</param>
         /// <param name="alpha"></param>
         /// <returns>The exp. RELU value.</returns>
-        public static double Elu(double val, double alpha)
+        public static double ExponentialRelu(double val, double alpha)
         {
             return val < 0 ? alpha * (Math.Exp(val) - 1) : val;
         }

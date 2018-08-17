@@ -9,9 +9,9 @@ using DigitRecognizer.MachineLearning.Pipeline;
 namespace DigitRecognizer.MachineLearning.Optimization
 {
     /// <summary>
-    /// Implements the gradient descent optimization algorithm.
+    /// Implements the gradient descent with momentum optimization algorithm.
     /// </summary>
-    public class GradientDescentOptimizer : IOptimizer
+    public class MomentumOptimizer : IOptimizer
     {
         private readonly ICostFunction _costFunction;
         private readonly INeuralNetwork _neuralNetwork;
@@ -19,11 +19,11 @@ namespace DigitRecognizer.MachineLearning.Optimization
         private List<double[][]> _activations;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GradientDescentOptimizer"/> class.
+        /// initilazies a new instance of the <see cref="MomentumOptimizer"/> class.
         /// </summary>
         /// <param name="neuralNetwork">The neural network.</param>
         /// <param name="costFunction">The cost function.</param>
-        public GradientDescentOptimizer(INeuralNetwork neuralNetwork, ICostFunction costFunction) 
+        public MomentumOptimizer(INeuralNetwork neuralNetwork, ICostFunction costFunction)
         {
             Contracts.ValueNotNull(costFunction, nameof(neuralNetwork));
             Contracts.ValueNotNull(costFunction, nameof(costFunction));
@@ -41,7 +41,7 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// Gets the <see cref="ICostFunction"/>.
         /// </summary>
         public ICostFunction CostFunction => _costFunction;
-        
+
         /// <summary>
         /// Calculates the cost of the specified prediction.
         /// </summary>
@@ -104,7 +104,7 @@ namespace DigitRecognizer.MachineLearning.Optimization
                     double[][] activation = _activations[currentLayer.Depth][i].AsMatrix();
 
                     double[][] weightGradients = activation.Transpose().Multiply(delta);
-                    
+
                     AdjustParameters(currentLayer.Value, delta, weightGradients, _neuralNetwork.LearningRate);
 
                     currentGradient = currentLayer.Value.BackpropagateError(delta);
@@ -228,7 +228,7 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <returns>The derivatives.</returns>
         public double[][] WeightedSumDerivative(IActivationFunction activationFunction, int nodeDepth, int[] oneHots)
         {
-            double[][] cachedWeightedSum =_neuralNetwork.WeightedSumCache[nodeDepth];
+            double[][] cachedWeightedSum = _neuralNetwork.WeightedSumCache[nodeDepth];
 
             int rowCount = cachedWeightedSum.Length;
             int colCount = cachedWeightedSum[0].Length;

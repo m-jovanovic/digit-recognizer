@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using DigitRecognizer.Core.Data;
@@ -84,7 +83,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
             {
                 PipelineSettings.CurrentEpoch = epoch + 1;
 
-                Debug.WriteLine($"Current epoch: {PipelineSettings.CurrentEpoch}");
+                ConsoleUtility.WriteLine($"Current epoch: {PipelineSettings.CurrentEpoch}");
 
                 if (PipelineSettings.UseLearningRateDecay)
                 {

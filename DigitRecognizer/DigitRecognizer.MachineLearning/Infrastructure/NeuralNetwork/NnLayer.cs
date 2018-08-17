@@ -106,6 +106,16 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         }
 
         /// <summary>
+        /// Gets the weights.
+        /// </summary>
+        public WeightMatrix WeightMatrix => _weightMatrix;
+
+        /// <summary>
+        /// Gets the bias.
+        /// </summary>
+        public BiasVector BiasVector => _biasVector;
+
+        /// <summary>
         /// Calculates the weighted sum of the <see cref="NnLayer"/>.
         /// </summary>
         /// <param name="input">The input.</param>
@@ -135,20 +145,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         }
 
         /// <summary>
-        /// Adjusts the parameters of the <see cref="NnLayer"/>.
-        /// </summary>
-        /// <param name="biasGradients">The bias gradients.</param>
-        /// <param name="weightGradients">The weight gradients.</param>
-        /// <param name="learningRate">The learning rate.</param>
-        public void AdjustParameters(double[][] biasGradients, double[][] weightGradients, double learningRate)
-        {
-            _weightMatrix.AdjustValue(weightGradients, learningRate);
-
-            _biasVector.AdjustValue(biasGradients, learningRate);
-        }
-
-        /// <summary>
-        /// Backpropagates the error thorugh the <see cref="NnLayer"/>.
+        /// Backpropagates the error through the <see cref="NnLayer"/>.
         /// </summary>
         /// <param name="currentLayerError">The error of the current layer.</param>
         /// <returns>The new error.</returns>
@@ -163,7 +160,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         /// <returns>The serialization context.</returns>
         public NnSerializationContext Serialize()
         {
-            var fileInfo = new NnSerializationContextInfo(_numberOfInputs, _numberOfOutputs, _numberOfOutputs, _activationFunction.Name);
+            var contextInfo = new NnSerializationContextInfo(_numberOfInputs, _numberOfOutputs, _numberOfOutputs, _activationFunction.Name);
 
             int weightsLength = _numberOfInputs * _numberOfOutputs;
             int biasLength = _numberOfOutputs;
@@ -176,7 +173,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
             Buffer.BlockCopy(_weightMatrix.Flattened, 0, data, 0, weightsSizeInBytes);
             Buffer.BlockCopy(_biasVector.Bias, 0, data, weightsSizeInBytes, biasSizeInBytes);
 
-            var context = new NnSerializationContext(data, fileInfo);
+            var context = new NnSerializationContext(data, contextInfo);
 
             return context;
         }

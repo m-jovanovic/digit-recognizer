@@ -22,24 +22,29 @@ namespace DigitRecognizer.Engine
         {
             var learningRate = 0.001;
             var epochs = 60;
-            var regularizationFactor = 6.5;
+            var regularizationFactor = 10.0;
             
             LearningPipeline pipeline = new LearningPipeline()
                 .UseGradientClipping()
                 .UseL2Regularization(regularizationFactor)
-                .UseLearningRateDecay(new StepDecay(learningRate, 0.2, 5))
+                //.UseLearningRateDecay(new StepDecay(learningRate, 0.5, 10))
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
                 .SetEpochCount(epochs);
 
             var nn = new NeuralNetwork(learningRate);
             
-            var layer1 = new NnLayer(784, 100, new LeakyRelu());
-            var layer2 = new NnLayer(100, 30, new LeakyRelu());
-            var layer3 = new NnLayer(30, 10, new Softmax());
+            var layer1 = new NnLayer(784, 120, new Relu());
+            var layer2 = new NnLayer(120, 50, new Relu());
+            var layer3 = new NnLayer(50, 10, new Softmax());
 
-            nn.AddLayer(layer1);
-            nn.AddLayer(layer2);
-            nn.AddLayer(layer3);
+            var layers = new List<NnLayer>
+            {
+                layer1,
+                layer2, 
+                layer3
+            };
+
+            nn.AddLayer(layers);
 
             var optimizer = new GradientDescentOptimizer(nn, new CrossEntropy());
 

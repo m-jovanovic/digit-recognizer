@@ -35,6 +35,15 @@ namespace DigitRecognizer.MachineLearning.Optimization
         void Backpropagate(double[][] predictions, int[] oneHots);
 
         /// <summary>
+        /// Adjusts the current parameters with specified gradient and learning rate.
+        /// </summary>
+        /// <param name="layer">The layer.</param>
+        /// <param name="delta">The delat values.</param>
+        /// <param name="gradient">The gradient values.</param>
+        /// <param name="learningRate">The learning rate.</param>
+        void AdjustParameters(NnLayer layer, double[][] delta, double[][] gradient, double learningRate);
+
+        /// <summary>
         /// Calculates the output derivative with respect to the <see cref="ICostFunction"/> of the optimizer.
         /// </summary>
         /// <param name="predictions">The predictions.</param>

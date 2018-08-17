@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\Dropout\BinomialDistribution.cs" />
+    <Compile Include="Infrastructure\Dropout\Dropout.cs" />
     <Compile Include="Infrastructure\Factories\AbstractTypeFactory.cs" />
     <Compile Include="Infrastructure\Factories\InitializerFactory.cs" />
     <Compile Include="Infrastructure\Initialization\HeEtAlInitializer.cs" />
@@ -74,7 +76,7 @@
     <Compile Include="Infrastructure\NeuralNetwork\BiasVector.cs" />
     <Compile Include="Infrastructure\NeuralNetwork\WeightMatrix.cs" />
     <Compile Include="Infrastructure\Functions\CrossEntropy.cs" />
-    <Compile Include="Infrastructure\Functions\Elu.cs" />
+    <Compile Include="Infrastructure\Functions\ExponentialRelu.cs" />
     <Compile Include="Infrastructure\Functions\LeakyRelu.cs" />
     <Compile Include="Infrastructure\Functions\MeanSquareError.cs" />
     <Compile Include="Infrastructure\Functions\Relu.cs" />

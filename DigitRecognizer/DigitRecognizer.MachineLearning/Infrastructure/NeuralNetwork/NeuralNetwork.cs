@@ -1,61 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using DigitRecognizer.Core.Extensions;
+﻿using System.Collections.Generic;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Data;
-using DigitRecognizer.MachineLearning.Infrastructure.Functions;
 
 namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
 {
+    /// <summary>
+    /// Represents a neural network with fully connected layers.
+    /// </summary>
     public class NeuralNetwork : INeuralNetwork
     {
         private readonly Core.Data.LinkedList<NnLayer> _layers;
-
         private double _learningRate;
+        private readonly CalculationCache _weightedSumCache;
+        private readonly CalculationCache _activationCache;
 
+        /// <summary>
+        /// Gets or sets the learning rate.
+        /// </summary>
         public double LearningRate
         {
             get => _learningRate;
             set => _learningRate = value;
         }
 
+        /// <summary>
+        /// Gets the number of layers.
+        /// </summary>
         public int NumberOfLayers => _layers.Count;
 
+        /// <summary>
+        /// Gets the layers of the neural network.
+        /// </summary>
         public Core.Data.LinkedList<NnLayer> Layers => _layers;
         
+        /// <summary>
+        /// Gets the weighted sum cache.
+        /// </summary>
         public List<double[][]> WeightedSumCache => _weightedSumCache.GetCache();
 
+        /// <summary>
+        /// Gets the activatio cache.
+        /// </summary>
         public List<double[][]> ActivationCache => _activationCache.GetCache();
 
-        private readonly CalculationCache _weightedSumCache;
-        private readonly CalculationCache _activationCache;
-
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="NeuralNetwork"/> class.
         /// </summary>
-        /// <param name="activationFunction"></param>
-        /// <param name="nodeDepth"></param>
-        /// <param name="oneHot"></param>
-        /// <returns></returns>
-        public double[][] WeightedSumDerivative(IActivationFunction activationFunction, int nodeDepth, int[] oneHot)
-        {
-            double[][] cachedWeightedSum = _weightedSumCache.GetValue(nodeDepth);
-
-            int rowCount = cachedWeightedSum.Length;
-            int colCount = cachedWeightedSum[0].Length;
-            double[][] result = VectorUtilities.CreateMatrix(rowCount, colCount);
-
-            for (var i = 0; i < rowCount; i++)
-            {
-                result[i] = activationFunction.Derivative(cachedWeightedSum[i], oneHot[i].OneHot(colCount));
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        /// <param name="learningRate">The learning rate.</param>
         public NeuralNetwork(double learningRate)
         {
             _learningRate = learningRate;
@@ -65,25 +56,10 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         }
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="NeuralNetwork"/> class with the specified layers.
         /// </summary>
-        /// <param name="layer"></param>
-        /// <param name="learningRate"></param>
-        public NeuralNetwork(NnLayer layer, double learningRate)
-        {
-            _learningRate = learningRate;
-            Contracts.ValueNotNull(layer, nameof(layer));
-            
-            _layers = new Core.Data.LinkedList<NnLayer>(layer);
-            _weightedSumCache = new CalculationCache();
-            _activationCache = new CalculationCache();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="layers"></param>
-        /// <param name="learningRate"></param>
+        /// <param name="layers">The collection of <see cref="NnLayer"/> objects.</param>
+        /// <param name="learningRate">The learning rate.</param>
         public NeuralNetwork(IEnumerable<NnLayer> layers, double learningRate)
         {
             _learningRate = learningRate;
@@ -92,23 +68,6 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
             _layers = new Core.Data.LinkedList<NnLayer>(layers);
             _weightedSumCache = new CalculationCache();
             _activationCache = new CalculationCache();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public double[][] Decide(double[][] input)
-        {
-            if (input.Length > 1)
-            {
-                throw new NotSupportedException("Running more than 1 input through the network is not supported");
-            }
-
-            double[][] prediction = FeedForward(input);
-
-            return prediction;
         }
 
         /// <summary>
@@ -147,95 +106,9 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         }
 
         /// <summary>
-        /// 
+        /// Adds the specified collection of <see cref="NnLayer"/> objects to the <see cref="NeuralNetwork"/>.
         /// </summary>
-        public void Backpropagate(double[][] outputError, int[] oneHot)
-        {
-            for (var iter = 0; iter < outputError.Length; iter++)
-            {
-                double[][] currentError = outputError[iter].AsMatrix();
-
-                Core.Data.LinkedListNode<NnLayer> currentLayer = _layers.Last;
-
-                while (currentLayer != null)
-                {
-                    double[][] gradient = currentError;
-
-                    // We don't multiply with the weighed sum derivative for the last layer in the network.
-                    if (currentLayer.Depth < _layers.Count - 1)
-                    {
-                        double[][] wSumDeriv = WeightedSumDerivative(currentLayer.Value.ActivationFunction,
-                            currentLayer.Depth, oneHot);
-
-                        gradient = gradient.HadamardProduct(wSumDeriv[iter].AsMatrix());
-                    }
-
-                    //double[][] currentLayerError = gradients.Average().AsMatrix();
-
-                    double[][] actvation = ActivationCache[currentLayer.Depth][iter].AsMatrix();
-
-                    double[][] weightGradients = actvation.Transpose().Multiply(gradient);
-
-                    currentLayer.Value.AdjustParameters(gradient, weightGradients, _learningRate);
-
-                    currentError = currentLayer.Value.BackpropagateError(gradient);
-
-                    currentLayer = currentLayer.Previous;
-                }
-            }
-
-            //Core.Data.LinkedListNode<NnLayer> currentLayer = _layers.Last;
-            //double[][] currentError = outputError;
-            //while (currentLayer != null)
-            //{
-            //    double[][] gradients = currentError;
-
-            //    if (currentLayer.Depth < _layers.Count - 1)
-            //    {
-            //        double[][] wSumDeriv = WeightedSumDerivative(currentLayer.Value.ActivationFunction,
-            //            currentLayer.Depth, oneHot).Average().AsMatrix();
-
-            //        gradients = gradients.HadamardProduct(wSumDeriv);
-            //    }
-
-            //    double[][] currentLayerError = gradients.Average().AsMatrix();
-
-            //    //double[][] activations1 = _activationCache.GetValue(currentLayer.Depth);
-            //    //double[][] weightGradients1 = VectorUtilities.CreateMatrix(currentLayer.Value.NumberOfInputs, currentLayer.Value.NumberOfOutputs);
-            //    //for (var i = 0; i < activations1.Length; i++)
-            //    //{
-            //    //    double[][] deltaW = activations1[i].AsMatrix().Transpose().Multiply(gradients[i].AsMatrix());
-            //    //    weightGradients1.Add(deltaW);
-            //    //}
-            //    //foreach (double[] gradRow in weightGradients1)
-            //    //{
-            //    //    for (var j = 0; j < weightGradients1[0].Length; j++)
-            //    //    {
-            //    //        gradRow[j] /= activations1.Length;
-            //    //    }
-            //    //}
-
-            //    //double[][] averageActivation = _activationCache.GetValue(currentLayer.Depth).Average().AsMatrix();
-            //    double[][] activations = _activationCache.GetValue(currentLayer.Depth);
-            //    //double[][] weightGradients = averageActivation.Transpose().Multiply(currentLayerError);
-
-            //    for (var i = 0; i < gradients.Length; i++)
-            //    {
-            //        double[][] weightGrad = activations[i].AsMatrix().Transpose().Multiply(gradients[i].AsMatrix());
-            //        currentLayer.Value.AdjustParameters(gradients[i].AsMatrix(), weightGrad, _learningRate);
-            //    }
-            //    //currentLayer.Value.AdjustParameters(currentLayerError, weightGradients, _learningRate);
-
-            //    currentError = currentLayer.Value.BackpropagateError(currentLayerError);
-
-            //    currentLayer = currentLayer.Previous;
-            //}
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="layers"></param>
+        /// <param name="layers">The collection of <see cref="NnLayer"/> objects.</param>
         public void AddLayer(IEnumerable<NnLayer> layers)
         {
             Contracts.ValueNotNull(layers, nameof(layers));
@@ -247,9 +120,9 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         }
 
         /// <summary>
-        /// 
+        /// Adds the specified layer to the <see cref="NeuralNetwork"/>.
         /// </summary>
-        /// <param name="layer"></param>
+        /// <param name="layer">The <see cref="NnLayer"/> object.</param>
         public void AddLayer(NnLayer layer)
         {
             Contracts.ValueNotNull(layer, nameof(layer));
