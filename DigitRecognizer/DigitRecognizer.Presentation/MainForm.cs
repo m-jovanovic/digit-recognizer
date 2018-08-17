@@ -5,6 +5,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
 using DigitRecognizer.Core.Extensions;
+using DigitRecognizer.Core.IO;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 
 namespace DigitRecognizer.Presentation
@@ -111,13 +112,20 @@ namespace DigitRecognizer.Presentation
             {
                 MessageBox.Show(@"No neural network is currently loaded", @"Neural Network Info", MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
+
                 return;
             }
 
-            double[] pixels = _bitmap.Preprocess();
+            var processor = new ImagePreprocessor();
+
+            double[] pixels = processor.Preprocess(_bitmap);
+
             double[] prediction = _predictionModel.Predict(pixels);
+
             int argMax = prediction.ArgMax();
+
             double percent = prediction[argMax];
+
             lblDecision.Text = $@"Network: {argMax} ({percent:P2})";
         }
 

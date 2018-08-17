@@ -52,6 +52,7 @@
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="IO\ILabelReader.cs" />
+    <Compile Include="IO\ImagePreprocessor.cs" />
     <Compile Include="IO\IPixelReader.cs" />
     <Compile Include="IO\LabelReader.cs" />
     <Compile Include="IO\MemoryStreamReader.cs" />

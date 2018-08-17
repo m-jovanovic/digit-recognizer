@@ -429,42 +429,5 @@ namespace DigitRecognizer.Core.Utilities
 
             return bmp;
         }
-
-        /// <summary>
-        /// Preprocesses the specified image so that it can be fed through a neural network.
-        /// The image has to be an RGB or grayscale image with 0 being black, and 255 being white.
-        /// </summary>
-        /// <param name="image">The image being preprocessed.</param>
-        /// <returns>The flattened and clamped pixels of the preprocessed image.</returns>
-        public static double[] Preprocess(this Image image)
-        {
-            Image grayscale = Grayscale(image);
-
-            Image resized = Resize(grayscale, ImageSizeInPixels, ImageSizeInPixels);
-
-            Image grayscaleWithTreshold = Threshold(resized, 128, 0, 255);
-
-            Box coords = DetermineBox(grayscaleWithTreshold);
-
-            (Image, Box) imageAndPadding = ScaleToBoxAndGetPaddingCoords(grayscaleWithTreshold, coords);
-
-            Image padded = Pad(imageAndPadding.Item1, imageAndPadding.Item2);
-
-            Image inverted = Invert(padded);
-
-            Point centerOfMass = CalculateCenterOfMass(inverted);
-
-            var shiftx = (int)Math.Round(ImageSizeInPixels / 2.0 - centerOfMass.X);
-
-            var shifty = (int)Math.Round(ImageSizeInPixels / 2.0 - centerOfMass.Y);
-
-            Image centered = Translate(inverted, shiftx, shifty);
-
-            Image final = Threshold(centered, 154, 0, 255, true);
-
-            double[] data = FlattenAndClamp(final);
-
-            return data;
-        }
     }
 }
