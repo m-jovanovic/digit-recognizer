@@ -8,6 +8,7 @@ using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
 using DigitRecognizer.MachineLearning.Optimization;
+using DigitRecognizer.MachineLearning.Optimization.Optimizers;
 using DigitRecognizer.MachineLearning.Providers;
 
 namespace DigitRecognizer.MachineLearning.Pipeline

@@ -28,18 +28,6 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.Data
         }
 
         /// <summary>
-        /// Gets the value for the specified index.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <returns>The cached value.</returns>
-        public double[][] GetValue(int index)
-        {
-            Contracts.ValueWithinBounds(index, 0, _cache.Count, nameof(index));
-            
-            return _cache[index];
-        }
-
-        /// <summary>
         /// Sets the specified value at the specified index.
         /// </summary>
         /// <param name="value">The value.</param>

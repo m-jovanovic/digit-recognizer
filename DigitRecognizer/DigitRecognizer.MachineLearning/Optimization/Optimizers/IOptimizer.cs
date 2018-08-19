@@ -1,8 +1,9 @@
-﻿using DigitRecognizer.MachineLearning.Infrastructure.Functions;
+﻿using DigitRecognizer.Core.Data;
+using DigitRecognizer.MachineLearning.Infrastructure.Functions;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
 using DigitRecognizer.MachineLearning.Pipeline;
 
-namespace DigitRecognizer.MachineLearning.Optimization
+namespace DigitRecognizer.MachineLearning.Optimization.Optimizers
 {
     /// <summary>
     /// Interface that an optimization algorithm should implement.
@@ -37,11 +38,11 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <summary>
         /// Adjusts the current parameters with specified gradient and learning rate.
         /// </summary>
-        /// <param name="layer">The layer.</param>
+        /// <param name="node">The node.</param>
         /// <param name="delta">The delat values.</param>
         /// <param name="gradient">The gradient values.</param>
         /// <param name="learningRate">The learning rate.</param>
-        void AdjustParameters(NnLayer layer, double[][] delta, double[][] gradient, double learningRate);
+        void AdjustParameters(LinkedListNode<NnLayer> node, double[][] delta, double[][] gradient, double learningRate);
 
         /// <summary>
         /// Calculates the output derivative with respect to the <see cref="ICostFunction"/> of the optimizer.

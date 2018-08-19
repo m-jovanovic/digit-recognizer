@@ -8,7 +8,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.Models
     /// <summary>
     /// Represents a model that runs an internal neural network to predict input values.
     /// </summary>
-    public class PredictionModel
+    public class PredictionModel : IPredictionModel
     {
         private readonly INeuralNetwork _neuralNetwork;
 

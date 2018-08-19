@@ -8,7 +8,7 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
     /// <summary>
     /// Represents a weight matrix that is part of a <see cref="NnLayer"/>.
     /// </summary>
-    public class WeightMatrix// : IValueAdjustable
+    public class WeightMatrix : IValueAdjustable
     {
         private readonly double[][] _weights;
 
@@ -61,33 +61,33 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
         /// </summary>
         public double[][] Weights => _weights;
 
-        ///// <summary>
-        ///// Adjusts the weights of the <see cref="WeightMatrix"/> using the specified gradient.
-        ///// </summary>
-        ///// <param name="gradient">The gradient with respect to the weights.</param>
-        ///// <param name="learningRate">The learning rate.</param>
-        //public void AdjustValue(double[][] gradient, double learningRate)
-        //{
-        //    int rowCount = gradient.Length;
-        //    int colCount = gradient[0].Length;
-        //    Contracts.ValuesMatch(RowCount, rowCount, nameof(RowCount));
-        //    Contracts.ValuesMatch(ColCount, colCount, nameof(RowCount));
+        /// <summary>
+        /// Adjusts the weights of the <see cref="WeightMatrix"/> using the specified gradient.
+        /// </summary>
+        /// <param name="gradient">The gradient with respect to the weights.</param>
+        /// <param name="learningRate">The learning rate.</param>
+        public void AdjustValue(double[][] gradient, double learningRate)
+        {
+            int rowCount = gradient.Length;
+            int colCount = gradient[0].Length;
+            Contracts.ValuesMatch(RowCount, rowCount, nameof(RowCount));
+            Contracts.ValuesMatch(ColCount, colCount, nameof(RowCount));
 
-        //    var regularizationFactor = 1.0;
+            var regularizationFactor = 1.0;
 
-        //    if (PipelineSettings.Instance.UseL2Regularization)
-        //    {
-        //        regularizationFactor = 1 - PipelineSettings.Instance.RegularizationFactor * learningRate / PipelineSettings.Instance.DatasetSize;
-        //    }
+            if (PipelineSettings.Instance.UseL2Regularization)
+            {
+                regularizationFactor = 1 - PipelineSettings.Instance.RegularizationFactor * learningRate / PipelineSettings.Instance.DatasetSize;
+            }
 
-        //    for (var i = 0; i < rowCount; i++)
-        //    {
-        //        for (var j = 0; j < colCount; j++)
-        //        {
-        //            _weights[i][j] = regularizationFactor * _weights[i][j] - gradient[i][j] * learningRate;
-        //        }
-        //    }
-        //}
+            for (var i = 0; i < rowCount; i++)
+            {
+                for (var j = 0; j < colCount; j++)
+                {
+                    _weights[i][j] = regularizationFactor * _weights[i][j] - gradient[i][j] * learningRate;
+                }
+            }
+        }
 
         public static implicit operator double[][] (WeightMatrix m)
         {

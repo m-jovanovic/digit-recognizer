@@ -7,7 +7,6 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.Dropout
     /// </summary>
     public class Dropout
     {
-        private readonly double _keepProbability;
         private readonly BinomialDistribution _binomialDistributiion;
 
         /// <summary>
@@ -16,9 +15,12 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.Dropout
         /// <param name="keepProbability">The keep probability.</param>
         public Dropout(double keepProbability)
         {
-            _keepProbability = keepProbability;
+            if (keepProbability < 0 || keepProbability > 1.0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(keepProbability));
+            }
 
-            _binomialDistributiion = new BinomialDistribution(_keepProbability, new Random());
+            _binomialDistributiion = new BinomialDistribution(keepProbability, new Random());
         }
 
 

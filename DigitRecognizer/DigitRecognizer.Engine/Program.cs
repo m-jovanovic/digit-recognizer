@@ -12,6 +12,7 @@ using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
 using DigitRecognizer.MachineLearning.Optimization;
 using DigitRecognizer.MachineLearning.Optimization.LearningRateDecay;
+using DigitRecognizer.MachineLearning.Optimization.Optimizers;
 using DigitRecognizer.MachineLearning.Providers;
 
 namespace DigitRecognizer.Engine
@@ -20,7 +21,7 @@ namespace DigitRecognizer.Engine
     {
         private static void Main()
         {
-            var learningRate = 0.001;
+            var learningRate = 0.0003;
             var epochs = 60;
             var regularizationFactor = 10.0;
             
@@ -31,22 +32,16 @@ namespace DigitRecognizer.Engine
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
                 .SetEpochCount(epochs);
 
-            var nn = new NeuralNetwork(learningRate);
-            
-            var layer1 = new NnLayer(784, 120, new Relu());
-            var layer2 = new NnLayer(120, 50, new Relu());
-            var layer3 = new NnLayer(50, 10, new Softmax());
-
             var layers = new List<NnLayer>
             {
-                layer1,
-                layer2, 
-                layer3
+                new NnLayer(784, 100, new LeakyRelu()),
+                new NnLayer(100, 30, new LeakyRelu()),
+                new NnLayer(30, 10, new Softmax())
             };
 
-            nn.AddLayer(layers);
-
-            var optimizer = new GradientDescentOptimizer(nn, new CrossEntropy());
+            var nn = new NeuralNetwork(layers, learningRate);
+            
+            var optimizer = new MomentumOptimizer(nn, new CrossEntropy(), 0.9);
 
             var provider = new BatchDataProvider(DirectoryHelper.TrainLabelsPath, DirectoryHelper.TrainImagesPath, 100);
 

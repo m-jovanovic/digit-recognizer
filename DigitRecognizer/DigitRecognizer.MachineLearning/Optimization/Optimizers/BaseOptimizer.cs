@@ -6,26 +6,26 @@ using DigitRecognizer.MachineLearning.Infrastructure.Functions;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
 using DigitRecognizer.MachineLearning.Pipeline;
 
-namespace DigitRecognizer.MachineLearning.Optimization
+namespace DigitRecognizer.MachineLearning.Optimization.Optimizers
 {
     /// <summary>
-    /// Implements the gradient descent optimization algorithm.
+    /// Represents a base class for optimization algorithms.
     /// </summary>
-    public class GradientDescentOptimizer : IOptimizer
+    public abstract class BaseOptimizer : IOptimizer
     {
-        private readonly ICostFunction _costFunction;
         private readonly INeuralNetwork _neuralNetwork;
+        private readonly ICostFunction _costFunction;
         private List<double[][]> _weightedSumDerivatives;
         private List<double[][]> _activations;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="GradientDescentOptimizer"/> class.
+        /// initilazies a new instance of the <see cref="BaseOptimizer"/> class.
         /// </summary>
         /// <param name="neuralNetwork">The neural network.</param>
         /// <param name="costFunction">The cost function.</param>
-        public GradientDescentOptimizer(INeuralNetwork neuralNetwork, ICostFunction costFunction) 
+        protected BaseOptimizer(INeuralNetwork neuralNetwork, ICostFunction costFunction)
         {
-            Contracts.ValueNotNull(costFunction, nameof(neuralNetwork));
+            Contracts.ValueNotNull(neuralNetwork, nameof(neuralNetwork));
             Contracts.ValueNotNull(costFunction, nameof(costFunction));
 
             _neuralNetwork = neuralNetwork;
@@ -35,20 +35,20 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <summary>
         /// Gets the <see cref="INeuralNetwork"/>.
         /// </summary>
-        public INeuralNetwork NeuralNetwork => _neuralNetwork;
+        public virtual INeuralNetwork NeuralNetwork => _neuralNetwork;
 
         /// <summary>
         /// Gets the <see cref="ICostFunction"/>.
         /// </summary>
-        public ICostFunction CostFunction => _costFunction;
-        
+        public virtual ICostFunction CostFunction => _costFunction;
+
         /// <summary>
         /// Calculates the cost of the specified prediction.
         /// </summary>
         /// <param name="prediction">The prediction.</param>
         /// <param name="oneHot">The one hot value.</param>
         /// <returns>The cost.</returns>
-        public double CalculateError(double[] prediction, int oneHot)
+        public virtual double CalculateError(double[] prediction, int oneHot)
         {
             double error = _costFunction.Cost(prediction, oneHot.OneHot(prediction.Length));
 
@@ -60,7 +60,7 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// </summary>
         /// <param name="predictions">The predictions.</param>
         /// <param name="oneHots">The one hot values.</param>
-        public void Optimize(double[][] predictions, int[] oneHots)
+        public virtual void Optimize(double[][] predictions, int[] oneHots)
         {
             if (PipelineSettings.Instance.CurrentIteration % 10 == 0)
             {
@@ -79,7 +79,7 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// </summary>
         /// <param name="predictions">The predictions.</param>
         /// <param name="oneHots">The one hot values.</param>
-        public void Backpropagate(double[][] predictions, int[] oneHots)
+        public virtual void Backpropagate(double[][] predictions, int[] oneHots)
         {
             ProcessCaches(oneHots);
 
@@ -103,9 +103,9 @@ namespace DigitRecognizer.MachineLearning.Optimization
 
                     double[][] activation = _activations[currentLayer.Depth][i].AsMatrix();
 
-                    double[][] weightGradients = activation.Transpose().Multiply(delta);
-                    
-                    AdjustParameters(currentLayer.Value, delta, weightGradients, _neuralNetwork.LearningRate);
+                    double[][] wDelta = activation.Transpose().Multiply(delta);
+
+                    AdjustParameters(currentLayer, delta, wDelta, _neuralNetwork.LearningRate);
 
                     currentGradient = currentLayer.Value.BackpropagateError(delta);
 
@@ -117,43 +117,15 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <summary>
         /// Adjusts the current parameters with specified gradient and learning rate.
         /// </summary>
-        /// <param name="layer">The layer.</param>
-        /// <param name="delta">The delat values.</param>
-        /// <param name="gradient">The gradient values.</param>
+        /// <param name="node">The node.</param>
+        /// <param name="bDelta">The bias delta values.</param>
+        /// <param name="wDelta">The weight delta values.</param>
         /// <param name="learningRate">The learning rate.</param>
-        public void AdjustParameters(NnLayer layer, double[][] delta, double[][] gradient, double learningRate)
+        public virtual void AdjustParameters(Core.Data.LinkedListNode<NnLayer> node, double[][] bDelta, double[][] wDelta, double learningRate)
         {
-            int rowCount = delta.Length;
-            int colCount = delta[0].Length;
+            node.Value.BiasVector.AdjustValue(bDelta, learningRate);
 
-            const int rowIndex = 0;
-            Contracts.ValuesMatch(1, rowCount, nameof(rowCount));
-            Contracts.ValuesMatch(layer.BiasVector.Length, colCount, nameof(colCount));
-
-            for (var i = 0; i < colCount; i++)
-            {
-                layer.BiasVector.Bias[i] = layer.BiasVector.Bias[i] - delta[rowIndex][i] * learningRate;
-            }
-
-            rowCount = gradient.Length;
-            colCount = gradient[0].Length;
-            Contracts.ValuesMatch(layer.WeightMatrix.RowCount, rowCount, nameof(layer.WeightMatrix.RowCount));
-            Contracts.ValuesMatch(layer.WeightMatrix.ColCount, colCount, nameof(layer.WeightMatrix.RowCount));
-
-            var regularizationFactor = 1.0;
-
-            if (PipelineSettings.Instance.UseL2Regularization)
-            {
-                regularizationFactor = 1 - PipelineSettings.Instance.RegularizationFactor * learningRate / PipelineSettings.Instance.DatasetSize;
-            }
-
-            for (var i = 0; i < rowCount; i++)
-            {
-                for (var j = 0; j < colCount; j++)
-                {
-                    layer.WeightMatrix.Weights[i][j] = regularizationFactor * layer.WeightMatrix.Weights[i][j] - gradient[i][j] * learningRate;
-                }
-            }
+            node.Value.WeightMatrix.AdjustValue(wDelta, learningRate);
         }
 
         /// <summary>
@@ -190,7 +162,7 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <param name="predictions">The predictions.</param>
         /// <param name="oneHots">The one hot values.</param>
         /// <returns>The derivatives.</returns>
-        public double[][] CalculateOutputDerivative(double[][] predictions, int[] oneHots)
+        public virtual double[][] CalculateOutputDerivative(double[][] predictions, int[] oneHots)
         {
             int count = predictions.Length;
             int length = predictions[0].Length;
@@ -226,9 +198,9 @@ namespace DigitRecognizer.MachineLearning.Optimization
         /// <param name="nodeDepth">The node depth.</param>
         /// <param name="oneHots">The one hot values.</param>
         /// <returns>The derivatives.</returns>
-        public double[][] WeightedSumDerivative(IActivationFunction activationFunction, int nodeDepth, int[] oneHots)
+        public virtual double[][] WeightedSumDerivative(IActivationFunction activationFunction, int nodeDepth, int[] oneHots)
         {
-            double[][] cachedWeightedSum =_neuralNetwork.WeightedSumCache[nodeDepth];
+            double[][] cachedWeightedSum = _neuralNetwork.WeightedSumCache[nodeDepth];
 
             int rowCount = cachedWeightedSum.Length;
             int colCount = cachedWeightedSum[0].Length;
