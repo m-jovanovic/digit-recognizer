@@ -10,8 +10,6 @@ using DigitRecognizer.MachineLearning.Infrastructure.Functions;
 using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
-using DigitRecognizer.MachineLearning.Optimization;
-using DigitRecognizer.MachineLearning.Optimization.LearningRateDecay;
 using DigitRecognizer.MachineLearning.Optimization.Optimizers;
 using DigitRecognizer.MachineLearning.Providers;
 
@@ -22,13 +20,12 @@ namespace DigitRecognizer.Engine
         private static void Main()
         {
             var learningRate = 0.0003;
-            var epochs = 60;
-            var regularizationFactor = 10.0;
+            var epochs = 20;
+            var regularizationFactor = 15.0;
             
             LearningPipeline pipeline = new LearningPipeline()
                 .UseGradientClipping()
                 .UseL2Regularization(regularizationFactor)
-                //.UseLearningRateDecay(new StepDecay(learningRate, 0.5, 10))
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
                 .SetEpochCount(epochs);
 
@@ -41,9 +38,9 @@ namespace DigitRecognizer.Engine
 
             var nn = new NeuralNetwork(layers, learningRate);
             
-            var optimizer = new MomentumOptimizer(nn, new CrossEntropy(), 0.9);
+            var optimizer = new MomentumOptimizer(nn, new CrossEntropy(), 0.93);
 
-            var provider = new BatchDataProvider(DirectoryHelper.TrainLabelsPath, DirectoryHelper.TrainImagesPath, 100);
+            var provider = new BatchDataProvider(DirectoryHelper.ExpandedTrainLabelsPath, DirectoryHelper.ExpandedTrainImagesPath, 100);
 
             pipeline.Add(optimizer);
 
@@ -75,7 +72,7 @@ namespace DigitRecognizer.Engine
             string basePath = Path.GetFullPath(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory) +
                                                DirectoryHelper.ModelsFolder);
 
-            string modelName = $"{Guid.NewGuid()}-{acc:N5}.nn";
+            string modelName = $"{Guid.NewGuid()}-{acc:N4}.nn";
 
             string filename = $"{basePath}/{modelName}";
 
