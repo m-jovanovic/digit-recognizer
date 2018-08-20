@@ -26,6 +26,16 @@
         public static string TrainImagesPath => $"{DatasetPath}/train-images.idx3-ubyte";
 
         /// <summary>
+        /// Gets the path to the expaneded training labels file.
+        /// </summary>
+        public static string ExpandedTrainLabelsPath => $"{DatasetPath}/train-exp-labels.idx1-ubyte";
+
+        /// <summary>
+        /// Gets the path to the expanded training images file.
+        /// </summary>
+        public static string ExpandedTrainImagesPath => $"{DatasetPath}/train-exp-images.idx3-ubyte";
+
+        /// <summary>
         /// Gets the path to the testing labels file.
         /// </summary>
         public static string TestLabelsPath => $"{DatasetPath}/t10k-labels.idx1-ubyte";

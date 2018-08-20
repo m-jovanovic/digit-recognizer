@@ -8,7 +8,7 @@
         /// <summary>
         /// A "magic number" of bytes that needs to be skipped at the beginning of the stream. 
         /// </summary>
-        private const int InitialOffset = 8;
+        public const int InitialOffset = 8;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LabelReader"/> class.

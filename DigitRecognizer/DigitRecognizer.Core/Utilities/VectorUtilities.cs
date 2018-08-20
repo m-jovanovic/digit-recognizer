@@ -64,10 +64,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <returns>A jagged array a.k.a. matrix.</returns>
         internal static double[][] AsMatrix(double[] arr)
         {
-            var result = new[]
-            {
-                arr
-            };
+            double[][] result = { arr };
 
             return result;
         }

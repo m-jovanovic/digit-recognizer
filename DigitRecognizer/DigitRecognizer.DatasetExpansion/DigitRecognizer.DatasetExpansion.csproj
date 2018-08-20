@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BA726236-C7EC-41CA-ABB6-E4FE7E784939}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DigitRecognizer.Core</RootNamespace>
-    <AssemblyName>DigitRecognizer.Core</AssemblyName>
+    <ProjectGuid>{757CF815-DD01-4F66-8E9F-DB3FF9B4A463}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DigitRecognizer.DatasetExpansion</RootNamespace>
+    <AssemblyName>DigitRecognizer.DatasetExpansion</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -20,21 +21,19 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,34 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Box.cs" />
-    <Compile Include="Data\LinkedList.cs" />
-    <Compile Include="Data\LinkedListNode.cs" />
-    <Compile Include="Data\MnistImageBatch.cs" />
-    <Compile Include="Extensions\RandomExtensions.cs" />
-    <Compile Include="Extensions\VectorExtensions.cs" />
-    <Compile Include="Extensions\ByteExtensions.cs" />
-    <Compile Include="Extensions\DoubleExtensions.cs" />
-    <Compile Include="Extensions\StreamExtensions.cs" />
-    <Compile Include="IO\ILabelReader.cs" />
-    <Compile Include="IO\ImagePreprocessor.cs" />
-    <Compile Include="IO\IPixelReader.cs" />
-    <Compile Include="IO\LabelReader.cs" />
-    <Compile Include="IO\MemoryStreamReader.cs" />
-    <Compile Include="IO\NnSerializableBase.cs" />
-    <Compile Include="IO\NnBinaryDeserializer.cs" />
-    <Compile Include="IO\NnBinarySerializer.cs" />
-    <Compile Include="IO\NnSerializationContext.cs" />
-    <Compile Include="IO\NnSerializationContextInfo.cs" />
-    <Compile Include="IO\PixelReader.cs" />
+    <Compile Include="Api\DatasetExpander.cs" />
+    <Compile Include="Api\DatasetSerializer.cs" />
+    <Compile Include="Infrastructure\AffineTransformation.cs" />
+    <Compile Include="Infrastructure\DatasetProvider.cs" />
+    <Compile Include="Infrastructure\FisherYatesShuffle.cs" />
+    <Compile Include="Infrastructure\MnistImage.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\ConsoleUtility.cs" />
-    <Compile Include="Utilities\DirectoryHelper.cs" />
-    <Compile Include="Utilities\ImageUtilities.cs" />
-    <Compile Include="Utilities\MathUtilities.cs" />
-    <Compile Include="Utilities\Contracts.cs" />
-    <Compile Include="Utilities\VectorUtilities.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DigitRecognizer.Core\DigitRecognizer.Core.csproj">
+      <Project>{BA726236-C7EC-41CA-ABB6-E4FE7E784939}</Project>
+      <Name>DigitRecognizer.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
