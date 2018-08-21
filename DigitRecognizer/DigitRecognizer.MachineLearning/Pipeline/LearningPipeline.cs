@@ -7,14 +7,13 @@ using DigitRecognizer.Core.Data;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork;
-using DigitRecognizer.MachineLearning.Optimization;
 using DigitRecognizer.MachineLearning.Optimization.Optimizers;
 using DigitRecognizer.MachineLearning.Providers;
 
 namespace DigitRecognizer.MachineLearning.Pipeline
 {
     /// <summary>
-    /// Represents a configurable pipeline that can be used to generate <see cref="NeuralNetwork"/> models.
+    /// Represents a configurable pipeline that can be used to train <see cref="NeuralNetwork"/> models.
     /// </summary>
     public class LearningPipeline : ICollection<ILearningPipelineItem>
     {
@@ -94,6 +93,11 @@ namespace DigitRecognizer.MachineLearning.Pipeline
                 for (var i = 0; i < PipelineSettings.TrainingIterationsCount; i++)
                 {
                     PipelineSettings.CurrentIteration++;
+
+                    if (PipelineSettings.CanPerformDropout)
+                    {
+                        PipelineSettings.DropoutVectors = PipelineSettings.Dropout.GenerateDropoutVectors(PipelineSettings.HiddenLayerSizes);
+                    }
 
                     // A training iteration is constited of three steeps:
 
@@ -242,7 +246,16 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         {
             var network = (INeuralNetwork)neuralNetworkModel;
 
-            // TODO: Finish this method.
+            var sizes = new int[network.NumberOfLayers - 1];
+
+            List<NnLayer> layers = network.Layers.ToList();
+
+            for (var i = 1; i < network.NumberOfLayers; i++)
+            {
+                sizes[i - 1] = layers[i].NumberOfInputs;
+            }
+            
+            this.SetHiddenLayerSizes(sizes);
         }
 
         /// <summary>

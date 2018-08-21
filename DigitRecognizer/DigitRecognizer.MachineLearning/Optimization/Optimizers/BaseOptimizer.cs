@@ -95,6 +95,11 @@ namespace DigitRecognizer.MachineLearning.Optimization.Optimizers
                 {
                     double[][] delta = currentGradient;
 
+                    if (PipelineSettings.Instance.CanPerformDropout && currentLayer.Next != null)
+                    {
+                        delta = delta.DotProduct(PipelineSettings.Instance.DropoutVectors[currentLayer.Depth]);
+                    }
+
                     // We don't multiply with the weighed sum derivative for the last layer in the network.
                     if (currentLayer.Depth < _neuralNetwork.Layers.Count - 1)
                     {

@@ -3,7 +3,7 @@
     /// <summary>
     /// Interface for a prediction model.
     /// </summary>
-    interface IPredictionModel
+    public interface IPredictionModel
     {
         /// <summary>
         /// Predicts the output for the specified input.

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Data;
+using DigitRecognizer.MachineLearning.Pipeline;
 
 namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
 {
@@ -94,6 +96,13 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
                 _activationCache.SetValue(output, currentLayer.Depth);
 
                 double[][] weightedSum = currentLayer.Value.WeightedSum(output);
+
+                if (PipelineSettings.Instance.CanPerformDropout && currentLayer.Next != null)
+                {
+                    double[] dropoutVector = PipelineSettings.Instance.DropoutVectors[currentLayer.Depth]; 
+
+                    weightedSum = weightedSum.DotProduct(dropoutVector);
+                }
 
                 _weightedSumCache.SetValue(weightedSum, currentLayer.Depth);
 

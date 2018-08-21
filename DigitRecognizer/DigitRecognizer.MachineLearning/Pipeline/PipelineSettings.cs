@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using DigitRecognizer.MachineLearning.Infrastructure.Dropout;
 using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
 using DigitRecognizer.MachineLearning.Optimization.LearningRateDecay;
 
@@ -19,6 +21,7 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         {
             WeightsInitializerType = InitializerType.RandomInitialization;
             LearningRateScheduler = null;
+            Dropout = null;
         }
 
         /// <summary>
@@ -123,5 +126,30 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// Gets or sets the learning rate schduler.
         /// </summary>
         internal ILearningRateDecay LearningRateScheduler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the use dropout property.
+        /// </summary>
+        internal bool UseDropout { get; set; }
+
+        /// <summary>
+        /// Gets or sets the dropout property.
+        /// </summary>
+        internal Dropout Dropout { get; set; }
+
+        /// <summary>
+        /// Gets or sets the layer sizes.
+        /// </summary>
+        internal int[] HiddenLayerSizes { get; set; }
+
+        /// <summary>
+        /// Gets the value indicating if dropout can be performed.
+        /// </summary>
+        internal bool CanPerformDropout => UseDropout && Dropout != null && HiddenLayerSizes.Length > 0;
+        
+        /// <summary>
+        /// Gets or sets the dropout vectors.
+        /// </summary>
+        internal List<double[]> DropoutVectors { get; set; }
     }
 }

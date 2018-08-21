@@ -9,6 +9,8 @@ namespace DigitRecognizer.MachineLearning.Infrastructure.NeuralNetwork
     public interface INeuralNetwork : ILearningPipelineNeuralNetworkModel
     {
         double LearningRate { get; set; }
+        int NumberOfLayers { get; }
+
         Core.Data.LinkedList<NnLayer> Layers { get; }
         List<double[][]> WeightedSumCache { get; }
         List<double[][]> ActivationCache { get; }

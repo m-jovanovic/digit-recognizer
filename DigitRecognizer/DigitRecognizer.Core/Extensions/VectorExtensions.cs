@@ -41,6 +41,17 @@ namespace DigitRecognizer.Core.Extensions
         }
 
         /// <summary>
+        /// Performs the dot product multiplication of a matrix and an array.
+        /// </summary>
+        /// <param name="m">The matrix.</param>
+        /// <param name="arr">The array.</param>
+        /// <returns>The matrix.</returns>
+        public static double[][] DotProduct(this double[][] m, double[] arr)
+        {
+            return VectorUtilities.DotProduct(m, arr);
+        }
+
+        /// <summary>
         /// Calculates the average of the specified matrix, column-wise.
         /// </summary>
         /// <param name="m">The matrix whose average is being calculated.</param>

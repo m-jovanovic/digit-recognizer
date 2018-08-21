@@ -4,14 +4,14 @@ using DigitRecognizer.Core.Utilities;
 namespace DigitRecognizer.MachineLearning.Infrastructure.Initialization
 {
     /// <summary>
-    /// Implements the He-et-al initialization algorithm.
+    /// Implements the He initialization algorithm.
     /// </summary>
-    public class HeEtAlInitializer : IInitializer
+    public class HeInitializer : IInitializer
     {
         /// <summary>
         /// Gest the <see cref="Initialization.InitializerType"/>.
         /// </summary>
-        public InitializerType InitializerType => InitializerType.HeEtAlInitialization;
+        public InitializerType InitializerType => InitializerType.HeInitialization;
 
         /// <summary>
         /// Returns an initialized matrix based on the specified parameters.

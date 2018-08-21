@@ -1,4 +1,5 @@
 ﻿using DigitRecognizer.Core.Utilities;
+using DigitRecognizer.MachineLearning.Infrastructure.Dropout;
 using DigitRecognizer.MachineLearning.Infrastructure.Initialization;
 using DigitRecognizer.MachineLearning.Optimization.LearningRateDecay;
 
@@ -37,9 +38,9 @@ namespace DigitRecognizer.MachineLearning.Pipeline
         /// <summary>
         /// Configures the <see cref="LearningPipeline"/> to use learning rate decay.
         /// </summary>
-        /// <param name="pipeline"></param>
+        /// <param name="pipeline">The learning pipeline.</param>
         /// <param name="learingRateDecay">The learning rate decay scheduler.</param>
-        /// <returns></returns>
+        /// <returns>The configured pipeline.</returns>
         public static LearningPipeline UseLearningRateDecay(this LearningPipeline pipeline, ILearningRateDecay learingRateDecay)
         {
             pipeline.PipelineSettings.UseLearningRateDecay = true;
@@ -59,6 +60,34 @@ namespace DigitRecognizer.MachineLearning.Pipeline
             Contracts.ValueGreaterThanZero(regularizationFactor, nameof(regularizationFactor));
 
             pipeline.PipelineSettings.RegularizationFactor = regularizationFactor;
+
+            return pipeline;
+        }
+
+        /// <summary>
+        /// Configures the <see cref="LearningPipeline"/> to use dropout.
+        /// </summary>
+        /// <param name="pipeline">The learning pipeline.</param>
+        /// <param name="keepProbability">The keep probability.</param>
+        /// <returns>The configured pipeline.</returns>
+        public static LearningPipeline UseDropout(this LearningPipeline pipeline, double keepProbability)
+        {
+            pipeline.PipelineSettings.UseDropout = true;
+            
+            pipeline.PipelineSettings.Dropout = new Dropout(keepProbability);
+
+            return pipeline;
+        }
+
+        /// <summary>
+        /// Configures the sizes of the hidden layers of the network.
+        /// </summary>
+        /// <param name="pipeline">The learning pipeline.</param>
+        /// <param name="sizes">The array of sizes.</param>
+        /// <returns>The configured pipeline.</returns>
+        internal static LearningPipeline SetHiddenLayerSizes(this LearningPipeline pipeline, int[] sizes)
+        {
+            pipeline.PipelineSettings.HiddenLayerSizes = sizes;
 
             return pipeline;
         }

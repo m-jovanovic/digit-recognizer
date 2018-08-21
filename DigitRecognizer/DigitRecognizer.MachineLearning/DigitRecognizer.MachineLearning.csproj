@@ -44,7 +44,7 @@
     <Compile Include="Infrastructure\Dropout\Dropout.cs" />
     <Compile Include="Infrastructure\Factories\AbstractTypeFactory.cs" />
     <Compile Include="Infrastructure\Factories\InitializerFactory.cs" />
-    <Compile Include="Infrastructure\Initialization\HeEtAlInitializer.cs" />
+    <Compile Include="Infrastructure\Initialization\HeInitializer.cs" />
     <Compile Include="Infrastructure\Initialization\IInitializer.cs" />
     <Compile Include="Infrastructure\Initialization\InitializerType.cs" />
     <Compile Include="Infrastructure\Initialization\RandomInitializer.cs" />

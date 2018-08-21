@@ -20,12 +20,13 @@ namespace DigitRecognizer.Engine
         private static void Main()
         {
             var learningRate = 0.0003;
-            var epochs = 20;
+            var epochs = 40;
             var regularizationFactor = 15.0;
             
             LearningPipeline pipeline = new LearningPipeline()
                 .UseGradientClipping()
                 .UseL2Regularization(regularizationFactor)
+                .UseDropout(0.5)
                 .SetWeightsInitializer(InitializerType.RandomInitialization)
                 .SetEpochCount(epochs);
 
@@ -40,7 +41,7 @@ namespace DigitRecognizer.Engine
             
             var optimizer = new MomentumOptimizer(nn, new CrossEntropy(), 0.93);
 
-            var provider = new BatchDataProvider(DirectoryHelper.ExpandedTrainLabelsPath, DirectoryHelper.ExpandedTrainImagesPath, 100);
+            var provider = new BatchDataProvider(DirectoryHelper.TrainLabelsPath, DirectoryHelper.TrainImagesPath, 100);
 
             pipeline.Add(optimizer);
 

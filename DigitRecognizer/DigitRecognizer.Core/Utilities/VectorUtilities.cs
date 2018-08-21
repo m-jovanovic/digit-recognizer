@@ -248,6 +248,28 @@ namespace DigitRecognizer.Core.Utilities
         }
 
         /// <summary>
+        /// Performs the dot product multiplication of a matrix and an array.
+        /// </summary>
+        /// <param name="m">The matrix.</param>
+        /// <param name="arr">The array.</param>
+        /// <returns>The matrix.</returns>
+        internal static double[][] DotProduct(double[][] m, double[] arr)
+        {
+            int rowCount = m.Length;
+            int colCount = m[0].Length;
+            Contracts.ValuesMatch(colCount, arr.Length, nameof(arr.Length));
+
+            double[][] result = CreateMatrix(rowCount, colCount);
+
+            Parallel.For(0, rowCount, (i) =>
+            {
+                result[i] = HadamardProduct(m[i], arr);
+            });
+
+            return m;
+        }
+
+        /// <summary>
         /// Sums the specified vector.
         /// </summary>
         /// <param name="arr">The array.</param>

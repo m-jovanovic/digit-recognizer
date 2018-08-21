@@ -23,6 +23,6 @@
         /// <summary>
         /// Initializes all values using the He-et-al initialization method.
         /// </summary>
-        HeEtAlInitialization = 3
+        HeInitialization = 3
     }
 }
