@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Windows.Forms;
+using DigitRecognizer.Presentation.Presenters;
+using DigitRecognizer.Presentation.Views.Implementations;
 
 namespace DigitRecognizer.Presentation
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            var mainForm = new MainForm();
+            var _ = new MainFormPresenter(mainForm);
+            Application.Run(mainForm);
         }
     }
 }

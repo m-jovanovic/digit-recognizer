@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favico.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,15 +50,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Presenters\MainFormPresenter.cs" />
+    <Compile Include="Views\Implementations\BenchmarkView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Implementations\BenchmarkView.Designer.cs">
+      <DependentUpon>BenchmarkView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Implementations\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Views\Implementations\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="MainForm.resx">
+    <Compile Include="Views\Interfaces\IBenchmarkView.cs" />
+    <Compile Include="Views\Interfaces\IConfigurationView.cs" />
+    <Compile Include="Views\Interfaces\IMainFormView.cs" />
+    <EmbeddedResource Include="Views\Implementations\BenchmarkView.resx">
+      <DependentUpon>BenchmarkView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Implementations\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -89,6 +105,9 @@
       <Project>{BF82C3DF-0EFE-45DB-8E3D-1FFDD548AE73}</Project>
       <Name>DigitRecognizer.MachineLearning</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="favico.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
