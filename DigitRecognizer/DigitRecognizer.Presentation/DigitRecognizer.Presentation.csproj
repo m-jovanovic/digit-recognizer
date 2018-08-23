@@ -50,7 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Presenters\MainFormPresenter.cs" />
+    <Compile Include="Presenters\BenchmarkPresenter.cs" />
+    <Compile Include="Presenters\ApplicationPresenter.cs" />
+    <Compile Include="Services\ILoggingService.cs" />
+    <Compile Include="Services\IMessageService.cs" />
+    <Compile Include="Services\LoggingService.cs" />
+    <Compile Include="Services\MessageService.cs" />
     <Compile Include="Views\Implementations\BenchmarkView.cs">
       <SubType>UserControl</SubType>
     </Compile>

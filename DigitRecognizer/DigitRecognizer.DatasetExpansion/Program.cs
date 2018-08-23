@@ -10,6 +10,8 @@ namespace DigitRecognizer.DatasetExpansion
     {
         private static void Main()
         {
+            Console.Title = "Digit Recognizer - Dataset Expansion";
+
             Console.WriteLine("Starting dataset expansion");
             
             var expander = new DatasetExpander();

@@ -28,120 +28,148 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblProgress = new System.Windows.Forms.Label();
-            this.lblAccuracy = new System.Windows.Forms.Label();
-            this.pBarProgress = new System.Windows.Forms.ProgressBar();
-            this.pBarAccuracy = new System.Windows.Forms.ProgressBar();
-            this.panelLine = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.btnCancelBenchmark = new System.Windows.Forms.Button();
+            this.btnRunBenchmark = new System.Windows.Forms.Button();
             this.labelBenchmark = new System.Windows.Forms.Label();
-            this.btnBenchmark = new System.Windows.Forms.Button();
+            this.panelLine = new System.Windows.Forms.Panel();
+            this.pBarAccuracy = new System.Windows.Forms.ProgressBar();
+            this.pBarProgress = new System.Windows.Forms.ProgressBar();
+            this.lblAccuracy = new System.Windows.Forms.Label();
+            this.lblProgress = new System.Windows.Forms.Label();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lblProgress
+            // panel1
             // 
-            this.lblProgress.AutoSize = true;
-            this.lblProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProgress.Location = new System.Drawing.Point(8, 64);
-            this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(72, 20);
-            this.lblProgress.TabIndex = 3;
-            this.lblProgress.Text = "Progress";
+            this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.btnCancelBenchmark);
+            this.panel1.Controls.Add(this.btnRunBenchmark);
+            this.panel1.Controls.Add(this.labelBenchmark);
+            this.panel1.Controls.Add(this.panelLine);
+            this.panel1.Controls.Add(this.pBarAccuracy);
+            this.panel1.Controls.Add(this.pBarProgress);
+            this.panel1.Controls.Add(this.lblAccuracy);
+            this.panel1.Controls.Add(this.lblProgress);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(5, 417);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(911, 184);
+            this.panel1.TabIndex = 0;
             // 
-            // lblAccuracy
+            // btnCancelBenchmark
             // 
-            this.lblAccuracy.AutoSize = true;
-            this.lblAccuracy.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAccuracy.Location = new System.Drawing.Point(8, 127);
-            this.lblAccuracy.Name = "lblAccuracy";
-            this.lblAccuracy.Size = new System.Drawing.Size(74, 20);
-            this.lblAccuracy.TabIndex = 5;
-            this.lblAccuracy.Text = "Accuracy";
+            this.btnCancelBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancelBenchmark.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancelBenchmark.Location = new System.Drawing.Point(776, 9);
+            this.btnCancelBenchmark.Name = "btnCancelBenchmark";
+            this.btnCancelBenchmark.Size = new System.Drawing.Size(127, 30);
+            this.btnCancelBenchmark.TabIndex = 14;
+            this.btnCancelBenchmark.Text = "Cancel";
+            this.btnCancelBenchmark.UseVisualStyleBackColor = true;
             // 
-            // pBarProgress
+            // btnRunBenchmark
             // 
-            this.pBarProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pBarProgress.ForeColor = System.Drawing.Color.Violet;
-            this.pBarProgress.Location = new System.Drawing.Point(8, 92);
-            this.pBarProgress.MarqueeAnimationSpeed = 0;
-            this.pBarProgress.Name = "pBarProgress";
-            this.pBarProgress.Size = new System.Drawing.Size(849, 23);
-            this.pBarProgress.Step = 1;
-            this.pBarProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.pBarProgress.TabIndex = 4;
+            this.btnRunBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRunBenchmark.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRunBenchmark.Location = new System.Drawing.Point(643, 9);
+            this.btnRunBenchmark.Name = "btnRunBenchmark";
+            this.btnRunBenchmark.Size = new System.Drawing.Size(127, 30);
+            this.btnRunBenchmark.TabIndex = 8;
+            this.btnRunBenchmark.Text = "Run benchmark";
+            this.btnRunBenchmark.UseVisualStyleBackColor = true;
             // 
-            // pBarAccuracy
+            // labelBenchmark
             // 
-            this.pBarAccuracy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pBarAccuracy.ForeColor = System.Drawing.Color.Violet;
-            this.pBarAccuracy.Location = new System.Drawing.Point(8, 154);
-            this.pBarAccuracy.MarqueeAnimationSpeed = 0;
-            this.pBarAccuracy.Maximum = 10000;
-            this.pBarAccuracy.Name = "pBarAccuracy";
-            this.pBarAccuracy.Size = new System.Drawing.Size(849, 23);
-            this.pBarAccuracy.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.pBarAccuracy.TabIndex = 6;
+            this.labelBenchmark.AutoSize = true;
+            this.labelBenchmark.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelBenchmark.Location = new System.Drawing.Point(5, 15);
+            this.labelBenchmark.Name = "labelBenchmark";
+            this.labelBenchmark.Size = new System.Drawing.Size(115, 24);
+            this.labelBenchmark.TabIndex = 7;
+            this.labelBenchmark.Text = "Benchmark";
             // 
             // panelLine
             // 
             this.panelLine.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelLine.BackColor = System.Drawing.Color.Black;
-            this.panelLine.Location = new System.Drawing.Point(8, 48);
+            this.panelLine.Location = new System.Drawing.Point(7, 45);
             this.panelLine.Name = "panelLine";
-            this.panelLine.Size = new System.Drawing.Size(848, 3);
-            this.panelLine.TabIndex = 2;
+            this.panelLine.Size = new System.Drawing.Size(896, 3);
+            this.panelLine.TabIndex = 9;
             // 
-            // labelBenchmark
+            // pBarAccuracy
             // 
-            this.labelBenchmark.AutoSize = true;
-            this.labelBenchmark.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelBenchmark.Location = new System.Drawing.Point(8, 18);
-            this.labelBenchmark.Name = "labelBenchmark";
-            this.labelBenchmark.Size = new System.Drawing.Size(115, 24);
-            this.labelBenchmark.TabIndex = 0;
-            this.labelBenchmark.Text = "Benchmark";
+            this.pBarAccuracy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pBarAccuracy.ForeColor = System.Drawing.Color.Violet;
+            this.pBarAccuracy.Location = new System.Drawing.Point(7, 151);
+            this.pBarAccuracy.MarqueeAnimationSpeed = 0;
+            this.pBarAccuracy.Maximum = 10000;
+            this.pBarAccuracy.Name = "pBarAccuracy";
+            this.pBarAccuracy.Size = new System.Drawing.Size(897, 23);
+            this.pBarAccuracy.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.pBarAccuracy.TabIndex = 13;
             // 
-            // btnBenchmark
+            // pBarProgress
             // 
-            this.btnBenchmark.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBenchmark.Location = new System.Drawing.Point(736, 12);
-            this.btnBenchmark.Name = "btnBenchmark";
-            this.btnBenchmark.Size = new System.Drawing.Size(120, 30);
-            this.btnBenchmark.TabIndex = 1;
-            this.btnBenchmark.Text = "Run benchmark";
-            this.btnBenchmark.UseVisualStyleBackColor = true;
-            this.btnBenchmark.Click += new System.EventHandler(this.BtnBenchmark_Click);
+            this.pBarProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pBarProgress.ForeColor = System.Drawing.Color.Violet;
+            this.pBarProgress.Location = new System.Drawing.Point(7, 89);
+            this.pBarProgress.MarqueeAnimationSpeed = 0;
+            this.pBarProgress.Name = "pBarProgress";
+            this.pBarProgress.Size = new System.Drawing.Size(897, 23);
+            this.pBarProgress.Step = 1;
+            this.pBarProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.pBarProgress.TabIndex = 11;
+            // 
+            // lblAccuracy
+            // 
+            this.lblAccuracy.AutoSize = true;
+            this.lblAccuracy.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAccuracy.Location = new System.Drawing.Point(5, 124);
+            this.lblAccuracy.Name = "lblAccuracy";
+            this.lblAccuracy.Size = new System.Drawing.Size(74, 20);
+            this.lblAccuracy.TabIndex = 12;
+            this.lblAccuracy.Text = "Accuracy";
+            // 
+            // lblProgress
+            // 
+            this.lblProgress.AutoSize = true;
+            this.lblProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgress.Location = new System.Drawing.Point(5, 61);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(72, 20);
+            this.lblProgress.TabIndex = 10;
+            this.lblProgress.Text = "Progress";
             // 
             // BenchmarkView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.btnBenchmark);
-            this.Controls.Add(this.labelBenchmark);
-            this.Controls.Add(this.panelLine);
-            this.Controls.Add(this.pBarAccuracy);
-            this.Controls.Add(this.pBarProgress);
-            this.Controls.Add(this.lblAccuracy);
-            this.Controls.Add(this.lblProgress);
+            this.Controls.Add(this.panel1);
             this.Name = "BenchmarkView";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(865, 188);
+            this.Size = new System.Drawing.Size(921, 606);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label lblProgress;
-        private System.Windows.Forms.Label lblAccuracy;
-        private System.Windows.Forms.ProgressBar pBarProgress;
-        private System.Windows.Forms.ProgressBar pBarAccuracy;
-        private System.Windows.Forms.Panel panelLine;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btnRunBenchmark;
         private System.Windows.Forms.Label labelBenchmark;
-        private System.Windows.Forms.Button btnBenchmark;
+        private System.Windows.Forms.Panel panelLine;
+        private System.Windows.Forms.ProgressBar pBarAccuracy;
+        private System.Windows.Forms.ProgressBar pBarProgress;
+        private System.Windows.Forms.Label lblAccuracy;
+        private System.Windows.Forms.Label lblProgress;
+        private System.Windows.Forms.Button btnCancelBenchmark;
     }
 }

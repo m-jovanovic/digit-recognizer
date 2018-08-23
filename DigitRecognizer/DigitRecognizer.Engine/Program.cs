@@ -19,7 +19,9 @@ namespace DigitRecognizer.Engine
     {
         private static void Main()
         {
-            var learningRate = 0.0003;
+            Console.Title = "Digit Recognizer - Engine";
+
+            var learningRate = 0.00035;
             var epochs = 10;
             var regularizationFactor = 15.0;
             
@@ -32,14 +34,14 @@ namespace DigitRecognizer.Engine
 
             var layers = new List<NnLayer>
             {
-                new NnLayer(784, 100, new LeakyRelu()),
-                new NnLayer(100, 30, new LeakyRelu()),
-                new NnLayer(30, 10, new Softmax())
+                new NnLayer(784, 200, new LeakyRelu()),
+                new NnLayer(200, 100, new LeakyRelu()),
+                new NnLayer(100, 10, new Softmax())
             };
 
             var nn = new NeuralNetwork(layers, learningRate);
             
-            var optimizer = new MomentumOptimizer(nn, new CrossEntropy(), 0.91);
+            var optimizer = new MomentumOptimizer(nn, new CrossEntropy(), 0.93);
 
             var provider = new BatchDataProvider(DirectoryHelper.ExpandedTrainLabelsPath, DirectoryHelper.ExpandedTrainImagesPath, 100);
 

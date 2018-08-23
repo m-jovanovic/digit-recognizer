@@ -5,13 +5,18 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 {
     public partial class MainForm : Form, IMainFormView
     {
-        private readonly BenchmarkView _benchmarkView;
+        private BenchmarkView _benchmarkView;
 
         public MainForm()
         {
             InitializeComponent();
 
-            _benchmarkView = new BenchmarkView { Dock = DockStyle.Bottom };
+            InitializeViews();
+        }
+
+        private void InitializeViews()
+        {
+            _benchmarkView = new BenchmarkView { Dock = DockStyle.Fill };
 
             Controls.Add(_benchmarkView);
         }
