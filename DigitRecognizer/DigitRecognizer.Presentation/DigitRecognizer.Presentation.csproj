@@ -50,12 +50,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Infrastructure\DependencyResolver.cs" />
+    <Compile Include="Infrastructure\ExceptionHandlers.cs" />
     <Compile Include="Presenters\BenchmarkPresenter.cs" />
     <Compile Include="Presenters\ApplicationPresenter.cs" />
     <Compile Include="Services\ILoggingService.cs" />
     <Compile Include="Services\IMessageService.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\MessageService.cs" />
+    <Compile Include="Startup.cs" />
     <Compile Include="Views\Implementations\BenchmarkView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -73,6 +76,7 @@
     <Compile Include="Views\Interfaces\IBenchmarkView.cs" />
     <Compile Include="Views\Interfaces\IConfigurationView.cs" />
     <Compile Include="Views\Interfaces\IMainFormView.cs" />
+    <Compile Include="Views\Interfaces\IView.cs" />
     <EmbeddedResource Include="Views\Implementations\BenchmarkView.resx">
       <DependentUpon>BenchmarkView.cs</DependentUpon>
     </EmbeddedResource>

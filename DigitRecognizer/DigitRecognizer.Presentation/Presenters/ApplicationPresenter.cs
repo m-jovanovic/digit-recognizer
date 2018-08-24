@@ -7,11 +7,10 @@ namespace DigitRecognizer.Presentation.Presenters
     {
         private readonly BenchmarkPresenter _benchmarkPresenter;
 
-        public ApplicationPresenter(IMainFormView mainFormView)
+        public ApplicationPresenter(IMainFormView mainFormView, 
+            IMessageService messageService, 
+            ILoggingService loggingService)
         {
-            var messageService = new MessageService();
-            var loggingService = new LoggingService();
-
             _benchmarkPresenter = new BenchmarkPresenter(mainFormView.BenchmarkView, messageService, loggingService);
         }
     }

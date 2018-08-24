@@ -2,7 +2,7 @@
 
 namespace DigitRecognizer.Presentation.Views.Interfaces
 {
-    public interface IBenchmarkView
+    public interface IBenchmarkView : IView
     {
         event EventHandler RunBenchmark;
         event EventHandler CancelBenchmark;

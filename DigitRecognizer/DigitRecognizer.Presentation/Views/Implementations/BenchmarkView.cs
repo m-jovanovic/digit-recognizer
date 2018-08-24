@@ -6,22 +6,13 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 {
     public partial class BenchmarkView : UserControl, IBenchmarkView
     {
-        #region Init
+        #region Ctor
 
         public BenchmarkView()
         {
             InitializeComponent();
 
             InitializeView();
-        }
-
-        private void InitializeView()
-        {
-            btnRunBenchmark.Click += OnBtnRunBenchmarkClick;
-
-            btnCancelBenchmark.Click += OnBtnCancelBenchmarkClick;
-
-            ResetView();
         }
 
         #endregion
@@ -78,6 +69,20 @@ namespace DigitRecognizer.Presentation.Views.Implementations
             {
                 pBarProgress.PerformStep();
             }
+
+            string text = $@"{pBarProgress.Value}%";
+            
+            if (lblProgressVal.InvokeRequired)
+            {
+                lblProgressVal.Invoke((Action) (() =>
+                {
+                    lblProgressVal.Text = text;
+                }));
+            }
+            else
+            {
+                lblProgressVal.Text = text;
+            }
         }
 
         public void SetAccuracy(int accuracy)
@@ -99,32 +104,63 @@ namespace DigitRecognizer.Presentation.Views.Implementations
                 pBarAccuracy.Value = accuracy;
             }
 
-            string message = $@"Accuracy: {accuracy / 10000.0:P2} ({accuracy}/10000)";
+            string text1 = $@"Accuracy: {accuracy}/10000 images correcty classified";
 
             if (lblAccuracy.InvokeRequired)
             {
                 lblAccuracy.Invoke((Action)(() =>
                 {
-                    lblAccuracy.Text = message;
+                    lblAccuracy.Text = text1;
                 }));
             }
             else
             {
-                lblAccuracy.Text = message;
+                lblAccuracy.Text = text1;
             }
+
+            string text2 = $"{accuracy / 10000.0 * 100:N2}%";
+
+            if (lblAccuracyValue.InvokeRequired)
+            {
+                lblAccuracyValue.Invoke((Action)(() =>
+                {
+                    lblAccuracyValue.Text = text2;
+                }));
+            }
+            else
+            {
+                lblAccuracyValue.Text = text2;
+            }
+        }
+
+        public void Display()
+        {
+            Show();
+        }
+
+        public void Close()
+        {
+            Hide();
+        }
+
+        private void InitializeView()
+        {
+            btnRunBenchmark.Click += OnBtnRunBenchmarkClick;
+
+            btnCancelBenchmark.Click += OnBtnCancelBenchmarkClick;
+
+            ResetView();
         }
 
         private void OnBtnRunBenchmarkClick(object sender, EventArgs e)
         {
             ResetView();
-            
+
             RunBenchmark?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnBtnCancelBenchmarkClick(object sender, EventArgs e)
         {
-            ResetView();
-
             CancelBenchmark?.Invoke(this, EventArgs.Empty);
         }
 
@@ -135,6 +171,8 @@ namespace DigitRecognizer.Presentation.Views.Implementations
             pBarProgress.Value = 0;
 
             lblAccuracy.Text = @"Accuracy";
+
+            lblProgressVal.Text = lblAccuracyValue.Text = string.Empty;
         }
 
         #endregion
