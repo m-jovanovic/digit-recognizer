@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using DigitRecognizer.Presentation.Views.Interfaces;
 
 namespace DigitRecognizer.Presentation.Views.Implementations
@@ -6,22 +7,48 @@ namespace DigitRecognizer.Presentation.Views.Implementations
     public partial class MainForm : Form, IMainFormView
     {
         private BenchmarkView _benchmarkView;
+        private List<IView> _views;
 
         public MainForm()
         {
             InitializeComponent();
 
             InitializeViews();
+
+            HideView();
         }
 
         private void InitializeViews()
         {
+            _views = new List<IView>();
+
             _benchmarkView = new BenchmarkView { Dock = DockStyle.Fill };
 
             Controls.Add(_benchmarkView);
+
+            _views.Add(this);
+
+            _views.Add(BenchmarkView);
+
+            _views.ForEach(x => x.HideView());
         }
 
         public IBenchmarkView BenchmarkView => _benchmarkView;
+
+        private void BenchmarkToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            _benchmarkView.ShowView();
+        }
+
+        public void ShowView()
+        {
+            Show();
+        }
+
+        public void HideView()
+        {
+            Hide();
+        }
     }
 
     //public partial class MainForm : Form

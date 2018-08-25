@@ -3,7 +3,7 @@
     /// <summary>
     /// Interface for the main form view.
     /// </summary>
-    public interface IMainFormView
+    public interface IMainFormView : IView
     {
         /// <summary>
         /// Gets the benchmark view.

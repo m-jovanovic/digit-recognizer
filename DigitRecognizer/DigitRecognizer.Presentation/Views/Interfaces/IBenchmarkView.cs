@@ -13,5 +13,6 @@ namespace DigitRecognizer.Presentation.Views.Interfaces
         void PerformProgressStep();
         void SetAccuracy(int accuracy);
         void DrawGrid(ImageGridModel model);
+        void ResetView();
     }
 }

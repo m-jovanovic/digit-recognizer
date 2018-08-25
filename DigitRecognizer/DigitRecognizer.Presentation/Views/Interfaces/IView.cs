@@ -2,7 +2,7 @@
 {
     public interface IView
     {
-        void Display();
-        void Close();
+        void ShowView();
+        void HideView();
     }
 }

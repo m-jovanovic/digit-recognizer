@@ -29,24 +29,52 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
+            this.benchmarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.BackColor = System.Drawing.SystemColors.Control;
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.benchmarkToolStripMenuItem});
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(1384, 24);
+            this.menuStrip.TabIndex = 0;
+            // 
+            // benchmarkToolStripMenuItem
+            // 
+            this.benchmarkToolStripMenuItem.Name = "benchmarkToolStripMenuItem";
+            this.benchmarkToolStripMenuItem.Size = new System.Drawing.Size(79, 20);
+            this.benchmarkToolStripMenuItem.Text = "Benchmark";
+            this.benchmarkToolStripMenuItem.Click += new System.EventHandler(this.BenchmarkToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1384, 861);
+            this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip;
             this.MinimumSize = new System.Drawing.Size(1400, 900);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Digit Recognizer";
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem benchmarkToolStripMenuItem;
     }
 }
 

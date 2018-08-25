@@ -83,7 +83,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\Interfaces\IBenchmarkView.cs" />
-    <Compile Include="Views\Interfaces\IConfigurationView.cs" />
     <Compile Include="Views\Interfaces\IMainFormView.cs" />
     <Compile Include="Views\Interfaces\IView.cs" />
     <EmbeddedResource Include="Components\ImageGrid.resx">

@@ -8,7 +8,11 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 {
     public partial class BenchmarkView : UserControl, IBenchmarkView
     {
+        #region Fields
+
         private readonly ImageGrid _imageGrid;
+
+        #endregion
 
         #region Ctor
 
@@ -61,6 +65,29 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 
         #region Methods
 
+        private void InitializeView()
+        {
+            btnRunBenchmark.Click += OnBtnRunBenchmarkClick;
+
+            btnCancelBenchmark.Click += OnBtnCancelBenchmarkClick;
+
+            ResetView();
+        }
+
+        private void OnBtnRunBenchmarkClick(object sender, EventArgs e)
+        {
+            RunBenchmark?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnBtnCancelBenchmarkClick(object sender, EventArgs e)
+        {
+            CancelBenchmark?.Invoke(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+        #region IBenchmarkView implementation
+
         public void PerformProgressStep()
         {
             if (!IsBenchmarkRunning)
@@ -81,10 +108,10 @@ namespace DigitRecognizer.Presentation.Views.Implementations
             }
 
             string text = $@"{pBarProgress.Value}%";
-            
+
             if (lblProgressVal.InvokeRequired)
             {
-                lblProgressVal.Invoke((Action) (() =>
+                lblProgressVal.Invoke((Action)(() =>
                 {
                     lblProgressVal.Text = text;
                 }));
@@ -142,47 +169,16 @@ namespace DigitRecognizer.Presentation.Views.Implementations
                 lblAccuracyValue.Text = text2;
             }
         }
-        
+
         public void DrawGrid(ImageGridModel model)
         {
             _imageGrid.DrawGrid(model);
         }
 
-        public void Display()
+        public void ResetView()
         {
-            Show();
-        }
-
-        public void Close()
-        {
-            Hide();
-        }
-
-        private void InitializeView()
-        {
-            btnRunBenchmark.Click += OnBtnRunBenchmarkClick;
-
-            btnCancelBenchmark.Click += OnBtnCancelBenchmarkClick;
-            
-            ResetView();
-        }
-
-        private void OnBtnRunBenchmarkClick(object sender, EventArgs e)
-        {
-            ResetView();
-
             _imageGrid.ResetGrid();
 
-            RunBenchmark?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnBtnCancelBenchmarkClick(object sender, EventArgs e)
-        {
-            CancelBenchmark?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void ResetView()
-        {
             pBarAccuracy.Value = 0;
 
             pBarProgress.Value = 0;
@@ -190,6 +186,16 @@ namespace DigitRecognizer.Presentation.Views.Implementations
             lblAccuracy.Text = @"Accuracy";
 
             lblProgressVal.Text = lblAccuracyValue.Text = string.Empty;
+        }
+
+        public void ShowView()
+        {
+            Show();
+        }
+
+        public void HideView()
+        {
+            Hide();
         }
 
         #endregion

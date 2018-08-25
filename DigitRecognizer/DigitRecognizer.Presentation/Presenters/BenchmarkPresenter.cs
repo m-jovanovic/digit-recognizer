@@ -58,6 +58,8 @@ namespace DigitRecognizer.Presentation.Presenters
 
             IPredictionModel model = ClusterPredictionModel.FromFiles(dlg.FileNames);
 
+            _benchmarkView.ResetView();
+
             _cancellationTokenSource = new CancellationTokenSource();
 
             CancellationToken token = _cancellationTokenSource.Token;
