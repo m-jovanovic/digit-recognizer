@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using DigitRecognizer.Presentation.Data;
+using DigitRecognizer.Presentation.Infrastructure;
 
 namespace DigitRecognizer.Presentation.Components
 {
@@ -12,9 +13,9 @@ namespace DigitRecognizer.Presentation.Components
 
         private ImageGridModel _gridModel;
 
-        private readonly List<int> _incorrectlyClassifiedImagesPredictions;
-        private readonly List<int> _incorrectlyClassifiedImagesLabels;
-        private readonly List<Image> _incorrectlyClassifiedImages;
+        private List<int> _incorrectlyClassifiedImagesPredictions;
+        private List<int> _incorrectlyClassifiedImagesLabels;
+        private List<Image> _incorrectlyClassifiedImages;
 
         #endregion
 
@@ -24,118 +25,41 @@ namespace DigitRecognizer.Presentation.Components
         {
             InitializeComponent();
 
+            InitializePanels();
+
             _incorrectlyClassifiedImagesPredictions = new List<int>();
             _incorrectlyClassifiedImagesLabels = new List<int>();
             _incorrectlyClassifiedImages = new List<Image>();
-
-            panelImagesGrid.Paint += OnPanelImagesGridPaint;
-            panelIncorrectImagesGrid.Paint += OnPanelIncorrectImagesGridPaint;
         }
 
         #endregion
 
         #region Methods
 
-        protected override void OnResize(EventArgs e)
+        private void InitializePanels()
         {
-            double half = Width / 2.0;
-            
-            // Left panel
+            PanelDoubleBuffering.Enable(panelImagesGrid);
+            PanelDoubleBuffering.Enable(panelIncorrectImagesGrid);
 
-            double center = half / 2.0;
-
-            panelImagesGrid.Left = (int) (center - panelImagesGrid.Width / 2.0);
-            panelImagesGrid.Top = (Height - panelImagesGrid.Height) / 2;
-            lblLeft.Left = panelImagesGrid.Left - 5;
-            lblLeft.Top = panelImagesGrid.Top - 25;
-
-            // Right panel
-
-            center = Width - half / 2.0;
-
-            panelIncorrectImagesGrid.Left = (int)(center - panelIncorrectImagesGrid.Width / 2.0);
-            panelIncorrectImagesGrid.Top = (Height - panelIncorrectImagesGrid.Height) / 2;
-            lblRight.Left = panelIncorrectImagesGrid.Left - 5;
-            lblRight.Top = panelIncorrectImagesGrid.Top - 25;
-
-            lblNote.Left = panelIncorrectImagesGrid.Right - lblNote.Width + 5;
-            lblNote.Top = panelIncorrectImagesGrid.Bottom + lblNote.Height - 10;
-
-            base.OnResize(e);
+            panelImagesGrid.Paint += OnPanelImagesGridPaint;
+            panelIncorrectImagesGrid.Paint += OnPanelIncorrectImagesGridPaint;
         }
 
-        private void OnPanelImagesGridPaint(object sender, PaintEventArgs e)
+        public void ResetGrid()
         {
-            if (_gridModel == null) return;
+            _gridModel = null;
+            _incorrectlyClassifiedImages = new List<Image>();
+            _incorrectlyClassifiedImagesLabels = new List<int>();
+            _incorrectlyClassifiedImagesPredictions = new List<int>();
 
-            int xOffset = _gridModel.Images[0].Width;
-            int yOffset = _gridModel.Images[0].Height;
-
-            for (var i = 0; i < _gridModel.Count; i++)
-            {
-                int x = i % 10 * xOffset;
-                int y = i / 10 * yOffset;
-
-                Image img = _gridModel.Images[i];
-
-                e.Graphics.DrawImage(img, new Point(x, y));
-
-                Size imgSize = img.Size;
-
-                var drawFont = new Font("Arial", 10);
-                var drawBrush = new SolidBrush(Color.Black);
-                var drawFormat = new StringFormat();
-
-                string label = _gridModel.Labels[i].ToString();
-                SizeF labelSize = e.Graphics.MeasureString(label, drawFont);
-
-                e.Graphics.DrawString(label, drawFont, drawBrush, x, y + imgSize.Height - labelSize.Height, drawFormat);
-
-                string prediction = _gridModel.Predictions[i].ToString();
-                SizeF predictionSize = e.Graphics.MeasureString(prediction, drawFont);
-
-                e.Graphics.DrawString(prediction, drawFont, drawBrush, x + imgSize.Width - predictionSize.Width, y + imgSize.Height - predictionSize.Height, drawFormat);
-            }
+            panelImagesGrid.Invalidate();
+            panelIncorrectImagesGrid.Invalidate();
         }
 
-        private void OnPanelIncorrectImagesGridPaint(object sender, PaintEventArgs e)
-        {
-            if (_gridModel == null) return;
-
-            int xOffset = _gridModel.Images[0].Width;
-            int yOffset = _gridModel.Images[0].Height;
-
-            for (var i = 0; i < _incorrectlyClassifiedImages.Count; i++)
-            {
-                int x = i % 10 * xOffset;
-                int y = i / 10 * yOffset;
-
-                Image img = _incorrectlyClassifiedImages[i];
-
-                e.Graphics.DrawImage(img, new Point(x, y));
-
-                Size imgSize = img.Size;
-
-                var drawFont = new Font("Arial", 10);
-                var drawBrush = new SolidBrush(Color.Black);
-                var drawFormat = new StringFormat();
-
-                string label = _incorrectlyClassifiedImagesLabels[i].ToString();
-                SizeF labelSize = e.Graphics.MeasureString(label, drawFont);
-
-                e.Graphics.DrawString(label, drawFont, drawBrush, x, y + imgSize.Height - labelSize.Height, drawFormat);
-
-                string prediction = _incorrectlyClassifiedImagesPredictions[i].ToString();
-                SizeF predictionSize = e.Graphics.MeasureString(prediction, drawFont);
-
-                e.Graphics.DrawString(prediction, drawFont, drawBrush, x + imgSize.Width - predictionSize.Width, y + imgSize.Height - predictionSize.Height, drawFormat);
-            }
-        }
-        
         public void DrawGrid(ImageGridModel model)
         {
             _gridModel = model;
-            
+
             panelImagesGrid.Invalidate();
 
             int count = _incorrectlyClassifiedImages.Count;
@@ -154,7 +78,77 @@ namespace DigitRecognizer.Presentation.Components
             {
                 panelIncorrectImagesGrid.Invalidate();
             }
+        }
 
+        private void OnPanelImagesGridPaint(object sender, PaintEventArgs e)
+        {
+            if (_gridModel == null) return;
+
+            DrawGrid(e.Graphics, _gridModel.Images, _gridModel.Labels, _gridModel.Predictions);
+        }
+
+        private void OnPanelIncorrectImagesGridPaint(object sender, PaintEventArgs e)
+        {
+            if (_incorrectlyClassifiedImages.Count == 0) return;
+
+            DrawGrid(e.Graphics, _incorrectlyClassifiedImages.ToArray(), _incorrectlyClassifiedImagesLabels.ToArray(), _incorrectlyClassifiedImagesPredictions.ToArray());
+        }
+
+        private static void DrawGrid(Graphics g, Image[] images, int[] labels, int[] predictions)
+        {
+            int xOffset = images[0].Width;
+            int yOffset = images[0].Height;
+
+            for (var i = 0; i < images.Length; i++)
+            {
+                int x = i % 10 * xOffset;
+                int y = i / 10 * yOffset;
+
+                Image img = images[i];
+
+                g.DrawImage(img, new Point(x, y));
+
+                Size imgSize = img.Size;
+
+                var drawFont = new Font("Arial", 10);
+                var drawBrush = new SolidBrush(Color.Black);
+                var drawFormat = new StringFormat();
+
+                string label = labels[i].ToString();
+                SizeF labelSize = g.MeasureString(label, drawFont);
+
+                g.DrawString(label, drawFont, drawBrush, x, y + imgSize.Height - labelSize.Height, drawFormat);
+
+                string prediction = predictions[i].ToString();
+                SizeF predictionSize = g.MeasureString(prediction, drawFont);
+
+                g.DrawString(prediction, drawFont, drawBrush, x + imgSize.Width - predictionSize.Width, y + imgSize.Height - predictionSize.Height, drawFormat);
+            }
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            // Left panel
+            CalculateGridLocation(panelImagesGrid, lblLeft, Width / 4.0);
+
+            // Right panel
+            CalculateGridLocation(panelIncorrectImagesGrid, lblRight, Width - Width / 4.0);
+
+            lblNote.Left = panelIncorrectImagesGrid.Right - lblNote.Width + 5;
+            lblNote.Top = panelIncorrectImagesGrid.Bottom + lblNote.Height - 10;
+
+            base.OnResize(e);
+        }
+
+        private void CalculateGridLocation(object panelObj, object labelObj, double center)
+        {
+            var panel = (Panel)panelObj;
+            panel.Left = (int)(center - panel.Width / 2.0);
+            panel.Top = (Height - panel.Height) / 2;
+
+            var label = (Label)labelObj;
+            label.Left = panel.Left - 5;
+            label.Top = panel.Top - 25;
         }
 
         #endregion

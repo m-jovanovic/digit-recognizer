@@ -171,6 +171,8 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         {
             ResetView();
 
+            _imageGrid.ResetGrid();
+
             RunBenchmark?.Invoke(this, EventArgs.Empty);
         }
 

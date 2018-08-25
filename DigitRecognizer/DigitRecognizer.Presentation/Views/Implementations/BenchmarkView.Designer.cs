@@ -57,7 +57,7 @@
             this.panelBenchmarkContainer.Controls.Add(this.lblAccuracy);
             this.panelBenchmarkContainer.Controls.Add(this.lblProgress);
             this.panelBenchmarkContainer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelBenchmarkContainer.Location = new System.Drawing.Point(5, 711);
+            this.panelBenchmarkContainer.Location = new System.Drawing.Point(5, 435);
             this.panelBenchmarkContainer.Name = "panelBenchmarkContainer";
             this.panelBenchmarkContainer.Size = new System.Drawing.Size(911, 184);
             this.panelBenchmarkContainer.TabIndex = 0;
@@ -177,7 +177,7 @@
             this.panelGridContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelGridContainer.Location = new System.Drawing.Point(5, 5);
             this.panelGridContainer.Name = "panelGridContainer";
-            this.panelGridContainer.Size = new System.Drawing.Size(911, 706);
+            this.panelGridContainer.Size = new System.Drawing.Size(911, 430);
             this.panelGridContainer.TabIndex = 1;
             // 
             // BenchmarkView
@@ -189,7 +189,7 @@
             this.Controls.Add(this.panelBenchmarkContainer);
             this.Name = "BenchmarkView";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(921, 900);
+            this.Size = new System.Drawing.Size(921, 624);
             this.panelBenchmarkContainer.ResumeLayout(false);
             this.panelBenchmarkContainer.PerformLayout();
             this.ResumeLayout(false);
