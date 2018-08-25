@@ -9,6 +9,7 @@ using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.MachineLearning.Providers;
+using DigitRecognizer.Presentation.Data;
 using DigitRecognizer.Presentation.Services;
 using DigitRecognizer.Presentation.Views.Interfaces;
 
@@ -95,11 +96,13 @@ namespace DigitRecognizer.Presentation.Presenters
 
                 MnistImageBatch data = provider.GetData();
 
-                List<double[]> predictions = data.Pixels.Select(model.Predict).ToList();
+                int[] predictions = data.Pixels.Select(model.Predict).Select(x=> x.ArgMax()).ToArray();
 
-                acc += data.Labels.Where((t, j) => t == predictions[j].ArgMax()).Count();
+                acc += data.Labels.Where((lbl, pred) => lbl == predictions[pred]).Count();
 
                 _benchmarkView.PerformProgressStep();
+
+                _benchmarkView.DrawGrid(new ImageGridModel(data, predictions));
             }
 
             _benchmarkView.SetAccuracy(acc);

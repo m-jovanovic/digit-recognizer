@@ -1,4 +1,5 @@
 ﻿using System;
+using DigitRecognizer.Presentation.Data;
 
 namespace DigitRecognizer.Presentation.Views.Interfaces
 {
@@ -11,5 +12,6 @@ namespace DigitRecognizer.Presentation.Views.Interfaces
 
         void PerformProgressStep();
         void SetAccuracy(int accuracy);
+        void DrawGrid(ImageGridModel model);
     }
 }

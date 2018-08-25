@@ -47,6 +47,7 @@
     <Compile Include="Data\LinkedList.cs" />
     <Compile Include="Data\LinkedListNode.cs" />
     <Compile Include="Data\MnistImageBatch.cs" />
+    <Compile Include="Extensions\ImageExtensions.cs" />
     <Compile Include="Extensions\RandomExtensions.cs" />
     <Compile Include="Extensions\VectorExtensions.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />

@@ -1,16 +1,26 @@
 ﻿using System;
 using System.Windows.Forms;
+using DigitRecognizer.Presentation.Components;
+using DigitRecognizer.Presentation.Data;
 using DigitRecognizer.Presentation.Views.Interfaces;
 
 namespace DigitRecognizer.Presentation.Views.Implementations
 {
     public partial class BenchmarkView : UserControl, IBenchmarkView
     {
+        private readonly ImageGrid _imageGrid;
+
         #region Ctor
 
         public BenchmarkView()
         {
             InitializeComponent();
+
+            Padding = new Padding(5);
+
+            _imageGrid = new ImageGrid() { Dock = DockStyle.Fill, Padding = new Padding(20)};
+
+            panelGridContainer.Controls.Add(_imageGrid);
 
             InitializeView();
         }
@@ -132,6 +142,11 @@ namespace DigitRecognizer.Presentation.Views.Implementations
                 lblAccuracyValue.Text = text2;
             }
         }
+        
+        public void DrawGrid(ImageGridModel model)
+        {
+            _imageGrid.DrawGrid(model);
+        }
 
         public void Display()
         {
@@ -148,7 +163,7 @@ namespace DigitRecognizer.Presentation.Views.Implementations
             btnRunBenchmark.Click += OnBtnRunBenchmarkClick;
 
             btnCancelBenchmark.Click += OnBtnCancelBenchmarkClick;
-
+            
             ResetView();
         }
 

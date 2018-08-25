@@ -50,6 +50,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ImageGridModel.cs" />
+    <Compile Include="EventArguments\GridPaintEventArgs.cs" />
+    <Compile Include="Components\ImageGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\ImageGrid.Designer.cs">
+      <DependentUpon>ImageGrid.cs</DependentUpon>
+    </Compile>
     <Compile Include="Infrastructure\DependencyResolver.cs" />
     <Compile Include="Infrastructure\ExceptionHandlers.cs" />
     <Compile Include="Presenters\BenchmarkPresenter.cs" />
@@ -77,6 +85,9 @@
     <Compile Include="Views\Interfaces\IConfigurationView.cs" />
     <Compile Include="Views\Interfaces\IMainFormView.cs" />
     <Compile Include="Views\Interfaces\IView.cs" />
+    <EmbeddedResource Include="Components\ImageGrid.resx">
+      <DependentUpon>ImageGrid.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Implementations\BenchmarkView.resx">
       <DependentUpon>BenchmarkView.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,5 +129,6 @@
   <ItemGroup>
     <Content Include="favico.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

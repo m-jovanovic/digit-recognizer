@@ -28,7 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelBenchmarkContainer = new System.Windows.Forms.Panel();
+            this.lblAccuracyValue = new System.Windows.Forms.Label();
+            this.lblProgressVal = new System.Windows.Forms.Label();
             this.btnCancelBenchmark = new System.Windows.Forms.Button();
             this.btnRunBenchmark = new System.Windows.Forms.Button();
             this.labelBenchmark = new System.Windows.Forms.Label();
@@ -37,29 +39,50 @@
             this.pBarProgress = new System.Windows.Forms.ProgressBar();
             this.lblAccuracy = new System.Windows.Forms.Label();
             this.lblProgress = new System.Windows.Forms.Label();
-            this.lblProgressVal = new System.Windows.Forms.Label();
-            this.lblAccuracyValue = new System.Windows.Forms.Label();
-            this.panel1.SuspendLayout();
+            this.panelGridContainer = new System.Windows.Forms.Panel();
+            this.panelBenchmarkContainer.SuspendLayout();
             this.SuspendLayout();
             // 
-            // panel1
+            // panelBenchmarkContainer
             // 
-            this.panel1.BackColor = System.Drawing.Color.White;
-            this.panel1.Controls.Add(this.lblAccuracyValue);
-            this.panel1.Controls.Add(this.lblProgressVal);
-            this.panel1.Controls.Add(this.btnCancelBenchmark);
-            this.panel1.Controls.Add(this.btnRunBenchmark);
-            this.panel1.Controls.Add(this.labelBenchmark);
-            this.panel1.Controls.Add(this.panelLine);
-            this.panel1.Controls.Add(this.pBarAccuracy);
-            this.panel1.Controls.Add(this.pBarProgress);
-            this.panel1.Controls.Add(this.lblAccuracy);
-            this.panel1.Controls.Add(this.lblProgress);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(5, 417);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(911, 184);
-            this.panel1.TabIndex = 0;
+            this.panelBenchmarkContainer.BackColor = System.Drawing.Color.White;
+            this.panelBenchmarkContainer.Controls.Add(this.lblAccuracyValue);
+            this.panelBenchmarkContainer.Controls.Add(this.lblProgressVal);
+            this.panelBenchmarkContainer.Controls.Add(this.btnCancelBenchmark);
+            this.panelBenchmarkContainer.Controls.Add(this.btnRunBenchmark);
+            this.panelBenchmarkContainer.Controls.Add(this.labelBenchmark);
+            this.panelBenchmarkContainer.Controls.Add(this.panelLine);
+            this.panelBenchmarkContainer.Controls.Add(this.pBarAccuracy);
+            this.panelBenchmarkContainer.Controls.Add(this.pBarProgress);
+            this.panelBenchmarkContainer.Controls.Add(this.lblAccuracy);
+            this.panelBenchmarkContainer.Controls.Add(this.lblProgress);
+            this.panelBenchmarkContainer.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panelBenchmarkContainer.Location = new System.Drawing.Point(5, 711);
+            this.panelBenchmarkContainer.Name = "panelBenchmarkContainer";
+            this.panelBenchmarkContainer.Size = new System.Drawing.Size(911, 184);
+            this.panelBenchmarkContainer.TabIndex = 0;
+            // 
+            // lblAccuracyValue
+            // 
+            this.lblAccuracyValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblAccuracyValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAccuracyValue.Location = new System.Drawing.Point(812, 124);
+            this.lblAccuracyValue.Name = "lblAccuracyValue";
+            this.lblAccuracyValue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblAccuracyValue.Size = new System.Drawing.Size(96, 20);
+            this.lblAccuracyValue.TabIndex = 16;
+            this.lblAccuracyValue.Text = "0%";
+            // 
+            // lblProgressVal
+            // 
+            this.lblProgressVal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblProgressVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblProgressVal.Location = new System.Drawing.Point(842, 61);
+            this.lblProgressVal.Name = "lblProgressVal";
+            this.lblProgressVal.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblProgressVal.Size = new System.Drawing.Size(66, 20);
+            this.lblProgressVal.TabIndex = 15;
+            this.lblProgressVal.Text = "0%";
             // 
             // btnCancelBenchmark
             // 
@@ -149,46 +172,33 @@
             this.lblProgress.TabIndex = 10;
             this.lblProgress.Text = "Progress";
             // 
-            // lblProgressVal
+            // panelGridContainer
             // 
-            this.lblProgressVal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblProgressVal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProgressVal.Location = new System.Drawing.Point(842, 61);
-            this.lblProgressVal.Name = "lblProgressVal";
-            this.lblProgressVal.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.lblProgressVal.Size = new System.Drawing.Size(66, 20);
-            this.lblProgressVal.TabIndex = 15;
-            this.lblProgressVal.Text = "0%";
-            // 
-            // lblAccuracyValue
-            // 
-            this.lblAccuracyValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblAccuracyValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAccuracyValue.Location = new System.Drawing.Point(812, 124);
-            this.lblAccuracyValue.Name = "lblAccuracyValue";
-            this.lblAccuracyValue.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.lblAccuracyValue.Size = new System.Drawing.Size(96, 20);
-            this.lblAccuracyValue.TabIndex = 16;
-            this.lblAccuracyValue.Text = "0%";
+            this.panelGridContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelGridContainer.Location = new System.Drawing.Point(5, 5);
+            this.panelGridContainer.Name = "panelGridContainer";
+            this.panelGridContainer.Size = new System.Drawing.Size(911, 706);
+            this.panelGridContainer.TabIndex = 1;
             // 
             // BenchmarkView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.panelGridContainer);
+            this.Controls.Add(this.panelBenchmarkContainer);
             this.Name = "BenchmarkView";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Size = new System.Drawing.Size(921, 606);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.Size = new System.Drawing.Size(921, 900);
+            this.panelBenchmarkContainer.ResumeLayout(false);
+            this.panelBenchmarkContainer.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelBenchmarkContainer;
         private System.Windows.Forms.Button btnRunBenchmark;
         private System.Windows.Forms.Label labelBenchmark;
         private System.Windows.Forms.Panel panelLine;
@@ -199,5 +209,6 @@
         private System.Windows.Forms.Button btnCancelBenchmark;
         private System.Windows.Forms.Label lblProgressVal;
         private System.Windows.Forms.Label lblAccuracyValue;
+        private System.Windows.Forms.Panel panelGridContainer;
     }
 }
