@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using DigitRecognizer.Presentation.Components;
-using DigitRecognizer.Presentation.Data;
+using DigitRecognizer.Presentation.Models;
 using DigitRecognizer.Presentation.Views.Interfaces;
 
 namespace DigitRecognizer.Presentation.Views.Implementations

@@ -50,8 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\ImageGridModel.cs" />
-    <Compile Include="EventArguments\GridPaintEventArgs.cs" />
+    <Compile Include="Models\ImageGridModel.cs" />
     <Compile Include="Components\ImageGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -131,6 +130,8 @@
   <ItemGroup>
     <Content Include="favico.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="EventArguments\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

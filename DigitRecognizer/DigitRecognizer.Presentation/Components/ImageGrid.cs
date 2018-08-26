@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
-using DigitRecognizer.Presentation.Data;
 using DigitRecognizer.Presentation.Infrastructure;
+using DigitRecognizer.Presentation.Models;
 
 namespace DigitRecognizer.Presentation.Components
 {
@@ -11,11 +11,11 @@ namespace DigitRecognizer.Presentation.Components
     {
         #region Fields
 
-        private ImageGridModel _gridModel;
+        private ImageGridModel _currentlyInProcessing;
+        private ImageGridModel _incorrectlyClassified;
 
-        private List<int> _incorrectlyClassifiedImagesPredictions;
-        private List<int> _incorrectlyClassifiedImagesLabels;
-        private List<Image> _incorrectlyClassifiedImages;
+        private int _gridCurrentImagesPage = 0;
+        private int _gridIncorrectImagesPage = 0;
 
         #endregion
 
@@ -27,9 +27,9 @@ namespace DigitRecognizer.Presentation.Components
 
             InitializePanels();
 
-            _incorrectlyClassifiedImagesPredictions = new List<int>();
-            _incorrectlyClassifiedImagesLabels = new List<int>();
-            _incorrectlyClassifiedImages = new List<Image>();
+            InitializeButtons();
+
+            ResetGrid();
         }
 
         #endregion
@@ -38,60 +38,113 @@ namespace DigitRecognizer.Presentation.Components
 
         private void InitializePanels()
         {
-            PanelDoubleBuffering.Enable(panelImagesGrid);
+            PanelDoubleBuffering.Enable(panelCurrentImagesGrid);
             PanelDoubleBuffering.Enable(panelIncorrectImagesGrid);
 
-            panelImagesGrid.Paint += OnPanelImagesGridPaint;
+            panelCurrentImagesGrid.Paint += OnPanelCurrentImagesGridPaint;
             panelIncorrectImagesGrid.Paint += OnPanelIncorrectImagesGridPaint;
+        }
+
+        private void InitializeButtons()
+        {
+            btnCurrentGridPrev.Click += BtnCurrentGridOnClick;
+            btnCurrentGridNext.Click += BtnCurrentGridOnClick;
+            btnIncorrectGridPrev.Click += BtnIncorrectGridOnClick;
+            btnIncorrectGridNext.Click += BtnIncorrectGridOnClick;
         }
 
         public void ResetGrid()
         {
-            _gridModel = null;
-            _incorrectlyClassifiedImages = new List<Image>();
-            _incorrectlyClassifiedImagesLabels = new List<int>();
-            _incorrectlyClassifiedImagesPredictions = new List<int>();
+            _currentlyInProcessing = new ImageGridModel();
+            _incorrectlyClassified = new ImageGridModel();
 
-            panelImagesGrid.Invalidate();
+            panelCurrentImagesGrid.Invalidate();
             panelIncorrectImagesGrid.Invalidate();
+
+            btnCurrentGridPrev.Enabled = false;
+            btnCurrentGridNext.Enabled = false;
+            btnIncorrectGridPrev.Enabled = false;
+            btnIncorrectGridNext.Enabled = false;
         }
 
         public void DrawGrid(ImageGridModel model)
         {
-            _gridModel = model;
+            _currentlyInProcessing += model;
 
-            panelImagesGrid.Invalidate();
+            int initialCount = _incorrectlyClassified.Count;
 
-            int count = _incorrectlyClassifiedImages.Count;
-
-            for (var i = 0; i < _gridModel.Labels.Length; i++)
+            for (var i = 0; i < model.Labels.Count; i++)
             {
-                if (_gridModel.Labels[i] != _gridModel.Predictions[i])
+                if (model.Labels[i] != model.Predictions[i])
                 {
-                    _incorrectlyClassifiedImagesPredictions.Add(_gridModel.Predictions[i]);
-                    _incorrectlyClassifiedImagesLabels.Add(_gridModel.Labels[i]);
-                    _incorrectlyClassifiedImages.Add(_gridModel.Images[i]);
+                    _incorrectlyClassified.Predictions.Add(model.Predictions[i]);
+                    _incorrectlyClassified.Labels.Add(model.Labels[i]);
+                    _incorrectlyClassified.Images.Add(model.Images[i]);
                 }
             }
 
-            if (count != _incorrectlyClassifiedImages.Count)
+            CalculatePaginationInfo();
+
+            panelCurrentImagesGrid.Invalidate();
+
+            if (initialCount != _incorrectlyClassified.Count)
             {
                 panelIncorrectImagesGrid.Invalidate();
             }
         }
 
-        private void OnPanelImagesGridPaint(object sender, PaintEventArgs e)
+        private void CalculatePaginationInfo()
         {
-            if (_gridModel == null) return;
+            _gridCurrentImagesPage = (_currentlyInProcessing.Count - 1) / Global.ImageGridFieldCount;
 
-            DrawGrid(e.Graphics, _gridModel.Images, _gridModel.Labels, _gridModel.Predictions);
+            CalculatePaginationButtonsState(btnCurrentGridPrev, btnCurrentGridNext, _gridCurrentImagesPage, _gridCurrentImagesPage);
+
+            _gridIncorrectImagesPage = (_incorrectlyClassified.Count - 1) / Global.ImageGridFieldCount; 
+
+            CalculatePaginationButtonsState(btnIncorrectGridPrev, btnIncorrectGridNext, _gridIncorrectImagesPage, _gridIncorrectImagesPage);
+        }
+
+        private static void CalculatePaginationButtonsState(Control prevBtn, Control nextBtn, int page, int maxPage)
+        {
+            if (prevBtn.InvokeRequired)
+            {
+                prevBtn.Invoke((Action) (() => { prevBtn.Enabled = page > 0; }));
+            }
+            else
+            {
+                prevBtn.Enabled = page > 0;
+            }
+
+            if (nextBtn.InvokeRequired)
+            {
+                nextBtn.Invoke((Action) (() => { nextBtn.Enabled = page < maxPage; }));
+            }
+            else
+            {
+                nextBtn.Enabled = page < maxPage;
+            }
+        }
+
+        private void OnPanelCurrentImagesGridPaint(object sender, PaintEventArgs e)
+        {
+            OnPanelPaint(_currentlyInProcessing, _gridCurrentImagesPage, Global.ImageGridFieldCount, e.Graphics);
         }
 
         private void OnPanelIncorrectImagesGridPaint(object sender, PaintEventArgs e)
         {
-            if (_incorrectlyClassifiedImages.Count == 0) return;
+            OnPanelPaint(_incorrectlyClassified, _gridIncorrectImagesPage, Global.ImageGridFieldCount, e.Graphics);
+        }
 
-            DrawGrid(e.Graphics, _incorrectlyClassifiedImages.ToArray(), _incorrectlyClassifiedImagesLabels.ToArray(), _incorrectlyClassifiedImagesPredictions.ToArray());
+        private static void OnPanelPaint(ImageGridModel model, int page, int take, Graphics g)
+        {
+            if (model == null || model.Count == 0) return;
+
+            int skip = page * take;
+            
+            DrawGrid(g,
+                model.Images.Skip(skip).Take(take).ToArray(),
+                model.Labels.Skip(skip).Take(take).ToArray(),
+                model.Predictions.Skip(skip).Take(take).ToArray());
         }
 
         private static void DrawGrid(Graphics g, Image[] images, int[] labels, int[] predictions)
@@ -126,29 +179,54 @@ namespace DigitRecognizer.Presentation.Components
             }
         }
 
+        private void BtnCurrentGridOnClick(object sender, EventArgs e)
+        {
+            OnPageButtonClick(btnCurrentGridPrev, btnCurrentGridNext, ref _gridCurrentImagesPage, (Button)sender == btnCurrentGridNext, (_currentlyInProcessing.Count - 1) / Global.ImageGridFieldCount);
+
+            panelCurrentImagesGrid.Invalidate();
+        }
+
+        private void BtnIncorrectGridOnClick(object sender, EventArgs e)
+        {
+            OnPageButtonClick(btnIncorrectGridPrev, btnIncorrectGridNext, ref _gridIncorrectImagesPage, (Button)sender == btnIncorrectGridNext, (_incorrectlyClassified.Count - 1) / Global.ImageGridFieldCount);
+
+            panelIncorrectImagesGrid.Invalidate();
+        }
+
+        private static void OnPageButtonClick(Button prevBtn, Button nextBtn, ref int page, bool shouldIncrease, int maxPage)
+        {
+            page += shouldIncrease ? 1 : -1;
+
+            CalculatePaginationButtonsState(prevBtn, nextBtn, page, maxPage);
+        }
+
         protected override void OnResize(EventArgs e)
         {
             // Left panel
-            CalculateGridLocation(panelImagesGrid, lblLeft, Width / 4.0);
+            CalculateGridElementLocations(panelCurrentImagesGrid, lblLeft, btnCurrentGridPrev, btnCurrentGridNext, Width * 0.25);
 
             // Right panel
-            CalculateGridLocation(panelIncorrectImagesGrid, lblRight, Width - Width / 4.0);
+            CalculateGridElementLocations(panelIncorrectImagesGrid, lblRight, btnIncorrectGridPrev, btnIncorrectGridNext,  Width * 0.75);
 
             lblNote.Left = panelIncorrectImagesGrid.Right - lblNote.Width + 5;
-            lblNote.Top = panelIncorrectImagesGrid.Bottom + lblNote.Height - 10;
+            lblNote.Top = panelIncorrectImagesGrid.Bottom + 5;
 
             base.OnResize(e);
         }
 
-        private void CalculateGridLocation(object panelObj, object labelObj, double center)
+        private void CalculateGridElementLocations(Control panel, Control label, Control btnPrev, Control btnNext, double center)
         {
-            var panel = (Panel)panelObj;
             panel.Left = (int)(center - panel.Width / 2.0);
             panel.Top = (Height - panel.Height) / 2;
-
-            var label = (Label)labelObj;
+            
             label.Left = panel.Left - 5;
             label.Top = panel.Top - 25;
+
+            btnPrev.Left = panel.Left;
+            btnPrev.Top = panel.Bottom + 5;
+
+            btnNext.Left = panel.Left + btnPrev.Width + 5;
+            btnNext.Top = panel.Bottom + 5;
         }
 
         #endregion

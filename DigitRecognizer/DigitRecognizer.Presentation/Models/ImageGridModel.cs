@@ -1,10 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using DigitRecognizer.Core.Data;
 using DigitRecognizer.Core.Extensions;
 
-namespace DigitRecognizer.Presentation.Data
+namespace DigitRecognizer.Presentation.Models
 {
     public class ImageGridModel
     {
@@ -14,14 +16,18 @@ namespace DigitRecognizer.Presentation.Data
         
         public ImageGridModel(MnistImageBatch batch, int[] predictions)
         {
-            Count = predictions.Length;
-            Labels = batch.Labels;
-            Predictions = predictions;
-            Images = ProcessImages(batch.Pixels);
+            Labels = new List<int>(batch.Labels);
+
+            Predictions = new List<int>(predictions);
+
+            Images = new List<Image>(ProcessImages(batch.Pixels));
         }
 
         public ImageGridModel()
         {
+            Labels = new List<int>();
+            Predictions = new List<int>();
+            Images = new List<Image>();
         }
 
         private Image[] ProcessImages(double[][] pixelArray)
@@ -67,12 +73,21 @@ namespace DigitRecognizer.Presentation.Data
             return images;
         }
 
-        public Image[] Images { get; set; }
+        public List<Image> Images { get; set; }
 
-        public int[] Labels { get; set; }
+        public List<int> Labels { get; set; }
 
-        public int[] Predictions { get; set; }
+        public List<int> Predictions { get; set; }
 
-        public int Count { get; set; }
+        public int Count => Images.Count;
+
+        public static ImageGridModel operator +(ImageGridModel igm1, ImageGridModel igm2)
+        {
+            igm1.Images.AddRange(igm2.Images);
+            igm1.Labels.AddRange(igm2.Labels);
+            igm1.Predictions.AddRange(igm2.Predictions);
+
+            return igm1;
+        }
     }
 }

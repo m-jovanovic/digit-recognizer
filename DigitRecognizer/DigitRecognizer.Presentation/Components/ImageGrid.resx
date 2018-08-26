@@ -117,4 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnCurrentGridPrev.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAEkSURBVHhe7ZrNSsQwGEX7QILP4s9K/AHToi7F19CNNvUl08xex9Eb+JRSxs0Mgs13DlwoaQic
+        20JL2gYAAAAAAAD+kOvn1aEd+qPt810bx03oxycb8kM35Nsir3xaHu1U/YQhn0l4PZEvWYfXfGBT6mXL
+        lS95617GE5tSLyHmG7/yQ7qS7AfyyCPvQ76N6dK7/Pw5j7xNqZfQpwvkkXcm3w753K98TMdFdia/iJjC
+        7nR9OtJCi5QvMY3d+eUtbzExjf1YcgmmsD9a7FR5ny6ubMp+n02pHwlTgoQpQcKUIGFKkDAlSJgSJEwJ
+        Ei4lzF+ZKUGhBIUSFEpQnJWwfRfJx+fxb8qWmaR/7oQQx3s75YdJCQ825A/XP0kBAAAAAAD8L5rmC8wr
+        Y+jG9YndAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="btnCurrentGridNext.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAEiSURBVHhe7drNSsNQEIbhXJDgrVR0I1QLJkG7bW9DXNQk3mRyuk/b2AmMUEPOplYxM+8DA20Z
+        At9XSk9/EgAAAADAP/G02V7rTX/ysnnLyqbLq/CiD/khwV9lPnV8lZB+hCsJvT8poB+5H+51xb78vbmV
+        0O2ghC4tw7Ou2Bcp4ZBW9UJX7KMEQQmCEkSshKysH3XFvkgJ8hZJCZTQl5AW9YOu2EcJIvpyqMJcV+yj
+        BPEnJQwuPpVp86K+0Qg/M3LxqUwrJ8aZxjjfyIWnMpc5I4xceArj44CUFWEpYbtB+J3Mna7YRXjCfwvf
+        nwUIbxrhCU94wsu0/SdAXbGL8IR3GD7687irr7iqZnUS3sczPyTB127Df3H9JykAAAAA+H1JcgRZJ2PT
+        LaxZLAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="btnIncorrectGridNext.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAASJJREFUeF7t
+        2s1Kw1AQhuFckOCtVHQjVAsmQbttb0Nc1CTeZHK6T9vYCYxQQ86mVjEz7wMDbRkC31dKT38SAAAAAMA/
+        8bTZXutNf/KyecvKpsur8KIP+SHBX2U+dXyVkH6EKwm9PymgH7kf7nXFvvy9uZXQ7aCELi3Ds67YFynh
+        kFb1QlfsowRBCYISRKyErKwfdcW+SAnyFkkJlNCXkBb1g67YRwki+nKowlxX7KME8SclDC4+lWnzor7R
+        CD8zcvGpTCsnxpnGON/IhacylzkjjFx4CuPjgJQVYSlhu0H4ncydrthFeMJ/C9+fBQhvGuEJT3jCy7T9
+        J0BdsYvwhHcYPvrzuKuvuKpmdRLexzM/JMHXbsN/cf0nKQAAAAD4fUlyBFknY9MtrFksAAAAAElFTkSu
+        QmCC
+</value>
+  </data>
+  <data name="btnIncorrectGridPrev.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABGdBTUEAALGPC/xhBQAAASRJREFUeF7t
+        ms1KxDAYRftAgs/iz0r8AdOiLsXX0I029SXTzF7H0Rv4lFLGzQyCzXcOXChpCJzbQkvaBgAAAAAAAP6Q
+        6+fVoR36o+3zXRvHTejHJxvyQzfk2yKvfFoe7VT9hCGfSXg9kS9Zh9d8YFPqZcuVL3nrXsYTm1IvIeYb
+        v/JDupLsB/LII+9Dvo3p0rv8/DmPvE2pl9CnC+SRdybfDvncr3xMx0V2Jr+ImMLudH060kKLlC8xjd35
+        5S1vMTGN/VhyCaawP1rsVHmfLq5syn6fTakfCVOChClBwpQgYUqQMCVImBIkTAkSLiXMX5kpQaEEhRIU
+        SlCclbB9F8nH5/FvypaZpH/uhBDHezvlh0kJDzbkD9c/SQEAAAAAAPwvmuYLzCtj6Mb1id0AAAAASUVO
+        RK5CYII=
+</value>
+  </data>
 </root>

@@ -8,7 +8,7 @@ using DigitRecognizer.Core.Extensions;
 using DigitRecognizer.Core.Utilities;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.MachineLearning.Providers;
-using DigitRecognizer.Presentation.Data;
+using DigitRecognizer.Presentation.Models;
 using DigitRecognizer.Presentation.Services;
 using DigitRecognizer.Presentation.Views.Interfaces;
 

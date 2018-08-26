@@ -1,5 +1,5 @@
 ﻿using System;
-using DigitRecognizer.Presentation.Data;
+using DigitRecognizer.Presentation.Models;
 
 namespace DigitRecognizer.Presentation.Views.Interfaces
 {
