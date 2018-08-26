@@ -20,16 +20,26 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 
         private void InitializeViews()
         {
-            _views = new List<IView>();
+            FillControlsCollection();
 
+            FillViewsCollection();
+        }
+
+        private void FillControlsCollection()
+        {
             _benchmarkView = new BenchmarkView { Dock = DockStyle.Fill };
 
             Controls.Add(_benchmarkView);
+        }
 
-            _views.Add(this);
-
-            _views.Add(BenchmarkView);
-
+        private void FillViewsCollection()
+        {
+            _views = new List<IView>
+            {
+                this,
+                BenchmarkView
+            };
+            
             _views.ForEach(x => x.HideView());
         }
 

@@ -9,16 +9,18 @@ namespace DigitRecognizer.Presentation.Infrastructure
     {
         public static void CurrentDomainOnUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            string message = $"Something went terribly wrong.\r\n\r\n{(Exception)e.ExceptionObject}";
+            var ex = (Exception) e.ExceptionObject;
 
-            DependencyResolver.Resolve<ILoggingService>().Log((Exception)e.ExceptionObject);
+            string message = $"Something went wrong.{Environment.NewLine}{Environment.NewLine}{ex}";
+
+            DependencyResolver.Resolve<ILoggingService>().Log(ex);
 
             DependencyResolver.Resolve<IMessageService>().ShowMessage(message, "Unhandled Exception", icon: MessageBoxIcon.Error);
         }
 
         public static void ApplicationOnThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            string message = $"Something went terribly wrong.\r\n\r\n{e.Exception}";
+            string message = $"Something went wrong.{Environment.NewLine}{Environment.NewLine}{e.Exception}";
 
             DependencyResolver.Resolve<ILoggingService>().Log(e.Exception);
 

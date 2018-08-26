@@ -58,9 +58,11 @@
     <Compile Include="Components\ImageGrid.Designer.cs">
       <DependentUpon>ImageGrid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Global.cs" />
     <Compile Include="Infrastructure\DependencyResolver.cs" />
     <Compile Include="Infrastructure\ExceptionHandlers.cs" />
     <Compile Include="Infrastructure\PanelDoubleBuffering.cs" />
+    <Compile Include="Infrastructure\PredictionModelLoader.cs" />
     <Compile Include="Presenters\BenchmarkPresenter.cs" />
     <Compile Include="Presenters\ApplicationPresenter.cs" />
     <Compile Include="Services\ILoggingService.cs" />

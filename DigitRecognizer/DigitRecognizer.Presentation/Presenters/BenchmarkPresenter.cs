@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace DigitRecognizer.Presentation.Presenters
 {
     public class BenchmarkPresenter
     {
-        #region MyRegion
+        #region Fields
 
         private readonly IBenchmarkView _benchmarkView;
         private readonly IMessageService _messageService;
@@ -47,16 +46,14 @@ namespace DigitRecognizer.Presentation.Presenters
 
         private async void OnRunBenchmark(object sender, EventArgs e)
         {
-            // TODO: Refactor this code to use a globally available model
+            IPredictionModel model = Global.PredictionModel ?? (Global.PredictionModel = Global.LoadModel());
 
-            var dlg = new OpenFileDialog
+            if (model == null)
             {
-                Multiselect = true
-            };
+                _messageService.ShowMessage("The prediction model must be loaded first.", "Prediction model", icon: MessageBoxIcon.Information);
 
-            dlg.ShowDialog();
-
-            IPredictionModel model = ClusterPredictionModel.FromFiles(dlg.FileNames);
+                return;
+            }
 
             _benchmarkView.ResetView();
 
@@ -74,10 +71,9 @@ namespace DigitRecognizer.Presentation.Presenters
             }
             catch (Exception exception)
             {
-
                 _loggingService.Log(exception);
 
-                _messageService.ShowMessage("");
+                _messageService.ShowMessage("An error ocurred while running the benchmark. Please try again.", "Benchmark error", icon: MessageBoxIcon.Information);
             }
         }
 
