@@ -50,6 +50,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\PredictionPane.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\PredictionPane.Designer.cs">
+      <DependentUpon>PredictionPane.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\ImageGridModel.cs" />
     <Compile Include="Components\ImageGrid.cs">
       <SubType>UserControl</SubType>
@@ -64,6 +70,7 @@
     <Compile Include="Infrastructure\PredictionModelLoader.cs" />
     <Compile Include="Presenters\BenchmarkPresenter.cs" />
     <Compile Include="Presenters\ApplicationPresenter.cs" />
+    <Compile Include="Presenters\DrawingPresenter.cs" />
     <Compile Include="Services\ILoggingService.cs" />
     <Compile Include="Services\IMessageService.cs" />
     <Compile Include="Services\LoggingService.cs" />
@@ -75,6 +82,12 @@
     <Compile Include="Views\Implementations\BenchmarkView.Designer.cs">
       <DependentUpon>BenchmarkView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Implementations\DrawingView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Implementations\DrawingView.Designer.cs">
+      <DependentUpon>DrawingView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Implementations\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,13 +97,20 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\Interfaces\IBenchmarkView.cs" />
+    <Compile Include="Views\Interfaces\IDrawingView.cs" />
     <Compile Include="Views\Interfaces\IMainFormView.cs" />
     <Compile Include="Views\Interfaces\IView.cs" />
     <EmbeddedResource Include="Components\ImageGrid.resx">
       <DependentUpon>ImageGrid.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Components\PredictionPane.resx">
+      <DependentUpon>PredictionPane.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Implementations\BenchmarkView.resx">
       <DependentUpon>BenchmarkView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Implementations\DrawingView.resx">
+      <DependentUpon>DrawingView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Implementations\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

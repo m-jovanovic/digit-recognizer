@@ -46,9 +46,9 @@ namespace DigitRecognizer.Presentation.Presenters
 
         private async void OnRunBenchmark(object sender, EventArgs e)
         {
-            IPredictionModel model = Global.PredictionModel ?? (Global.PredictionModel = Global.LoadModel());
+            IPredictionModel predictionModel = Global.PredictionModel;
 
-            if (model == null)
+            if (predictionModel == null)
             {
                 _messageService.ShowMessage("The prediction model must be loaded first.", "Prediction model", icon: MessageBoxIcon.Information);
 
@@ -66,7 +66,7 @@ namespace DigitRecognizer.Presentation.Presenters
             try
             {
                 await Task.Run(() => {
-                    RunBenchmark(model);
+                    RunBenchmark(predictionModel);
                 }, token);
             }
             catch (Exception exception)

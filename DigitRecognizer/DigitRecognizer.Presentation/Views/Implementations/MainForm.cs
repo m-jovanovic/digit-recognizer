@@ -6,8 +6,15 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 {
     public partial class MainForm : Form, IMainFormView
     {
+        #region Fields
+
         private BenchmarkView _benchmarkView;
+        private DrawingView _drawingView;
         private List<IView> _views;
+
+        #endregion
+
+        #region Ctor
 
         public MainForm()
         {
@@ -17,6 +24,18 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 
             HideView();
         }
+
+        #endregion
+
+        #region Properties
+        
+        public IBenchmarkView BenchmarkView => _benchmarkView;
+
+        public IDrawingView DrawingView => _drawingView;
+
+        #endregion
+
+        #region Methods
 
         private void InitializeViews()
         {
@@ -28,8 +47,15 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         private void FillControlsCollection()
         {
             _benchmarkView = new BenchmarkView { Dock = DockStyle.Fill };
+            _drawingView = new DrawingView { Dock = DockStyle.Fill };
 
-            Controls.Add(_benchmarkView);
+            Control[] controls =
+            {
+                _benchmarkView,
+                _drawingView
+            };
+
+            Controls.AddRange(controls);
         }
 
         private void FillViewsCollection()
@@ -37,21 +63,42 @@ namespace DigitRecognizer.Presentation.Views.Implementations
             _views = new List<IView>
             {
                 this,
-                BenchmarkView
+                _benchmarkView,
+                _drawingView
             };
-            
-            _views.ForEach(x => x.HideView());
+
+            HideViews();
         }
 
-        public IBenchmarkView BenchmarkView => _benchmarkView;
+        private void HideViews() => _views.ForEach(x => x.HideView());
 
+        #endregion
+
+        #region Event handlers
+        
         private void BenchmarkToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
-            _benchmarkView.ShowView();
+            ToolstripMenuItem_Click_DisplayView(_benchmarkView);
         }
+
+        private void DrawingToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            ToolstripMenuItem_Click_DisplayView(_drawingView);
+        }
+
+        private static void ToolstripMenuItem_Click_DisplayView(IView view)
+        {
+            view.ShowView();
+        }
+
+        #endregion
+
+        #region IView implementation
 
         public void ShowView()
         {
+            BringToFront();
+
             Show();
         }
 
@@ -59,135 +106,7 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         {
             Hide();
         }
+        
+        #endregion
     }
-
-    //public partial class MainForm : Form
-    //{
-    //    private Point _currentPoint;
-    //    private Point _previousPoint;
-    //    private readonly Pen _pen = new Pen(Color.Black, 70);
-    //    private readonly Bitmap _bitmap;
-    //    private PredictionModel _predictionModel;
-
-    //    public MainForm()
-    //    {
-    //        InitializeComponent();
-    //        _bitmap = new Bitmap(drawingPanel.Width, drawingPanel.Height);
-    //        using (Graphics g = Graphics.FromImage(_bitmap))
-    //        {
-    //            g.Clear(Color.White);
-    //        }
-    //        _pen.SetLineCap(LineCap.Round, LineCap.Round, DashCap.Round);
-
-    //        openFileDialog.InitialDirectory = Path.GetFullPath(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory) + DirectoryHelper.ModelsFolder);
-    //        openFileDialog.Filter = @"Neural network files (*.nn)|*.nn";
-
-    //        drawingPanel.MouseDown += DrawingPanel_MouseDown;
-    //        drawingPanel.MouseMove += DrawingPanel_MouseMove;
-    //        drawingPanel.Paint += DrawingPanel_Paint;
-
-    //        btnClear.Click += BtnClear_Click;
-    //        btnDecide.Click += BtnDecide_Click;
-
-    //        lblDecision.Text = string.Empty;
-    //    }
-
-    //    private void DrawingPanel_MouseDown(object sender, MouseEventArgs e)
-    //    {
-    //        _previousPoint = e.Location;
-    //    }
-
-    //    private void DrawingPanel_MouseMove(object sender, MouseEventArgs e)
-    //    {
-    //        if (e.Button == MouseButtons.Left)
-    //        {
-    //            _currentPoint = e.Location;
-    //            const int retryCount = 5;
-    //            for (var i = 0; i < retryCount; i++)
-    //            {
-    //                try
-    //                {
-    //                    using (Graphics g = Graphics.FromImage(_bitmap))
-    //                    {
-    //                        g.DrawLine(_pen, _previousPoint, _currentPoint);
-    //                    }
-    //                }
-    //                catch
-    //                {
-    //                    continue;
-    //                }
-
-    //                break;
-    //            }
-    //            drawingPanel.Invalidate();
-    //            _previousPoint = _currentPoint;
-    //        }
-    //    }
-
-    //    private void DrawingPanel_Paint(object sender, PaintEventArgs e)
-    //    {
-    //        e.Graphics.DrawImage(_bitmap, Point.Empty);
-    //    }
-
-    //    private void BtnClear_Click(object sender, EventArgs e)
-    //    {
-    //        Clear();
-    //    }
-
-    //    private void Clear()
-    //    {
-    //        const int retryCount = 5;
-    //        for (var i = 0; i < retryCount; i++)
-    //        {
-    //            try
-    //            {
-    //                using (Graphics g = Graphics.FromImage(_bitmap))
-    //                {
-    //                    g.Clear(Color.White);
-    //                }
-    //            }
-    //            catch
-    //            {
-    //                continue;
-    //            }
-
-    //            break;
-    //        }
-    //        drawingPanel.Invalidate();
-    //        lblDecision.Text = string.Empty;
-    //    }
-
-    //    private void BtnDecide_Click(object sender, EventArgs e)
-    //    {
-    //        if (_predictionModel == null)
-    //        {
-    //            MessageBox.Show(@"No neural network is currently loaded", @"Neural Network Info", MessageBoxButtons.OK,
-    //                MessageBoxIcon.Information);
-
-    //            return;
-    //        }
-
-    //        var processor = new ImagePreprocessor();
-
-    //        double[] pixels = processor.Preprocess(_bitmap);
-
-    //        double[] prediction = _predictionModel.Predict(pixels);
-
-    //        int argMax = prediction.ArgMax();
-
-    //        double percent = prediction[argMax];
-
-    //        lblDecision.Text = $@"Network: {argMax} ({percent:P2})";
-    //    }
-
-    //    private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
-    //    {
-    //        DialogResult dialogResult = openFileDialog.ShowDialog();
-
-    //        if (dialogResult == DialogResult.OK && !string.IsNullOrEmpty(openFileDialog.FileName))
-    //        {
-    //            _predictionModel = PredictionModel.FromFile(openFileDialog.FileName);
-    //        }
-    //    }
-    //}
 }

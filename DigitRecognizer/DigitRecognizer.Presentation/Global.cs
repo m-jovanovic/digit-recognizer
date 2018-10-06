@@ -5,11 +5,13 @@ namespace DigitRecognizer.Presentation
 {
     public static class Global
     {
-        public static IPredictionModel PredictionModel { get; set; }
+        private static IPredictionModel _predictionModel;
+
+        public static IPredictionModel PredictionModel => _predictionModel ?? (_predictionModel = LoadModel());
 
         public static readonly int ImageGridFieldCount = 100;
 
-        public static IPredictionModel LoadModel()
+        private static IPredictionModel LoadModel()
         {
             var loader = new PredictionModelLoader();
 

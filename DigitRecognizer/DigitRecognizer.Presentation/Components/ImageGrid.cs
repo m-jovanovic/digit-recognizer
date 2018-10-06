@@ -193,7 +193,7 @@ namespace DigitRecognizer.Presentation.Components
             panelIncorrectImagesGrid.Invalidate();
         }
 
-        private static void OnPageButtonClick(Button prevBtn, Button nextBtn, ref int page, bool shouldIncrease, int maxPage)
+        private static void OnPageButtonClick(Control prevBtn, Control nextBtn, ref int page, bool shouldIncrease, int maxPage)
         {
             page += shouldIncrease ? 1 : -1;
 
@@ -209,6 +209,7 @@ namespace DigitRecognizer.Presentation.Components
             CalculateGridElementLocations(panelIncorrectImagesGrid, lblRight, btnIncorrectGridPrev, btnIncorrectGridNext,  Width * 0.75);
 
             lblNote.Left = panelIncorrectImagesGrid.Right - lblNote.Width + 5;
+
             lblNote.Top = panelIncorrectImagesGrid.Bottom + 5;
 
             base.OnResize(e);
@@ -217,15 +218,19 @@ namespace DigitRecognizer.Presentation.Components
         private void CalculateGridElementLocations(Control panel, Control label, Control btnPrev, Control btnNext, double center)
         {
             panel.Left = (int)(center - panel.Width / 2.0);
+
             panel.Top = (Height - panel.Height) / 2;
             
             label.Left = panel.Left - 5;
+
             label.Top = panel.Top - 25;
 
             btnPrev.Left = panel.Left;
+
             btnPrev.Top = panel.Bottom + 5;
 
             btnNext.Left = panel.Left + btnPrev.Width + 5;
+
             btnNext.Top = panel.Bottom + 5;
         }
 

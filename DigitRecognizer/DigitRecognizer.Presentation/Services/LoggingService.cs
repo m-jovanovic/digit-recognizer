@@ -17,7 +17,7 @@ namespace DigitRecognizer.Presentation.Services
                 Exception current = e;
                 while (current != null)
                 {
-                    builder.Append(e.StackTrace);
+                    builder.Append(e);
 
                     current = current.InnerException;
                 }

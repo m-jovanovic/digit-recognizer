@@ -190,6 +190,8 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 
         public void ShowView()
         {
+            BringToFront();
+
             Show();
         }
 

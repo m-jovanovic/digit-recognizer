@@ -8,6 +8,11 @@
         /// <summary>
         /// Gets the benchmark view.
         /// </summary>
-        IBenchmarkView BenchmarkView {get;}
+        IBenchmarkView BenchmarkView { get; }
+
+        /// <summary>
+        /// Gets the drawing view.
+        /// </summary>
+        IDrawingView DrawingView { get; }
     }
 }
