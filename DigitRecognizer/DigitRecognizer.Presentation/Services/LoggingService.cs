@@ -23,6 +23,24 @@ namespace DigitRecognizer.Presentation.Services
                 }
 
                 builder.AppendLine();
+                builder.AppendLine();
+
+                writer.Write(builder.ToString());
+            }
+        }
+
+        public void Log(string message)
+        {
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                return;
+            }
+
+            using (var writer = new StreamWriter(LogFileName, true))
+            {
+                var builder = new StringBuilder($"{DateTime.Now} - {message}{Environment.NewLine}");
+
+                builder.AppendLine();
 
                 writer.Write(builder.ToString());
             }

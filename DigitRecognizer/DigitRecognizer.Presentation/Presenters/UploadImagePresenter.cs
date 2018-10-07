@@ -39,6 +39,8 @@ namespace DigitRecognizer.Presentation.Presenters
         {
             try
             {
+                _loggingService.Log("Classify drawing has started");
+
                 var imagePreprocessor = new ImagePreprocessor();
 
                 double[] pixels = imagePreprocessor.Preprocess(_uploadImageView.Image);
@@ -48,6 +50,8 @@ namespace DigitRecognizer.Presentation.Presenters
                 double[] prediction = predictionModel.Predict(pixels);
 
                 _uploadImageView.ProcessPrediction(prediction);
+
+                _loggingService.Log("Classify drawing has completed");
             }
             catch (NullReferenceException exception)
             {

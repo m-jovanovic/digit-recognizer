@@ -13,6 +13,8 @@ namespace DigitRecognizer.Presentation.Presenters
             IMessageService messageService, 
             ILoggingService loggingService)
         {
+            loggingService.Log("Initializing presenters");
+
             _benchmarkPresenter = new BenchmarkPresenter(mainFormView.BenchmarkView, messageService, loggingService);
             _drawingPresenter = new DrawingPresenter(mainFormView.DrawingView, messageService, loggingService);
             _uploadImagePresenter = new UploadImagePresenter(mainFormView.UploadImageView, messageService, loggingService);

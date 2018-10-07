@@ -79,6 +79,8 @@ namespace DigitRecognizer.Presentation.Presenters
 
         private void RunBenchmark(IPredictionModel model)
         {
+            _loggingService.Log("Running benchmark has started");
+
             _benchmarkView.IsBenchmarkRunning = true;
 
             var provider = new BatchDataProvider(DirectoryHelper.TestLabelsPath, DirectoryHelper.TestImagesPath, 100);
@@ -106,10 +108,14 @@ namespace DigitRecognizer.Presentation.Presenters
             _benchmarkView.SetAccuracy(acc);
 
             _benchmarkView.IsBenchmarkRunning = false;
+
+            _loggingService.Log("Running benchmark has completed");
         }
 
         private void OnCancelBenchmark(object sender, EventArgs e)
         {
+            _loggingService.Log("Running benchmark was canceled");
+
             _cancellationTokenSource.Cancel();
         }
         
