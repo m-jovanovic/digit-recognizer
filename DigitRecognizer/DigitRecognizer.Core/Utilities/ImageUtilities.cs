@@ -20,7 +20,7 @@ namespace DigitRecognizer.Core.Utilities
         /// <param name="width">The new width in pixels.</param>
         /// <param name="height">The new height in pixels.</param>
         /// <returns>The resized image.</returns>
-        internal static Image Resize(Image image, int width, int height)
+        public static Image Resize(Image image, int width, int height)
         {
             var destRect = new Rectangle(0, 0, width, height);
             var destImage = new Bitmap(width, height);

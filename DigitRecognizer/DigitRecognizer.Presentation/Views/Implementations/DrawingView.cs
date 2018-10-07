@@ -113,8 +113,7 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         {
             _previousPoint = e.Location;
         }
-
-
+        
         protected override void OnResize(EventArgs e)
         {
             drawingPanel.Top = (Height - drawingPanel.Height) / 2; 

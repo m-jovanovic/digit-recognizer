@@ -71,6 +71,7 @@
     <Compile Include="Presenters\BenchmarkPresenter.cs" />
     <Compile Include="Presenters\ApplicationPresenter.cs" />
     <Compile Include="Presenters\DrawingPresenter.cs" />
+    <Compile Include="Presenters\UploadImagePresenter.cs" />
     <Compile Include="Services\ILoggingService.cs" />
     <Compile Include="Services\IMessageService.cs" />
     <Compile Include="Services\LoggingService.cs" />
@@ -96,9 +97,16 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\Implementations\UploadImageView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Implementations\UploadImageView.Designer.cs">
+      <DependentUpon>UploadImageView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Interfaces\IBenchmarkView.cs" />
     <Compile Include="Views\Interfaces\IDrawingView.cs" />
     <Compile Include="Views\Interfaces\IMainFormView.cs" />
+    <Compile Include="Views\Interfaces\IUploadImageView.cs" />
     <Compile Include="Views\Interfaces\IView.cs" />
     <EmbeddedResource Include="Components\ImageGrid.resx">
       <DependentUpon>ImageGrid.cs</DependentUpon>
@@ -124,6 +132,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Views\Implementations\UploadImageView.resx">
+      <DependentUpon>UploadImageView.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

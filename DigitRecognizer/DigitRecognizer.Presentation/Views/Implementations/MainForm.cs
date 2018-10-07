@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using DigitRecognizer.Presentation.Views.Interfaces;
 
@@ -10,6 +11,7 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 
         private BenchmarkView _benchmarkView;
         private DrawingView _drawingView;
+        private UploadImageView _uploadImageView;
         private List<IView> _views;
 
         #endregion
@@ -33,6 +35,8 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 
         public IDrawingView DrawingView => _drawingView;
 
+        public IUploadImageView UploadImageView => _uploadImageView;
+
         #endregion
 
         #region Methods
@@ -48,11 +52,13 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         {
             _benchmarkView = new BenchmarkView { Dock = DockStyle.Fill };
             _drawingView = new DrawingView { Dock = DockStyle.Fill };
+            _uploadImageView = new UploadImageView { Dock = DockStyle.Fill };
 
             Control[] controls =
             {
                 _benchmarkView,
-                _drawingView
+                _drawingView,
+                _uploadImageView
             };
 
             Controls.AddRange(controls);
@@ -62,12 +68,15 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         {
             _views = new List<IView>
             {
-                this,
                 _benchmarkView,
-                _drawingView
+                _drawingView,
+                _uploadImageView,
+                this
             };
 
             HideViews();
+
+            _views.First().ShowView();
         }
 
         private void HideViews() => _views.ForEach(x => x.HideView());
@@ -84,6 +93,11 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         private void DrawingToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             ToolstripMenuItem_Click_DisplayView(_drawingView);
+        }
+
+        private void UploadToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            ToolstripMenuItem_Click_DisplayView(_uploadImageView);
         }
 
         private static void ToolstripMenuItem_Click_DisplayView(IView view)
@@ -106,7 +120,7 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         {
             Hide();
         }
-        
+
         #endregion
     }
 }

@@ -14,5 +14,10 @@
         /// Gets the drawing view.
         /// </summary>
         IDrawingView DrawingView { get; }
+        
+        /// <summary>
+        /// Gets the upload image view.
+        /// </summary>
+        IUploadImageView UploadImageView { get; }
     }
 }

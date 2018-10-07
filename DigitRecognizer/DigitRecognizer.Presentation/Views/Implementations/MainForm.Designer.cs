@@ -32,6 +32,7 @@
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.benchmarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drawingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -40,7 +41,8 @@
             this.menuStrip.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.benchmarkToolStripMenuItem,
-            this.drawingToolStripMenuItem});
+            this.drawingToolStripMenuItem,
+            this.uploadToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1384, 24);
@@ -59,6 +61,13 @@
             this.drawingToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.drawingToolStripMenuItem.Text = "Drawing";
             this.drawingToolStripMenuItem.Click += new System.EventHandler(this.DrawingToolStripMenuItem_Click);
+            // 
+            // uploadToolStripMenuItem
+            // 
+            this.uploadToolStripMenuItem.Name = "uploadToolStripMenuItem";
+            this.uploadToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.uploadToolStripMenuItem.Text = "Upload";
+            this.uploadToolStripMenuItem.Click += new System.EventHandler(this.UploadToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -85,6 +94,7 @@
         private System.Windows.Forms.MenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem benchmarkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem drawingToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
     }
 }
 
