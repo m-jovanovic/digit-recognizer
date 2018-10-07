@@ -181,40 +181,35 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         {
             using(var pen = new Pen(Color.Gray, 0.5f))
             {
-                int increment = drawingPanel.Width / 28;
+                int increment = _bitmap.Width / 28;
 
-                DrawVerticalLines(g, pen, increment);
+                for (var i = 1; i < 28; i++)
+                {
+                    int offset = i * increment;
 
-                DrawHorizontalLines(g, pen, increment);
+                    DrawVerticalLine(_bitmap.Height, offset, g, pen);
+
+                    DrawHorizontalLine(_bitmap.Width, offset, g, pen);
+                }
             }
         }
 
-        private void DrawHorizontalLines(Graphics g, Pen pen, int increment)
+        private static void DrawVerticalLine(int distance, int offset, Graphics g, Pen pen)
         {
-            for (var i = 1; i < 28; i++)
-            {
-                int offset = i * increment;
+            var point1 = new Point(offset, 0);
 
-                var point1 = new Point(0, offset);
+            var point2 = new Point(offset, distance);
 
-                var point2 = new Point(drawingPanel.Width, offset);
-
-                g.DrawLine(pen, point1, point2);
-            }
+            g.DrawLine(pen, point1, point2);
         }
 
-        private void DrawVerticalLines(Graphics g, Pen pen, int increment)
+        private static void DrawHorizontalLine(int distance, int offset, Graphics g, Pen pen)
         {
-            for (var i = 1; i < 28; i++)
-            {
-                int offset = i * increment;
+            var point1 = new Point(0, offset);
 
-                var point1 = new Point(offset, 0);
+            var point2 = new Point(distance, offset);
 
-                var point2 = new Point(offset, drawingPanel.Height);
-
-                g.DrawLine(pen, point1, point2);
-            }
+            g.DrawLine(pen, point1, point2);
         }
 
         public void ShowView()

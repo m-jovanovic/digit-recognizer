@@ -150,8 +150,6 @@
   <ItemGroup>
     <Content Include="favico.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EventArguments\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,5 +1,5 @@
 ﻿using System;
-using DigitRecognizer.Core.Extensions;
+using System.Windows.Forms;
 using DigitRecognizer.Core.IO;
 using DigitRecognizer.MachineLearning.Infrastructure.Models;
 using DigitRecognizer.Presentation.Services;
@@ -36,15 +36,24 @@ namespace DigitRecognizer.Presentation.Presenters
         
         private void OnClassifyDrawing(object sender, EventArgs e)
         {
-            var imagePreprocessor = new ImagePreprocessor();
+            try
+            {
+                var imagePreprocessor = new ImagePreprocessor();
 
-            double[] pixels = imagePreprocessor.Preprocess(_drawingView.Drawing);
+                double[] pixels = imagePreprocessor.Preprocess(_drawingView.Drawing);
 
-            IPredictionModel predictionModel = Global.PredictionModel;
+                IPredictionModel predictionModel = Global.PredictionModel;
 
-            double[] prediction = predictionModel.Predict(pixels);
+                double[] prediction = predictionModel.Predict(pixels);
 
-            _drawingView.ProcessPrediction(prediction);
+                _drawingView.ProcessPrediction(prediction);
+            }
+            catch (Exception exception)
+            {
+                _loggingService.Log(exception);
+
+                _messageService.ShowMessage("An error ocurred while classyfing the drawing. Please try again.", "Classification error", icon: MessageBoxIcon.Information);
+            }
         }
 
         private void OnClearDrawing(object sender, EventArgs e)
