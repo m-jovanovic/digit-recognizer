@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -12,6 +14,100 @@ namespace DigitRecognizer.Core.Utilities
     public static class ImageUtilities
     {
         private const int ImageSizeInPixels = 28;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="windowSize"></param>
+        /// <param name="step"></param>
+        /// <returns></returns>
+        public static IEnumerable<BoundingBox> SlidingWindow(Image image, Size windowSize, int step)
+        {
+            var boxes = new List<BoundingBox>();
+
+            for (var y = 0; y < image.Height && y + windowSize.Height < image.Height; y += step)
+            {
+                for (var x = 0; x < image.Width && x + windowSize.Width < image.Width; x += step)
+                {
+                    Image img = SampleImageAtLocation(image, x, y, windowSize);
+
+                    if (img.Width == windowSize.Width && img.Height == windowSize.Height)
+                    {
+                        boxes.Add(new BoundingBox
+                        {
+                            Image = img,
+                            X = x,
+                            Y = y
+                        });
+                    }
+                }
+            }
+            
+            return boxes;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="windowSize"></param>
+        /// <returns></returns>
+        private static Image SampleImageAtLocation(Image image, int x, int y, Size windowSize)
+        {
+            var sample = new Bitmap(windowSize.Width, windowSize.Height);
+
+            using (var bmp = new Bitmap(image))
+            {
+                for (int i = y; i < y + windowSize.Height && i < bmp.Height; i++)
+                {
+                    for (int j = x; j < x + windowSize.Width && j < bmp.Width; j++)
+                    {
+                        try
+                        {
+                            sample.SetPixel(j - x, i - y, bmp.GetPixel(j, i));
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine($"x: {i}, y: {j}");
+                        }
+                    }
+                }
+            }
+                //using (var bmp = new Bitmap(image))
+                //{
+                //    BitmapData bmpData = bmp.LockBits(new Rectangle(Point.Empty, bmp.Size), ImageLockMode.ReadWrite,
+                //        PixelFormat.Format24bppRgb);
+
+                //    try
+                //    {
+                //        unsafe
+                //        {
+                //            byte* p = (byte*)bmpData.Scan0 + y * bmpData.Stride + x * 3;
+
+                //            for (int i = y; i < y + windowSize.Height; i++)
+                //            {
+                //                for (int j = x; j < x + windowSize.Width; j++)
+                //                {
+                //                    sample.SetPixel(j - x, i - y, Color.FromArgb(p[2],p[1],p[0]));
+
+                //                    p += 3;
+                //                }
+
+                //                p += bmpData.Stride;
+                //            }
+                //        }
+                //    }
+                //    finally
+                //    {
+                //        bmp.UnlockBits(bmpData);
+                //    }
+                //}
+
+                return sample;
+        }
 
         /// <summary>
         /// Resizes the image to the specified width and height.

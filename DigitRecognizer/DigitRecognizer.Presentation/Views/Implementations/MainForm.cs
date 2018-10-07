@@ -12,6 +12,7 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         private BenchmarkView _benchmarkView;
         private DrawingView _drawingView;
         private UploadImageView _uploadImageView;
+        private SlidingWindowView _slidingWindowView;
         private List<IView> _views;
 
         #endregion
@@ -37,6 +38,8 @@ namespace DigitRecognizer.Presentation.Views.Implementations
 
         public IUploadImageView UploadImageView => _uploadImageView;
 
+        public ISlidingWindowView SlidingWindowView => _slidingWindowView;
+
         #endregion
 
         #region Methods
@@ -53,12 +56,14 @@ namespace DigitRecognizer.Presentation.Views.Implementations
             _benchmarkView = new BenchmarkView { Dock = DockStyle.Fill };
             _drawingView = new DrawingView { Dock = DockStyle.Fill };
             _uploadImageView = new UploadImageView { Dock = DockStyle.Fill };
+            _slidingWindowView = new SlidingWindowView { Dock = DockStyle.Fill, Padding = new Padding(10)};
 
             Control[] controls =
             {
                 _benchmarkView,
                 _drawingView,
-                _uploadImageView
+                _uploadImageView,
+                _slidingWindowView
             };
 
             Controls.AddRange(controls);
@@ -71,6 +76,7 @@ namespace DigitRecognizer.Presentation.Views.Implementations
                 _benchmarkView,
                 _drawingView,
                 _uploadImageView,
+                _slidingWindowView,
                 this
             };
 
@@ -98,6 +104,11 @@ namespace DigitRecognizer.Presentation.Views.Implementations
         private void UploadToolStripMenuItem_Click(object sender, System.EventArgs e)
         {
             ToolstripMenuItem_Click_DisplayView(_uploadImageView);
+        }
+
+        private void SlidingWindowToolStripMenuItem_Click(object sender, System.EventArgs e)
+        {
+            ToolstripMenuItem_Click_DisplayView(_slidingWindowView);
         }
 
         private static void ToolstripMenuItem_Click_DisplayView(IView view)

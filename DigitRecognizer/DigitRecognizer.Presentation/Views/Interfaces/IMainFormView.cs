@@ -19,5 +19,10 @@
         /// Gets the upload image view.
         /// </summary>
         IUploadImageView UploadImageView { get; }
+
+        /// <summary>
+        /// Gets the sliding window view.
+        /// </summary>
+        ISlidingWindowView SlidingWindowView { get; }
     }
 }

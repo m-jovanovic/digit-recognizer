@@ -65,6 +65,7 @@
     <Compile Include="IO\NnSerializationContextInfo.cs" />
     <Compile Include="IO\PixelReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Data\BoundingBox.cs" />
     <Compile Include="Utilities\ConsoleUtility.cs" />
     <Compile Include="Utilities\DirectoryHelper.cs" />
     <Compile Include="Utilities\ImageUtilities.cs" />

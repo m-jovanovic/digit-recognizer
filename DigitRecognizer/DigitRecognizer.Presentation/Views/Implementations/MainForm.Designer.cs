@@ -33,6 +33,7 @@
             this.benchmarkToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drawingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.slidingWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,7 +43,8 @@
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.benchmarkToolStripMenuItem,
             this.drawingToolStripMenuItem,
-            this.uploadToolStripMenuItem});
+            this.uploadToolStripMenuItem,
+            this.slidingWindowToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(1384, 24);
@@ -68,6 +70,13 @@
             this.uploadToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.uploadToolStripMenuItem.Text = "Upload";
             this.uploadToolStripMenuItem.Click += new System.EventHandler(this.UploadToolStripMenuItem_Click);
+            // 
+            // slidingWindowToolStripMenuItem
+            // 
+            this.slidingWindowToolStripMenuItem.Name = "slidingWindowToolStripMenuItem";
+            this.slidingWindowToolStripMenuItem.Size = new System.Drawing.Size(100, 20);
+            this.slidingWindowToolStripMenuItem.Text = "Sliding window";
+            this.slidingWindowToolStripMenuItem.Click += new System.EventHandler(this.SlidingWindowToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -95,6 +104,7 @@
         private System.Windows.Forms.ToolStripMenuItem benchmarkToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem drawingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem slidingWindowToolStripMenuItem;
     }
 }
 
