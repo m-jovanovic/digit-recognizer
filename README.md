@@ -1,2 +1,3 @@
-# digit-recognizer
-Small neural network framework developed in C#, specialized in digit classification (MNIST dataset)
+# Digit Recognizer
+
+Nural network that classifies MNIST dataset, along with a desktop application with visual representation of the classficiation process.
