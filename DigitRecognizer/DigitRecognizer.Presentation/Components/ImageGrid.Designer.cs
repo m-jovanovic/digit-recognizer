@@ -82,7 +82,7 @@
             this.lblRight.Name = "lblRight";
             this.lblRight.Size = new System.Drawing.Size(206, 20);
             this.lblRight.TabIndex = 12;
-            this.lblRight.Text = "Inocrrectly classified images";
+            this.lblRight.Text = "Incorrectly classified images";
             // 
             // lblNote
             // 
